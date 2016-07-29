@@ -36,4 +36,8 @@
         Loop
         TextBox2.Text = TEXT
     End Sub
+
+    Private Sub TextBox_KeyDown(sender As Object, e As KeyEventArgs) Handles TextBox1.KeyDown, TextBox2.KeyDown
+        If e.KeyCode = Keys.A AndAlso e.Control = True Then sender.SelectAll
+    End Sub
 End Class
