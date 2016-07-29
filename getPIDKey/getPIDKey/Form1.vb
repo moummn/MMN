@@ -1,16 +1,21 @@
 ﻿Public Class Form1
     Private Function fnGETPID(ByVal startPoint As Integer, ByVal StrString As String, ByRef PIDString As String) As Integer
+        PIDString = ""
         Dim I As Integer = InStr(startPoint, StrString, "-")
-        If I = 0 OrElse I < 6 OrElse I > Len(StrString) - 23 Then
+        If I = 0 OrElse I > Len(StrString) - 23 Then
             Return 0
-            Exit Function
+        ElseIf I < 6 Then
+            If I + 1 > Len(StrString) Then
+                Return 0
+            Else
+                Return I + 1
+            End If
         End If
         If Mid(StrString, I + 6, 1) = "-" AndAlso Mid(StrString, I + 12, 1) = "-" AndAlso Mid(StrString, I + 18, 1) = "-" Then
             PIDString = Mid(StrString, I - 5, 29)
             Return I + 24
-            Exit Function
         End If
-        Return 0
+        Return I + 1
     End Function
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
         Call Form1_Resize(sender, e)
@@ -32,7 +37,7 @@
         Do
             I = fnGETPID(I, S, PID)
             If I = 0 Then Exit Do
-            TEXT = TEXT & PID & vbCrLf
+            If PID <> "" Then TEXT = TEXT & PID & vbCrLf
         Loop
         TextBox2.Text = TEXT
     End Sub
