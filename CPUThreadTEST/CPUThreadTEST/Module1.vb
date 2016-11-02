@@ -26,35 +26,33 @@
     Private Sub MoniorThread(ByVal AllThreads As Integer)
         Dim SecPass As ULong = 0
         Dim L As UInt64
+        Dim A As UInt64
         Do
             SecPass += 1
             Threading.Thread.Sleep(1000)
             Console.CursorTop = 1
             Console.CursorLeft = 0
             Console.Write(CStr(SecPass) & "s")
-            Console.CursorTop = 2
-            Console.CursorLeft = 0
-            Console.Write("T:")
             L = 0
-            Try
-                For I As Integer = 1 To AllThreads
-                    L = L + ThrNum(I)
-                Next
-                Console.Write(CStr(L))
-            Catch ex As Exception
-
-            End Try
-
             For I As Integer = 1 To AllThreads
-                Console.CursorTop = I + 2
+                A = ThrNum(I)
+                Console.CursorTop = I + 1
                 Console.CursorLeft = 0
-                Console.Write(CStr(I) & ":" & CStr(ThrNum(I)))
+                Console.Write("THREAD " & Format(I, "00") & " : " & FormatNumber(A, 0,,, TriState.True))
+                Try
+                    L = L + A
+                Catch ex As Exception
+
+                End Try
             Next
+            Console.CursorTop = AllThreads + 2
+            Console.CursorLeft = 0
+            Console.Write("TOTAL     : " & FormatNumber(L, 0,,, TriState.True))
 
         Loop
     End Sub
     Sub Main()
-        Console.Write("Input threads:")
+        Console.Write("INPUT THREADS:")
         Dim AllThreads As Int32 = Val(Console.ReadLine())
         ReDim Thrs(AllThreads)
         ReDim ThrNum(AllThreads)
