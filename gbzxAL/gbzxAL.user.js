@@ -6,8 +6,8 @@
 // @grant       GM_getValue
 // @grant       GM_setValue
 // @run-at      document-start
-// @downloadURL https://
-// @updateURL   https://
+// @downloadURL https://github.com/moummn/MMN/raw/master/gbzxAL/gbzxAL.user.js
+// @updateURL   https://github.com/moummn/MMN/raw/master/gbzxAL/gbzxAL.user.js
 // ==/UserScript==
 
 var thisURL = document.URL;
