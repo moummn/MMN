@@ -1,13 +1,13 @@
 // ==UserScript==
-// @name        干部在线自动学习
+// @name        gbzxAL
 // @namespace   gbzxal
 // @include     *gbzx.dl.gov.cn/student*
 // @version     2016.11.17
 // @grant       GM_getValue
 // @grant       GM_setValue
 // @run-at      document-start
-// @downloadURL https://github.com/moummn/MMN/raw/master/gbzxAL/gbzxAL.user.js
-// @updateURL   https://github.com/moummn/MMN/raw/master/gbzxAL/gbzxAL.user.js
+// @downloadURL https://
+// @updateURL   https://
 // ==/UserScript==
 
 var thisURL = document.URL;
