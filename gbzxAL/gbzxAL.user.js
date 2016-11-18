@@ -3,7 +3,7 @@
 // @description 干部在线自动学习
 // @namespace   gbzxal
 // @include     *gbzx.dl.gov.cn/student*
-// @version     2016.11.18.0
+// @version     2016.11.19.0
 // @grant       GM_getValue
 // @grant       GM_setValue
 // @run-at      document-start
@@ -11,29 +11,17 @@
 // @updateURL   https://github.com/moummn/MMN/raw/master/gbzxAL/gbzxAL.user.js
 // ==/UserScript==
 
+//播放页面自动关闭
 var thisURL = document.URL;
 //window.alert(thisURL);
 if (thisURL.indexOf("playNew") + thisURL.indexOf("playScorm") > 0) {
     //var Player = document.getElementById("player");
     //Player.remove();
     window.close();
-    //window.alert();
 };
 
 
-//写入Script
-//var FNClickPlay = "";
-//FNClickPlay +="function fnClickPlay() {\n";
-//FNClickPlay +="var AllElemA = document.getElementById(\"right\");\n";
-//FNClickPlay +="var PlayElem = AllElemA.getElementsByTagName(\"a\")[0];\n";
-//FNClickPlay +="PlayElem.click();\n";
-////FNClickPlay +="window.alert(ChElem.checked);\n";
-//FNClickPlay +="};";
-//var ElemScript =document.createElement("script")
-//ElemScript.setAttribute("type","text/JavaScript");
-//document.head.appendChild(ElemScript).textContent = FNClickPlay;
-
-//载入时
+//载入时等待网页显示完成
 var i1 = setInterval(function () { fnWaitEnd(); }, 100);
 function fnWaitEnd() {
     //window.alert(document.readyState)
@@ -61,9 +49,6 @@ function fnWaitEnd() {
 function addStyle(css) {
     document.head.appendChild(document.createElement("style")).textContent = css;
 };
-//var AutoLNCSS= "";
-//AutoLNCSS +="";
-//addStyle(AutoLNCSS);
 
 //添加元素
 //function AddElementById()
@@ -81,18 +66,13 @@ function fnAddButton() {
     newEm.id = "AutoLN_CHECK";
     newEm.setAttribute("type", "checkbox");
     newEm.addEventListener('click', fnCheckChange, true);
-    //newEm.setAttribute("onclick","javascript:FNCheckChange()");
     newEmParent.appendChild(newEm);
     newEm.checked = GM_getValue("ALChecked");
     newEm = document.createElement("label");
     newEm.setAttribute("for", "AutoLN_CHECK");
-    //newEm.setAttribute("onclick","javascript:StartLN()");
     newEm.innerHTML = "开启自动学习";
     newEmParent.appendChild(newEm);
 };
-
-//newEm.addEventListener('click', StartLN, true);
-
 
 //自动学习的CSS样式
 var AutoLNCSS = "";
@@ -102,7 +82,7 @@ addStyle(AutoLNCSS)
 
 
 
-//点击Check事件
+//点击Check触发事件
 function fnCheckChange() {
     var ChElem = document.getElementById("AutoLN_CHECK");
     GM_setValue("ALChecked", ChElem.checked);
@@ -112,7 +92,6 @@ function fnCheckChange() {
         fnClickPlay();
 
         var t = setTimeout("location.reload()", 5000);
-        //location.reload();
     }
     else {
 
@@ -124,7 +103,6 @@ function fnClickPlay() {
     var PlayElem = AllElemA.getElementsByTagName("a")[0];
     //window.alert(PlayElem.innerHTML);
     PlayElem.click();
-    //window.alert("Clicked");
 
 };
 
@@ -137,14 +115,9 @@ function fnCheckAutoLN() {
     if (ChElem.checked == true) {
 
         var t1 = setTimeout(function () { fnClickPlay(); }, 2000);
-        //fnClickPlay();
         var t2 = setTimeout("location.reload()", 30000);
-        //location.reload();
     };
 };
-//window.alert(document.readyState);
-//http://gbzx.dl.gov.cn/student/course!play
-//var t=setTimeout("location.reload()",5000);
 
 
 
