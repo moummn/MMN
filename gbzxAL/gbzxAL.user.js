@@ -3,7 +3,7 @@
 // @description 干部在线自动学习
 // @namespace   gbzxal
 // @include     *gbzx.dl.gov.cn/student*
-// @version     2016.11.17.3
+// @version     2016.11.18.0
 // @grant       GM_getValue
 // @grant       GM_setValue
 // @run-at      document-start
@@ -138,7 +138,7 @@ function fnCheckAutoLN() {
 
         var t1 = setTimeout(function () { fnClickPlay(); }, 2000);
         //fnClickPlay();
-        var t2 = setTimeout("location.reload()", 15000);
+        var t2 = setTimeout("location.reload()", 30000);
         //location.reload();
     };
 };
