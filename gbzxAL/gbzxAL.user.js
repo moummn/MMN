@@ -3,7 +3,7 @@
 // @description 干部在线自动学习
 // @namespace   gbzxal
 // @include     *gbzx.dl.gov.cn/student*
-// @version     2016.11.19.0
+// @version     2016.11.26.0
 // @grant       GM_getValue
 // @grant       GM_setValue
 // @run-at      document-start
@@ -18,6 +18,13 @@ if (thisURL.indexOf("playNew") + thisURL.indexOf("playScorm") > 0) {
     //var Player = document.getElementById("player");
     //Player.remove();
     window.close();
+};
+
+//如果1分钟未载入完成，刷新页面
+var AutoLNState = GM_getValue("ALChecked");
+//window.alert(AutoLNState);
+if (AutoLNState == true) {
+    var t60 = setTimeout("location.reload()", 60000);
 };
 
 
