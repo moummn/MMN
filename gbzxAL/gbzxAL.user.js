@@ -3,7 +3,7 @@
 // @description 干部在线自动学习
 // @namespace   gbzxal
 // @include     *gbzx.dl.gov.cn/student*
-// @version     2016.11.27.0
+// @version     2016.11.27.1
 // @grant       GM_getValue
 // @grant       GM_setValue
 // @run-at      document-start
@@ -27,13 +27,11 @@ if (AutoLNState == true) {
     var t60 = setTimeout("location.reload()", 60000);
 };
 
-
 //载入时等待网页显示完成
 var i1 = setInterval(function () { fnWaitEnd(); }, 100);
 function fnWaitEnd() {
     //window.alert(document.readyState)
     if (document.readyState == "complete") {
-
         if (thisURL.indexOf("scormList") > 0) {
             var AllElemA = document.getElementById("right");
             var PlayElem = AllElemA.getElementsByTagName("img")[1];
@@ -45,10 +43,7 @@ function fnWaitEnd() {
             fnAddButton();
             fnCheckAutoLN();
         };
-
-
-
-        window.clearInterval(i1)
+        window.clearInterval(i1);
     };
 };
 
@@ -67,8 +62,7 @@ function fnAddButton() {
     var newEm = document.createElement("span");
     newEm.id = "AutoLN";
     newEmParent.appendChild(newEm);
-
-    newEmParent = newEm
+    newEmParent = newEm;
     newEm = document.createElement("input");
     newEm.id = "AutoLN_CHECK";
     newEm.setAttribute("type", "checkbox");
@@ -84,10 +78,8 @@ function fnAddButton() {
 //自动学习的CSS样式
 var AutoLNCSS = "";
 AutoLNCSS += "#AutoLN { font-family: \"黑体\"; font-size: 24px; font-weight: bold; background-color: yellow; padding-left: 5px; padding-right: 5px;";
-AutoLNCSS += "border-top-width: medium; border-right-width: medium; border-bottom-width: medium; border-left-width: medium; border-top-style: outset; border-right-style: outset; border-bottom-style: outset; border-left-style: outset;}"
-addStyle(AutoLNCSS)
-
-
+AutoLNCSS += "border-top-width: medium; border-right-width: medium; border-bottom-width: medium; border-left-width: medium; border-top-style: outset; border-right-style: outset; border-bottom-style: outset; border-left-style: outset;}";
+addStyle(AutoLNCSS);
 
 //点击Check触发事件
 function fnCheckChange() {
@@ -95,14 +87,12 @@ function fnCheckChange() {
     GM_setValue("ALChecked", ChElem.checked);
     //	window.alert(ChElem.innerHTML);
     if (ChElem.checked == true) {
-
         fnClickPlay();
-
         var t = setTimeout("location.reload()", 5000);
     }
     else {
         location.reload();
-    }
+    };
 };
 
 function fnClickPlay() {
@@ -110,21 +100,14 @@ function fnClickPlay() {
     var PlayElem = AllElemA.getElementsByTagName("a")[0];
     //window.alert(PlayElem.innerHTML);
     PlayElem.click();
-
 };
-
-
 
 //检查是否开始学习
 function fnCheckAutoLN() {
     var ChElem = document.getElementById("AutoLN_CHECK");
     //window.alert(ChElem.checked);
     if (ChElem.checked == true) {
-
         var t1 = setTimeout(function () { fnClickPlay(); }, 2000);
         var t2 = setTimeout("location.reload()", 30000);
     };
 };
-
-
-
