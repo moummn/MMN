@@ -3,7 +3,7 @@
 // @description 干部在线自动学习
 // @namespace   gbzxal
 // @include     *gbzx.dl.gov.cn/student*
-// @version     2016.11.27.1
+// @version     2016.11.27.2
 // @grant       GM_getValue
 // @grant       GM_setValue
 // @run-at      document-start
@@ -28,7 +28,7 @@ if (AutoLNState == true) {
 };
 
 //载入时等待网页显示完成
-var i1 = setInterval(function () { fnWaitEnd(); }, 100);
+var iWC = setInterval(function () { fnWaitEnd(); }, 100);
 function fnWaitEnd() {
     //window.alert(document.readyState)
     if (document.readyState == "complete") {
@@ -43,7 +43,7 @@ function fnWaitEnd() {
             fnAddButton();
             fnCheckAutoLN();
         };
-        window.clearInterval(i1);
+        window.clearInterval(iWC);
     };
 };
 
