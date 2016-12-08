@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        TBaoAutoSubmit
-// @description 淘宝自动提交订单
+// @description 淘宝自动提交订单1
 // @namespace   tbas
 // @include     *buy.taobao.com/auction/order/confirm_order.htm*
 // @version     1
