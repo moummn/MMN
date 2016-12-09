@@ -4,7 +4,7 @@
 // @namespace   tbas
 // @include     *buy.taobao.com*confirm_order.htm*
 // @include     *buy.tmall.com*confirm_order.htm*
-// @version     2016.12.09.0
+// @version     2016.12.09.1
 // @grant       none
 // @run-at      document-end
 // @downloadURL https://github.com/moummn/MMN/raw/master/TBaoAutoSubmit/TBaoAutoSubmit.user.js
