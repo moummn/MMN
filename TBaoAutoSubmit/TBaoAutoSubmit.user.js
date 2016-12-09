@@ -2,8 +2,9 @@
 // @name        TBaoAutoSubmit
 // @description 淘宝自动提交订单
 // @namespace   tbas
-// @include     *buy.taobao.com/auction/order/confirm_order.htm*
-// @version     2016.12.08.0
+// @include     *buy.taobao.com*confirm_order.htm*
+// @include     *buy.tmall.com*confirm_order.htm*
+// @version     2016.12.09.0
 // @grant       none
 // @run-at      document-end
 // @downloadURL https://github.com/moummn/MMN/raw/master/TBaoAutoSubmit/TBaoAutoSubmit.user.js
