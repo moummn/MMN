@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name        HTOAPDF
-// @namespace   HTOAPDF
 // @description OA系统PDF页面修正
+// @namespace   HTOAPDF
 // @include     *223.100.151.35:8989/OAapp/HtTrace*
-// @version     2017.06.18.2
+// @version     2017.06.18.3
 // @grant       none
+// @run-at      document-end
 // @downloadURL https://github.com/moummn/MMN/raw/master/HTOAPDF/HTOAPDF.js
 // @updateURL   https://github.com/moummn/MMN/raw/master/HTOAPDF/HTOAPDF.js
 // ==/UserScript==
