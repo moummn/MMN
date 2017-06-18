@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A7FE7E29-3C06-4007-BD7A-7F9A4F67D5A6}"
 	ProjectSection(SolutionItems) = preProject
-		HTOAPDF.js = HTOAPDF.js
+		HTOAPDF.user.js = HTOAPDF.user.js
 	EndProjectSection
 EndProject
 Global
