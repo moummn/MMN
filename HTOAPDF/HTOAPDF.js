@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        HTOAPDF
 // @namespace   HTOAPDF
-// @description OA系统PDF页面修正
+// @description OA绯荤粺PDF椤甸潰淇
 // @include     *223.100.151.35:8989/OAapp/HtTrace*
 // @version     2017.06.18.1
 // @grant       none
@@ -9,12 +9,12 @@
 // @updateURL   https://github.com/moummn/MMN/raw/master/HTOAPDF/HTOAPDF.js
 // ==/UserScript==
 
-//获得PDF地址
+//鑾峰緱PDF鍦板潃
 var wb1 = document.getElementById("wb");
 var src1 = wb1.src;
 //window.alert(src1);
 
-//添加embed元素以显示pdf
+//娣诲姞embed鍏冪礌浠ユ樉绀簆df
 var pdfTable1 = document.getElementById("pdfTable");
 var newEm = document.createElement("embed");
 newEm.id = "pdfTable_embed";
