@@ -2,9 +2,10 @@
 // @name        WEBRefresh
 // @namespace   WEBRefresh
 // @description 自定义刷新网页
-// @version     2017.08.31.2
+// @version     2017.08.31.3
 // @include     *www.natbbs.com*
 // @grant       none
+// @run-at      document-end
 // @downloadURL https://github.com/moummn/MMN/raw/master/UserJS/WEBRefresh.user.js
 // @updateURL   https://github.com/moummn/MMN/raw/master/UserJS/WEBRefresh.user.js
 // ==/UserScript==
