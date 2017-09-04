@@ -13,6 +13,6 @@
 //检测网页的URL，根据URL判断模式
 var thisURL = document.URL;
 if (thisURL.indexOf("www.natbbs.com") > 0) {
-    var t = setTimeout("location.reload()", 60000);
+    var t = setTimeout("location.reload()", 900000);
     //window.close();
 };
