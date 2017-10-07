@@ -13,16 +13,28 @@
     Dim RightAns As String = ""
     Dim GettingNewQuest As Boolean = False
     Private Sub sbGetRandomABCD(ByRef Ans())
-        Dim S1(), S2() As String
-        ReDim S1(4), S2(4)
-        S1 = Ans
+        Dim S1(4), S2(4) As String
+        For I As Integer = 1 To 4
+            S1(I) = Ans(I)
+        Next
+
         For I As Integer = 1 To Len(RightAns)
             S2(Val(Mid(RightAns, I, 1))) = "1"
         Next
+        RightAns = ""
         For I As Integer = 1 To 4
             Dim R As Integer = Int((5 - I) * Rnd(TimeOfDay.ToBinary) + 1)
-
+            Ans(I) = S1(R)
+            If S2(R) = "1" Then RightAns &= CStr(I)
+            For A As Integer = R To 3
+                S1(A) = S1(A + 1)
+                S2(A) = S2(A + 1)
+            Next
         Next
+        cb1.Text = Ans(1)
+        cb2.Text = Ans(2)
+        cb3.Text = Ans(3)
+        cb4.Text = Ans(4)
     End Sub
     Private Sub sbGetNewQuest()
         GettingNewQuest = True
@@ -64,7 +76,7 @@
                 Ans(2) = Cache(5, CurSub)
                 Ans(3) = Cache(6, CurSub)
                 Ans(4) = Cache(7, CurSub)
-                sbGetRandomABCD(Ans(4))
+                sbGetRandomABCD(Ans)
                 btnOK.Visible = True
                 Exit Do
             End If
@@ -73,11 +85,23 @@
         tbQuest.Text = S
 
         cb1.Checked = False
+        cb1.Font = New System.Drawing.Font(cb1.Font, FontStyle.Regular)
+        cb1.ForeColor = SystemColors.ControlText
         cb2.Checked = False
+        cb2.Font = New System.Drawing.Font(cb1.Font, FontStyle.Regular)
+        cb2.ForeColor = SystemColors.ControlText
         cb3.Checked = False
+        cb3.Font = New System.Drawing.Font(cb1.Font, FontStyle.Regular)
+        cb3.ForeColor = SystemColors.ControlText
         cb4.Checked = False
+        cb4.Font = New System.Drawing.Font(cb1.Font, FontStyle.Regular)
+        cb4.ForeColor = SystemColors.ControlText
+        btnNext.Visible = False
+        Label1.Visible = False
+        AcceptButton = btnOK
         Application.DoEvents()
 
+        cb1.Focus()
         GettingNewQuest = False
     End Sub
     Private Sub sbGetSubjects()
@@ -116,13 +140,84 @@
     End Sub
 
     Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
-        sbGetNewQuest()
+        Dim MyAns As String = ""
+        If cb1.Checked = True Then MyAns &= "1"
+        If cb2.Checked = True Then MyAns &= "2"
+        If cb3.Checked = True Then MyAns &= "3"
+        If cb4.Checked = True Then MyAns &= "4"
+        If MyAns = RightAns Then
+            Label1.Text = "正确"
+            Label1.ForeColor = SystemColors.ControlText
+            Label1.Visible = True
+            btnNext.Visible = True
+            btnOK.Visible = False
+        Else
+            Label1.Text = "错误"
+            Label1.ForeColor = Color.Red
+            Label1.Visible = True
+            btnNext.Visible = True
+            If InStr(RightAns, "1") > 0 Then
+                cb1.Font = New Font(cb1.Font, FontStyle.Bold)
+                cb1.ForeColor = Color.Red
+            End If
+            If InStr(RightAns, "2") > 0 Then
+                cb2.Font = New Font(cb1.Font, FontStyle.Bold)
+                cb2.ForeColor = Color.Red
+            End If
+            If InStr(RightAns, "3") > 0 Then
+                cb3.Font = New Font(cb1.Font, FontStyle.Bold)
+                cb3.ForeColor = Color.Red
+            End If
+            If InStr(RightAns, "4") > 0 Then
+                cb4.Font = New Font(cb1.Font, FontStyle.Bold)
+                cb4.ForeColor = Color.Red
+            End If
+        End If
+
+        AcceptButton = btnNext
     End Sub
 
     Private Sub cb_CheckedChanged(sender As Object, e As EventArgs) Handles cb1.CheckedChanged, cb2.CheckedChanged, cb3.CheckedChanged, cb4.CheckedChanged
         If GettingNewQuest = True Then Exit Sub
         If Cache(1, CurSub) = "3" Then Exit Sub
-        'If cb1.Checked = True Then
+        If btnNext.Visible = True Then Exit Sub
+        Dim MyAns As String = ""
+        If cb1.Checked = True Then MyAns = "1"
+        If cb2.Checked = True Then MyAns = "2"
+        If cb3.Checked = True Then MyAns = "3"
+        If cb4.Checked = True Then MyAns = "4"
+        If MyAns = RightAns Then
+            Label1.Text = "正确"
+            Label1.ForeColor = SystemColors.ControlText
+            Label1.Visible = True
+            btnNext.Visible = True
+        Else
+            Label1.Text = "错误"
+            Label1.ForeColor = Color.Red
+            Label1.Visible = True
+            btnNext.Visible = True
+            If RightAns = "1" Then
+                cb1.Font = New Font(cb1.Font, FontStyle.Bold)
+                cb1.ForeColor = Color.Red
+            End If
+            If RightAns = "2" Then
+                cb2.Font = New Font(cb1.Font, FontStyle.Bold)
+                cb2.ForeColor = Color.Red
+            End If
+            If RightAns = "3" Then
+                cb3.Font = New Font(cb1.Font, FontStyle.Bold)
+                cb3.ForeColor = Color.Red
+            End If
+            If RightAns = "4" Then
+                cb4.Font = New Font(cb1.Font, FontStyle.Bold)
+                cb4.ForeColor = Color.Red
+            End If
+        End If
 
+        AcceptButton = btnNext
+    End Sub
+
+    Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
+        sbGetNewQuest()
     End Sub
 End Class
