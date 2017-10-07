@@ -141,7 +141,7 @@ Partial Class frmMain
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(90, 70)
         Me.Label1.TabIndex = 8
-        Me.Label1.Text = "正确"
+        Me.Label1.Text = "结果"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'frmMain

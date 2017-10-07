@@ -105,7 +105,11 @@
         GettingNewQuest = False
     End Sub
     Private Sub sbGetSubjects()
-        Dim S As String = System.IO.File.ReadAllText("mTestEx.txt", System.Text.Encoding.Default)
+        If System.IO.File.Exists("mTestEx.dbt") = False Then
+            MsgBox("mTestEx.dbt文件不存在", vbCritical)
+            End
+        End If
+        Dim S As String = System.IO.File.ReadAllText("mTestEx.dbt", System.Text.Encoding.Default)
         Dim C() As String = Split(S, vbCrLf)
         AllSubjects = UBound(C)
         Try
