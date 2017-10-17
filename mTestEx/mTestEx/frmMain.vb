@@ -12,6 +12,10 @@
     Dim CurSub As Long
     Dim RightAns As String = ""
     Dim GettingNewQuest As Boolean = False
+
+
+    Public NumList As New ArrayList
+
     Private Sub sbGetRandomABCD(ByRef Ans())
         Dim S1(4), S2(4) As String
         For I As Integer = 1 To 4
@@ -36,7 +40,27 @@
         cb3.Text = Ans(3)
         cb4.Text = Ans(4)
     End Sub
-    Private Sub sbGetNewQuest()
+    Private Sub fnGetNewQuestList()
+        NumList.Clear()
+        Dim tList As New ArrayList
+        For I As Long = 0 To AllSubjects
+            If Cache(1, I) = "1" AndAlso AllowPanDuan = True Then
+                tList.Add(I)
+            End If
+            If Cache(1, I) = "2" AndAlso AllowDanXuan = True Then
+                tList.Add(I)
+            End If
+            If Cache(1, I) = "3" AndAlso AllowDuoXuan = True Then
+                tList.Add(I)
+            End If
+        Next
+        Do Until tList.Count <= 0
+            Dim I As Long = Int(Rnd(TimeOfDay.ToBinary) * tList.Count)
+            NumList.Add(tList.Item(I))
+            tList.RemoveAt(I)
+        Loop
+    End Sub
+    Private Sub fnGetNewQuest()
         GettingNewQuest = True
         Dim S As String = ""
 

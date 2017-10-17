@@ -32,12 +32,13 @@ Partial Class frmMain
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnNext = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.StatusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.选项OToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.选项OToolStripMenuItem, Me.StatusToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Size = New System.Drawing.Size(640, 25)
@@ -144,6 +145,12 @@ Partial Class frmMain
         Me.Label1.Text = "结果"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'StatusToolStripMenuItem
+        '
+        Me.StatusToolStripMenuItem.Name = "StatusToolStripMenuItem"
+        Me.StatusToolStripMenuItem.Size = New System.Drawing.Size(55, 21)
+        Me.StatusToolStripMenuItem.Text = "Status"
+        '
         'frmMain
         '
         Me.AcceptButton = Me.btnOK
@@ -180,4 +187,5 @@ Partial Class frmMain
     Friend WithEvents btnOK As Button
     Friend WithEvents btnNext As Button
     Friend WithEvents Label1 As Label
+    Friend WithEvents StatusToolStripMenuItem As ToolStripMenuItem
 End Class
