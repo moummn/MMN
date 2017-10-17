@@ -14,7 +14,10 @@
     Dim GettingNewQuest As Boolean = False
 
 
-    Public NumList As New ArrayList
+    Dim NumList As New ArrayList
+    Dim RightNum As Long = 0
+    Dim WrongNum As Long = 0
+
 
     Private Sub sbGetRandomABCD(ByRef Ans())
         Dim S1(4), S2(4) As String
@@ -60,51 +63,51 @@
             tList.RemoveAt(I)
         Loop
     End Sub
-    Private Sub fnGetNewQuest()
+    Private Function fnGetNewQuest()
+        fnGetNewQuest = 0
+
         GettingNewQuest = True
         Dim S As String = ""
+        If NumList.Count <= 0 Then Return 1
+        CurSub = Val(NumList.Item(0))
+        NumList.RemoveAt(0)
+        If Cache(1, CurSub) = "1" Then
+            S = "判断题"
+            cb3.Visible = False
+            cb4.Visible = False
+            cb1.Text = Cache(4, CurSub)
+            cb2.Text = Cache(5, CurSub)
+            btnOK.Visible = False
+            RightAns = Cache(8, CurSub)
 
-        Do
-            CurSub = Int(Rnd(TimeOfDay.ToBinary) * AllSubjects)
-            If Cache(1, CurSub) = "1" AndAlso AllowPanDuan = True Then
-                S = "判断题"
-                cb3.Visible = False
-                cb4.Visible = False
-                cb1.Text = Cache(4, CurSub)
-                cb2.Text = Cache(5, CurSub)
-                btnOK.Visible = False
-                RightAns = Cache(8, CurSub)
-                Exit Do
-            End If
-            If Cache(1, CurSub) = "2" AndAlso AllowDanXuan = True Then
-                S = "单选题"
-                cb3.Visible = True
-                cb4.Visible = True
-                RightAns = Cache(8, CurSub)
-                Dim Ans(4) As String
-                Ans(1) = Cache(4, CurSub)
-                Ans(2) = Cache(5, CurSub)
-                Ans(3) = Cache(6, CurSub)
-                Ans(4) = Cache(7, CurSub)
-                sbGetRandomABCD(Ans)
-                btnOK.Visible = False
-                Exit Do
-            End If
-            If Cache(1, CurSub) = "3" AndAlso AllowDuoXuan = True Then
-                S = "多选题"
-                cb3.Visible = True
-                cb4.Visible = True
-                RightAns = Cache(8, CurSub)
-                Dim Ans(4)
-                Ans(1) = Cache(4, CurSub)
-                Ans(2) = Cache(5, CurSub)
-                Ans(3) = Cache(6, CurSub)
-                Ans(4) = Cache(7, CurSub)
-                sbGetRandomABCD(Ans)
-                btnOK.Visible = True
-                Exit Do
-            End If
-        Loop
+        End If
+        If Cache(1, CurSub) = "2" Then
+            S = "单选题"
+            cb3.Visible = True
+            cb4.Visible = True
+            RightAns = Cache(8, CurSub)
+            Dim Ans(4) As String
+            Ans(1) = Cache(4, CurSub)
+            Ans(2) = Cache(5, CurSub)
+            Ans(3) = Cache(6, CurSub)
+            Ans(4) = Cache(7, CurSub)
+            sbGetRandomABCD(Ans)
+            btnOK.Visible = False
+        End If
+        If Cache(1, CurSub) = "3" Then
+            S = "多选题"
+            cb3.Visible = True
+            cb4.Visible = True
+            RightAns = Cache(8, CurSub)
+            Dim Ans(4)
+            Ans(1) = Cache(4, CurSub)
+            Ans(2) = Cache(5, CurSub)
+            Ans(3) = Cache(6, CurSub)
+            Ans(4) = Cache(7, CurSub)
+            sbGetRandomABCD(Ans)
+            btnOK.Visible = True
+        End If
+
         S = S & Cache(2, CurSub) & "：" & vbCrLf & Cache(3, CurSub)
         tbQuest.Text = S
 
@@ -123,11 +126,12 @@
         btnNext.Visible = False
         Label1.Visible = False
         AcceptButton = btnOK
+        StatusToolStripMenuItem.Text = "正确:" & RightNum & " 错误:" & WrongNum & " 剩余:" & NumList.Count
         Application.DoEvents()
 
         cb1.Focus()
         GettingNewQuest = False
-    End Sub
+    End Function
     Private Sub sbGetSubjects()
         If System.IO.File.Exists("mTestEx.dbt") = False Then
             MsgBox("mTestEx.dbt文件不存在", vbCritical)
@@ -156,14 +160,21 @@
         Call sbGetSubjects()
 
         frmOptions.btnCancel.Enabled = False
-        frmOptions.ShowDialog()
-
-        sbGetNewQuest()
+        Call 选项OToolStripMenuItem_Click(sender, e)
 
     End Sub
 
     Private Sub 选项OToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 选项OToolStripMenuItem.Click
-        frmOptions.ShowDialog()
+        Dim dr As New DialogResult
+        frmOptions.btnOK.DialogResult = DialogResult.OK
+        frmOptions.btnCancel.DialogResult = DialogResult.Cancel
+        dr = frmOptions.ShowDialog()
+        If dr = DialogResult.OK Then
+            RightNum = 0
+            WrongNum = 0
+            fnGetNewQuestList()
+            fnGetNewQuest()
+        End If
 
     End Sub
 
@@ -175,12 +186,14 @@
         If cb4.Checked = True Then MyAns &= "4"
         If MyAns = RightAns Then
             Label1.Text = "正确"
+            RightNum += 1
             Label1.ForeColor = SystemColors.ControlText
             Label1.Visible = True
             btnNext.Visible = True
             btnOK.Visible = False
         Else
             Label1.Text = "错误"
+            WrongNum += 1
             Label1.ForeColor = Color.Red
             Label1.Visible = True
             btnNext.Visible = True
@@ -201,6 +214,7 @@
                 cb4.ForeColor = Color.Red
             End If
         End If
+        StatusToolStripMenuItem.Text = "正确:" & RightNum & " 错误:" & WrongNum & " 剩余:" & NumList.Count
 
         AcceptButton = btnNext
     End Sub
@@ -216,11 +230,14 @@
         If cb4.Checked = True Then MyAns = "4"
         If MyAns = RightAns Then
             Label1.Text = "正确"
+            RightNum += 1
             Label1.ForeColor = SystemColors.ControlText
             Label1.Visible = True
             btnNext.Visible = True
+            StatusToolStripMenuItem.Text = "正确:" & RightNum & " 错误:" & WrongNum & " 剩余:" & NumList.Count
         Else
             Label1.Text = "错误"
+            WrongNum += 1
             Label1.ForeColor = Color.Red
             Label1.Visible = True
             btnNext.Visible = True
@@ -240,12 +257,28 @@
                 cb4.Font = New Font(cb1.Font, FontStyle.Bold)
                 cb4.ForeColor = Color.Red
             End If
+            StatusToolStripMenuItem.Text = "正确:" & RightNum & " 错误:" & WrongNum & " 剩余:" & NumList.Count
         End If
 
         AcceptButton = btnNext
     End Sub
 
     Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
-        sbGetNewQuest()
+        If fnGetNewQuest() <> 0 Then
+            fnGetNewQuestList()
+            fnGetNewQuest()
+        End If
+    End Sub
+
+    Private Sub StatusToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles StatusToolStripMenuItem.Click
+        Dim I As Long
+        I = MsgBox("重置吗？", vbQuestion + vbYesNo, "提示")
+        If I = 6 Then
+            WrongNum = 0
+            RightNum = 0
+            fnGetNewQuestList()
+            fnGetNewQuest()
+            StatusToolStripMenuItem.Text = "正确:" & RightNum & " 错误:" & WrongNum & " 剩余:" & NumList.Count
+        End If
     End Sub
 End Class

@@ -24,6 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.选项OToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.StatusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.tbQuest = New System.Windows.Forms.TextBox()
         Me.cb1 = New System.Windows.Forms.CheckBox()
         Me.cb2 = New System.Windows.Forms.CheckBox()
@@ -32,7 +33,6 @@ Partial Class frmMain
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnNext = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.StatusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -50,6 +50,12 @@ Partial Class frmMain
         Me.选项OToolStripMenuItem.Name = "选项OToolStripMenuItem"
         Me.选项OToolStripMenuItem.Size = New System.Drawing.Size(62, 21)
         Me.选项OToolStripMenuItem.Text = "选项(&O)"
+        '
+        'StatusToolStripMenuItem
+        '
+        Me.StatusToolStripMenuItem.Name = "StatusToolStripMenuItem"
+        Me.StatusToolStripMenuItem.Size = New System.Drawing.Size(55, 21)
+        Me.StatusToolStripMenuItem.Text = "Status"
         '
         'tbQuest
         '
@@ -144,12 +150,6 @@ Partial Class frmMain
         Me.Label1.TabIndex = 8
         Me.Label1.Text = "结果"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'StatusToolStripMenuItem
-        '
-        Me.StatusToolStripMenuItem.Name = "StatusToolStripMenuItem"
-        Me.StatusToolStripMenuItem.Size = New System.Drawing.Size(55, 21)
-        Me.StatusToolStripMenuItem.Text = "Status"
         '
         'frmMain
         '
