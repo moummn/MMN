@@ -3,7 +3,7 @@
 // @description 干部在线自动学习
 // @namespace   gbzxal
 // @include     *gbzx.dl.gov.cn/student*
-// @version     2017.11.19.2
+// @version     2017.11.19.0
 // @grant       GM.getValue
 // @grant       GM.setValue
 // @run-at      document-start
