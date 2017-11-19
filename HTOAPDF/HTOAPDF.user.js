@@ -29,8 +29,6 @@ for (var A = 0; A < AllScripts.length; A++) {
         };
     };
 
-window.alert(src1);
-
 //添加embed元素以显示pdf
 var newEm = document.createElement("embed");
 newEm.id = "pdfTable_embed";
