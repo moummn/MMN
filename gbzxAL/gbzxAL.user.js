@@ -3,9 +3,9 @@
 // @description 干部在线自动学习
 // @namespace   gbzxal
 // @include     *gbzx.dl.gov.cn/student*
-// @version     2017.11.19.0
-// @grant       GM.getValue
-// @grant       GM.setValue
+// @version     2017.12.12.0
+// @grant       GM_getValue
+// @grant       GM_setValue
 // @run-at      document-start
 // @downloadURL https://github.com/moummn/MMN/raw/master/gbzxAL/gbzxAL.user.js
 // @updateURL   https://github.com/moummn/MMN/raw/master/gbzxAL/gbzxAL.user.js
@@ -21,7 +21,7 @@ if (thisURL.indexOf("playNew") + thisURL.indexOf("playScorm") > 0) {
 };
 
 //如果1分钟未载入完成，刷新页面
-var AutoLNState = GM.getValue("ALChecked");
+var AutoLNState = GM_getValue("ALChecked");
 //window.alert(AutoLNState);
 if (AutoLNState == true) {
     var t60 = setTimeout("location.reload()", 60000);
@@ -68,7 +68,7 @@ function fnAddButton() {
     newEm.setAttribute("type", "checkbox");
     newEm.addEventListener('click', fnCheckChange, true);
     newEmParent.appendChild(newEm);
-    newEm.checked = GM.getValue("ALChecked");
+    newEm.checked = GM_getValue("ALChecked");
     newEm = document.createElement("label");
     newEm.setAttribute("for", "AutoLN_CHECK");
     newEm.innerHTML = "开启自动学习";
@@ -84,7 +84,7 @@ addStyle(AutoLNCSS);
 //点击Check触发事件
 function fnCheckChange() {
     var ChElem = document.getElementById("AutoLN_CHECK");
-    GM.setValue("ALChecked", ChElem.checked);
+    GM_setValue("ALChecked", ChElem.checked);
     //	window.alert(ChElem.innerHTML);
     if (ChElem.checked == true) {
         fnClickPlay();
