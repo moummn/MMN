@@ -28,7 +28,7 @@ Partial Class frmSFUG
         '
         'Timer1
         '
-        Me.Timer1.Interval = 60000
+        Me.Timer1.Interval = 5000
         '
         'frmSFUG
         '

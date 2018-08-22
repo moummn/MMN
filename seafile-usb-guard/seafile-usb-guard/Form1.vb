@@ -45,9 +45,9 @@
         Do
             Try
                 entry = Syslog.Entries(Syslog.Entries.Count - L)
-                If entry.TimeGenerated.AddMinutes(5).ToBinary < Now.ToBinary Then Exit Do
+                If entry.TimeGenerated.AddMinutes(1).ToBinary < Now.ToBinary Then Exit Do
                 If entry.InstanceId = 3221225484 Then
-                    sbCreateProcess("shutdown /f /r /t 300 /c ""因USB断开，重启系统。""")
+                    sbCreateProcess("shutdown /f /r /t 0 /c ""因USB断开，重启系统。""")
                 End If
             Catch
             End Try
