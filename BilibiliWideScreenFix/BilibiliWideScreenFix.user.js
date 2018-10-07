@@ -7,9 +7,9 @@
 // @match        *.bilibili.com/video/av*
 // @include      *.bilibili.com/video/av*
 // @grant        none
-// @run-at      document-end
-// @downloadURL  none
-// @updateURL    none
+// @run-at       document-end
+// @downloadURL  https://github.com/moummn/MMN/raw/master/BilibiliWideScreenFix/BilibiliWideScreenFix.user.js
+// @updateURL    https://github.com/moummn/MMN/raw/master/BilibiliWideScreenFix/BilibiliWideScreenFix.user.js
 // ==/UserScript==
 
 //获得基本信息
