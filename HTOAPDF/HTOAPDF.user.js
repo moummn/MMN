@@ -3,7 +3,8 @@
 // @description OA系统PDF页面修正
 // @namespace   HTOAPDF
 // @include     *223.100.151.35:8989/OAapp/HtTrace*
-// @version     2017.11.19.0
+// @include     *dlnewairport.com:8989/OAapp/HtTrace*
+// @version     2018.10.07.0
 // @grant       none
 // @run-at      document-end
 // @downloadURL https://github.com/moummn/MMN/raw/master/HTOAPDF/HTOAPDF.user.js
@@ -18,6 +19,7 @@ var src1;
 //获得PDF地址
 var AllScripts = document.getElementsByTagName("script");
 var SP1;
+var SP2;
 for (var A = 0; A < AllScripts.length; A++) {
         var SubmitElem = AllScripts[A].innerHTML;
   			SP1=SubmitElem.indexOf("wb.src=hostAdd + \"") ;
