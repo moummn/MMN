@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BilibiliWideScreenFix
 // @namespace    BilibiliWideScreenFix
-// @version      2018.10.08.0
+// @version      2018.10.09.0
 // @description  Bilibili宽屏修正
 // @author       M
 // @match        *.bilibili.com/video/av*
@@ -19,5 +19,5 @@ var t1 = setTimeout(function () { fnFix(); }, 5000);
 function fnFix(){
 var VWrapClass = document.getElementsByClassName("v-wrap");
 var FixContent = VWrapClass[0];
-FixContent.setAttribute('style','width: 100%');
+FixContent.setAttribute('style','width: 100%; padding: 0px 5px;');
 };
