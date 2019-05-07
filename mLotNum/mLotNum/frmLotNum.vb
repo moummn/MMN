@@ -76,7 +76,7 @@ NX:
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        Dim I As Integer = Int(UBound(LNList) * Rnd(Now.Millisecond + 1))
+        Dim I As Integer = Int((UBound(LNList) + 1) * Rnd(Now.Millisecond + 1))
         lblLotName.Text = LNList(I)
     End Sub
 End Class
