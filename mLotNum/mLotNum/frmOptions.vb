@@ -10,7 +10,6 @@
             S &= lvLN.Items(I).Text & "<!>" & CInt(lvLN.Items(I).Checked)
             If I < CO - 1 Then S &= "<@>"
         Next
-        Debug.Print(S)
         My.Settings.NameChecked = S
         My.Settings.Save()
     End Sub
@@ -21,10 +20,11 @@
         Next
     End Sub
 
-    Private Sub BtnClearAll_Click(sender As Object, e As EventArgs) Handles btnClearAll.Click
+    Private Sub BtnCleanAll_Click(sender As Object, e As EventArgs) Handles btnCleanAll.Click
         For I As Integer = 0 To lvLN.Items.Count - 1
             lvLN.Items(I).Checked = False
         Next
+
     End Sub
 
     Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click

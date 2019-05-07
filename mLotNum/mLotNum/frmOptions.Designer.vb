@@ -24,7 +24,7 @@ Partial Class frmOptions
     Private Sub InitializeComponent()
         Me.lvLN = New System.Windows.Forms.ListView()
         Me.btnSelectAll = New System.Windows.Forms.Button()
-        Me.btnClearAll = New System.Windows.Forms.Button()
+        Me.btnCleanAll = New System.Windows.Forms.Button()
         Me.btnClose = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
@@ -52,15 +52,14 @@ Partial Class frmOptions
         Me.btnSelectAll.Text = "全选(&S)"
         Me.btnSelectAll.UseVisualStyleBackColor = True
         '
-        'btnClearAll
+        'btnCleanAll
         '
-        Me.btnClearAll.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnClearAll.Location = New System.Drawing.Point(61, 0)
-        Me.btnClearAll.Name = "btnClearAll"
-        Me.btnClearAll.Size = New System.Drawing.Size(61, 23)
-        Me.btnClearAll.TabIndex = 2
-        Me.btnClearAll.Text = "清除(&C)"
-        Me.btnClearAll.UseVisualStyleBackColor = True
+        Me.btnCleanAll.Location = New System.Drawing.Point(61, 0)
+        Me.btnCleanAll.Name = "btnCleanAll"
+        Me.btnCleanAll.Size = New System.Drawing.Size(61, 23)
+        Me.btnCleanAll.TabIndex = 2
+        Me.btnCleanAll.Text = "清除(&C)"
+        Me.btnCleanAll.UseVisualStyleBackColor = True
         '
         'btnClose
         '
@@ -79,7 +78,7 @@ Partial Class frmOptions
         Me.CancelButton = Me.btnClose
         Me.ClientSize = New System.Drawing.Size(122, 450)
         Me.Controls.Add(Me.btnClose)
-        Me.Controls.Add(Me.btnClearAll)
+        Me.Controls.Add(Me.btnCleanAll)
         Me.Controls.Add(Me.btnSelectAll)
         Me.Controls.Add(Me.lvLN)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
@@ -93,6 +92,6 @@ Partial Class frmOptions
 
     Friend WithEvents lvLN As ListView
     Friend WithEvents btnSelectAll As Button
-    Friend WithEvents btnClearAll As Button
+    Friend WithEvents btnCleanAll As Button
     Friend WithEvents btnClose As Button
 End Class
