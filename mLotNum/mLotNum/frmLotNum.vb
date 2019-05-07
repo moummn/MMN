@@ -3,6 +3,8 @@
     Private Sub frmLotNum_Load(sender As Object, e As EventArgs) Handles Me.Load
         '初始化
         Randomize()
+        Me.Icon = My.Resources.mLotNum
+        '加载文件
         Dim S As String
         frmOptions.lvLN.Clear()
         FileOpen(1, Application.StartupPath & "\LotName.txt", OpenMode.Binary)
@@ -18,6 +20,7 @@
                 Exit Do
             End Try
         Loop
+
         '加载设置
         Dim SN(), SC() As String
         SN = Split(My.Settings.NameChecked, "<@>",, CompareMethod.Binary)
