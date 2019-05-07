@@ -33,7 +33,7 @@ Partial Class frmLotNum
         'lblLotName
         '
         Me.lblLotName.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblLotName.Font = New System.Drawing.Font("宋体", 72.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+        Me.lblLotName.Font = New System.Drawing.Font("宋体", 144.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.lblLotName.ForeColor = System.Drawing.Color.White
         Me.lblLotName.Location = New System.Drawing.Point(0, 0)
         Me.lblLotName.Name = "lblLotName"
@@ -69,7 +69,7 @@ Partial Class frmLotNum
         '
         'Timer1
         '
-        Me.Timer1.Interval = 10
+        Me.Timer1.Interval = 1
         '
         'btnMenu
         '

@@ -25,6 +25,7 @@ Partial Class frmOptions
         Me.lvLN = New System.Windows.Forms.ListView()
         Me.btnSelectAll = New System.Windows.Forms.Button()
         Me.btnClearAll = New System.Windows.Forms.Button()
+        Me.btnClose = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'lvLN
@@ -53,6 +54,7 @@ Partial Class frmOptions
         '
         'btnClearAll
         '
+        Me.btnClearAll.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnClearAll.Location = New System.Drawing.Point(61, 0)
         Me.btnClearAll.Name = "btnClearAll"
         Me.btnClearAll.Size = New System.Drawing.Size(61, 23)
@@ -60,11 +62,23 @@ Partial Class frmOptions
         Me.btnClearAll.Text = "清除(&C)"
         Me.btnClearAll.UseVisualStyleBackColor = True
         '
+        'btnClose
+        '
+        Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnClose.Location = New System.Drawing.Point(-1, -1)
+        Me.btnClose.Name = "btnClose"
+        Me.btnClose.Size = New System.Drawing.Size(1, 1)
+        Me.btnClose.TabIndex = 3
+        Me.btnClose.Text = "X"
+        Me.btnClose.UseVisualStyleBackColor = True
+        '
         'frmOptions
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CancelButton = Me.btnClose
         Me.ClientSize = New System.Drawing.Size(122, 450)
+        Me.Controls.Add(Me.btnClose)
         Me.Controls.Add(Me.btnClearAll)
         Me.Controls.Add(Me.btnSelectAll)
         Me.Controls.Add(Me.lvLN)
@@ -80,4 +94,5 @@ Partial Class frmOptions
     Friend WithEvents lvLN As ListView
     Friend WithEvents btnSelectAll As Button
     Friend WithEvents btnClearAll As Button
+    Friend WithEvents btnClose As Button
 End Class

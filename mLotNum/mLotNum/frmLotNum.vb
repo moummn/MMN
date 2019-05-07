@@ -1,9 +1,18 @@
 ﻿Public Class frmLotNum
     Dim LNList() As String
+    Public Sub EnableDoubleBuffering()
+        ' Set the value of the double-buffering style bits to true.
+        Me.SetStyle(ControlStyles.DoubleBuffer _
+     Or ControlStyles.UserPaint _
+     Or ControlStyles.AllPaintingInWmPaint,
+     True)
+        Me.UpdateStyles()
+    End Sub
     Private Sub frmLotNum_Load(sender As Object, e As EventArgs) Handles Me.Load
         '初始化
         Randomize()
         Me.Icon = My.Resources.mLotNum
+        EnableDoubleBuffering()
         '加载文件
         Dim S As String
         frmOptions.lvLN.Clear()
@@ -45,6 +54,7 @@
         frmOptions.Height = Screen.FromHandle(Me.Handle).Bounds.Height
         Timer1.Enabled = False
         frmOptions.ShowDialog()
+        btnStartStop.Focus()
     End Sub
 
     Private Sub BtnStartStop_Click(sender As Object, e As EventArgs) Handles btnStartStop.Click
@@ -66,7 +76,7 @@ NX:
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        Dim I As Integer = Int(UBound(LNList) * Rnd(Now.Millisecond))
+        Dim I As Integer = Int(UBound(LNList) * Rnd(Now.Millisecond + 1))
         lblLotName.Text = LNList(I)
     End Sub
 End Class
