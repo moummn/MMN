@@ -1,5 +1,5 @@
 ﻿Public Class frmLotNum
-    Dim LNList() As String
+    Dim LotState As Boolean = False
     Public Sub EnableDoubleBuffering()
         ' Set the value of the double-buffering style bits to true.
         Me.SetStyle(ControlStyles.DoubleBuffer _
@@ -7,6 +7,29 @@
      Or ControlStyles.AllPaintingInWmPaint,
      True)
         Me.UpdateStyles()
+    End Sub
+    Private Sub sbLotName()
+        LotState = True
+        Dim I As Integer
+        Dim LNList() As String
+        Dim CO As Integer = frmOptions.lvLN.Items.Count - 1
+
+        ReDim LNList(0)
+        For I = 0 To CO
+            If frmOptions.lvLN.Items(I).Checked = False Then GoTo NX
+            If Trim(LNList(UBound(LNList))) <> vbNullString Then ReDim Preserve LNList(UBound(LNList) + 1)
+            LNList(UBound(LNList)) = frmOptions.lvLN.Items(I).Text
+NX:
+        Next
+        I = 0
+        CO = UBound(LNList)
+        Do
+            I += Int(Rnd(Now.Millisecond + 1) * CO / 10 + 1)
+            If I >= CO Then I -= CO
+            lblLotName.Text = LNList(I)
+            Application.DoEvents()
+        Loop Until LotState = False
+
     End Sub
     Private Sub frmLotNum_Load(sender As Object, e As EventArgs) Handles Me.Load
         '初始化
@@ -58,25 +81,16 @@
     End Sub
 
     Private Sub BtnStartStop_Click(sender As Object, e As EventArgs) Handles btnStartStop.Click
-        If Timer1.Enabled = False Then
-            Dim CO As Integer = frmOptions.lvLN.Items.Count - 1
-            ReDim LNList(0)
-            For I As Integer = 0 To CO
-                If frmOptions.lvLN.Items(I).Checked = False Then GoTo NX
-                If Trim(LNList(UBound(LNList))) <> vbNullString Then ReDim Preserve LNList(UBound(LNList) + 1)
-                LNList(UBound(LNList)) = frmOptions.lvLN.Items(I).Text
-NX:
-            Next
-            Timer1.Enabled = True
+        If LotState = False Then
+            sbLotName()
         Else
-            Timer1.Enabled = False
+            LotState = False
         End If
 
 
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        Dim I As Integer = Int((UBound(LNList) + 1) * Rnd(Now.Millisecond + 1))
-        lblLotName.Text = LNList(I)
+
     End Sub
 End Class
