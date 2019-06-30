@@ -4,7 +4,6 @@
 // @version      2018.10.09.0
 // @description  Bilibili宽屏修正
 // @author       M
-// @match        *.bilibili.com/video/av*
 // @include      *.bilibili.com/video/av*
 // @grant        none
 // @run-at       document-end
