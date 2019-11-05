@@ -131,6 +131,7 @@
             RightAns = Cache(8, CurSub)
             Dim Ans = Cache(4, CurSub)
             btnOK.Visible = True
+            tbAns.Focus()
         End If
 
         S = S & Cache(2, CurSub) & "：" & vbCrLf & Cache(3, CurSub)
@@ -225,6 +226,7 @@
                 Label1.ForeColor = Color.Red
                 Label1.Visible = True
                 btnNext.Visible = True
+                btnOK.Visible = False
                 If InStr(RightAns, "1") > 0 Then
                     cb1.Font = New Font(cb1.Font, FontStyle.Bold)
                     cb1.ForeColor = Color.Red
@@ -257,6 +259,7 @@
                 Label1.ForeColor = Color.Red
                 Label1.Visible = True
                 btnNext.Visible = True
+                btnOK.Visible = False
                 tbAns.Text &= vbCrLf & vbCrLf & "正确答案：" & vbCrLf & RightAns
             End If
         End If

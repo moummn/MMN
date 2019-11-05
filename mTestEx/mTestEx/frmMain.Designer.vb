@@ -160,7 +160,7 @@ Partial Class frmMain
         Me.tbAns.Name = "tbAns"
         Me.tbAns.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.tbAns.Size = New System.Drawing.Size(520, 144)
-        Me.tbAns.TabIndex = 1000
+        Me.tbAns.TabIndex = 5
         '
         'frmMain
         '
