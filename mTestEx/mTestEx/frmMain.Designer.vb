@@ -60,8 +60,7 @@ Partial Class frmMain
         '
         'tbQuest
         '
-        Me.tbQuest.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.tbQuest.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tbQuest.Font = New System.Drawing.Font("微软雅黑", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.tbQuest.Location = New System.Drawing.Point(12, 28)
@@ -74,48 +73,48 @@ Partial Class frmMain
         '
         'cb1
         '
-        Me.cb1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cb1.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cb1.AutoSize = True
         Me.cb1.Font = New System.Drawing.Font("宋体", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.cb1.Location = New System.Drawing.Point(12, 233)
+        Me.cb1.Location = New System.Drawing.Point(12, 242)
         Me.cb1.Name = "cb1"
-        Me.cb1.Size = New System.Drawing.Size(520, 32)
+        Me.cb1.Size = New System.Drawing.Size(89, 18)
         Me.cb1.TabIndex = 1
         Me.cb1.Text = "CheckBox1"
         Me.cb1.UseVisualStyleBackColor = True
         '
         'cb2
         '
-        Me.cb2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cb2.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cb2.AutoSize = True
         Me.cb2.Font = New System.Drawing.Font("宋体", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.cb2.Location = New System.Drawing.Point(12, 271)
+        Me.cb2.Location = New System.Drawing.Point(12, 280)
         Me.cb2.Name = "cb2"
-        Me.cb2.Size = New System.Drawing.Size(520, 32)
+        Me.cb2.Size = New System.Drawing.Size(89, 18)
         Me.cb2.TabIndex = 2
         Me.cb2.Text = "CheckBox2"
         Me.cb2.UseVisualStyleBackColor = True
         '
         'cb3
         '
-        Me.cb3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cb3.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cb3.AutoSize = True
         Me.cb3.Font = New System.Drawing.Font("宋体", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.cb3.Location = New System.Drawing.Point(12, 309)
+        Me.cb3.Location = New System.Drawing.Point(12, 318)
         Me.cb3.Name = "cb3"
-        Me.cb3.Size = New System.Drawing.Size(520, 32)
+        Me.cb3.Size = New System.Drawing.Size(89, 18)
         Me.cb3.TabIndex = 3
         Me.cb3.Text = "CheckBox3"
         Me.cb3.UseVisualStyleBackColor = True
         '
         'cb4
         '
-        Me.cb4.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cb4.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cb4.AutoSize = True
         Me.cb4.Font = New System.Drawing.Font("宋体", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.cb4.Location = New System.Drawing.Point(12, 347)
+        Me.cb4.Location = New System.Drawing.Point(12, 356)
         Me.cb4.Name = "cb4"
-        Me.cb4.Size = New System.Drawing.Size(520, 32)
+        Me.cb4.Size = New System.Drawing.Size(89, 18)
         Me.cb4.TabIndex = 4
         Me.cb4.Text = "CheckBox4"
         Me.cb4.UseVisualStyleBackColor = True
@@ -154,6 +153,8 @@ Partial Class frmMain
         '
         'tbAns
         '
+        Me.tbAns.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tbAns.Font = New System.Drawing.Font("微软雅黑", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.tbAns.Location = New System.Drawing.Point(12, 234)
         Me.tbAns.Multiline = True

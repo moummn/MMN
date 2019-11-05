@@ -261,6 +261,8 @@
                 btnNext.Visible = True
                 btnOK.Visible = False
                 tbAns.Text &= vbCrLf & vbCrLf & "正确答案：" & vbCrLf & RightAns
+                tbAns.SelectionStart = tbAns.Text.Length
+                tbAns.ScrollToCaret()
             End If
         End If
         StatusToolStripMenuItem.Text = "正确:" & RightNum & " 错误:" & WrongNum & " 剩余:" & NumList.Count
@@ -329,5 +331,15 @@
             fnGetNewQuest()
             StatusToolStripMenuItem.Text = "正确:" & RightNum & " 错误:" & WrongNum & " 剩余:" & NumList.Count
         End If
+    End Sub
+
+    Private Sub FrmMain_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
+        tbQuest.Height = Me.Height / 2 - 16
+        tbAns.Top = Me.Height / 2 + 20
+        tbAns.Height = Me.Height / 2 - 70
+        cb1.Top = Me.Height / 2 + 27
+        cb2.Top = Me.Height / 2 + 65 + Me.Height / 8 - 53
+        cb3.Top = Me.Height / 2 + 103 + Me.Height / 4 - 107
+        cb4.Top = Me.Height / 2 + 141 + Me.Height * 3 / 8 - 160
     End Sub
 End Class
