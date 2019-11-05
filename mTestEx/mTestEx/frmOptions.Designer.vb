@@ -31,6 +31,7 @@ Partial Class frmOptions
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
+        Me.CheckBox4 = New System.Windows.Forms.CheckBox()
         Me.bnMode.SuspendLayout()
         Me.gbContents.SuspendLayout()
         Me.SuspendLayout()
@@ -41,7 +42,7 @@ Partial Class frmOptions
         Me.bnMode.Controls.Add(Me.RadioButton1)
         Me.bnMode.Location = New System.Drawing.Point(12, 12)
         Me.bnMode.Name = "bnMode"
-        Me.bnMode.Size = New System.Drawing.Size(67, 99)
+        Me.bnMode.Size = New System.Drawing.Size(67, 113)
         Me.bnMode.TabIndex = 0
         Me.bnMode.TabStop = False
         Me.bnMode.Text = "模式选择"
@@ -71,12 +72,13 @@ Partial Class frmOptions
         '
         'gbContents
         '
+        Me.gbContents.Controls.Add(Me.CheckBox4)
         Me.gbContents.Controls.Add(Me.CheckBox3)
         Me.gbContents.Controls.Add(Me.CheckBox2)
         Me.gbContents.Controls.Add(Me.CheckBox1)
         Me.gbContents.Location = New System.Drawing.Point(85, 12)
         Me.gbContents.Name = "gbContents"
-        Me.gbContents.Size = New System.Drawing.Size(67, 99)
+        Me.gbContents.Size = New System.Drawing.Size(102, 113)
         Me.gbContents.TabIndex = 1
         Me.gbContents.TabStop = False
         Me.gbContents.Text = "包含内容"
@@ -119,7 +121,7 @@ Partial Class frmOptions
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(12, 117)
+        Me.btnOK.Location = New System.Drawing.Point(12, 131)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(67, 23)
         Me.btnOK.TabIndex = 2
@@ -129,12 +131,24 @@ Partial Class frmOptions
         'btnCancel
         '
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Location = New System.Drawing.Point(85, 117)
+        Me.btnCancel.Location = New System.Drawing.Point(121, 131)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(67, 23)
         Me.btnCancel.TabIndex = 3
         Me.btnCancel.Text = "取消(&C)"
         Me.btnCancel.UseVisualStyleBackColor = True
+        '
+        'CheckBox4
+        '
+        Me.CheckBox4.AutoSize = True
+        Me.CheckBox4.Checked = True
+        Me.CheckBox4.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox4.Location = New System.Drawing.Point(6, 86)
+        Me.CheckBox4.Name = "CheckBox4"
+        Me.CheckBox4.Size = New System.Drawing.Size(90, 16)
+        Me.CheckBox4.TabIndex = 3
+        Me.CheckBox4.Text = "填空/问答题"
+        Me.CheckBox4.UseVisualStyleBackColor = True
         '
         'frmOptions
         '
@@ -142,7 +156,7 @@ Partial Class frmOptions
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(163, 151)
+        Me.ClientSize = New System.Drawing.Size(197, 165)
         Me.ControlBox = False
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnOK)
@@ -169,4 +183,5 @@ Partial Class frmOptions
     Friend WithEvents CheckBox1 As CheckBox
     Friend WithEvents btnOK As Button
     Friend WithEvents btnCancel As Button
+    Friend WithEvents CheckBox4 As CheckBox
 End Class

@@ -33,6 +33,7 @@ Partial Class frmMain
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnNext = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.tbAns = New System.Windows.Forms.TextBox()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -151,6 +152,16 @@ Partial Class frmMain
         Me.Label1.Text = "结果"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'tbAns
+        '
+        Me.tbAns.Font = New System.Drawing.Font("微软雅黑", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+        Me.tbAns.Location = New System.Drawing.Point(12, 234)
+        Me.tbAns.Multiline = True
+        Me.tbAns.Name = "tbAns"
+        Me.tbAns.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.tbAns.Size = New System.Drawing.Size(520, 144)
+        Me.tbAns.TabIndex = 1000
+        '
         'frmMain
         '
         Me.AcceptButton = Me.btnOK
@@ -166,6 +177,7 @@ Partial Class frmMain
         Me.Controls.Add(Me.cb1)
         Me.Controls.Add(Me.tbQuest)
         Me.Controls.Add(Me.MenuStrip1)
+        Me.Controls.Add(Me.tbAns)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "frmMain"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
@@ -188,4 +200,5 @@ Partial Class frmMain
     Friend WithEvents btnNext As Button
     Friend WithEvents Label1 As Label
     Friend WithEvents StatusToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents tbAns As TextBox
 End Class

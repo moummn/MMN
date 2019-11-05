@@ -6,6 +6,7 @@
     Public AllowPanDuan As Boolean = True
     Public AllowDanXuan As Boolean = True
     Public AllowDuoXuan As Boolean = True
+    Public AllowTianKong As Boolean = True
 
     Dim AllSubjects As Integer = 0
     Dim Cache(8, MAX_SUBJECTS) As String
@@ -56,6 +57,9 @@
             If Cache(1, I) = "3" AndAlso AllowDuoXuan = True Then
                 tList.Add(I)
             End If
+            If Cache(1, I) = "4" AndAlso AllowTianKong = True Then
+                tList.Add(I)
+            End If
         Next
         Do Until tList.Count <= 0
             Dim I As Long = Int(Rnd(TimeOfDay.ToBinary) * tList.Count)
@@ -73,8 +77,11 @@
         NumList.RemoveAt(0)
         If Cache(1, CurSub) = "1" Then
             S = "判断题"
+            cb1.Visible = True
+            cb2.Visible = True
             cb3.Visible = False
             cb4.Visible = False
+            tbAns.Visible = False
             cb1.Text = Cache(4, CurSub)
             cb2.Text = Cache(5, CurSub)
             btnOK.Visible = False
@@ -83,8 +90,11 @@
         End If
         If Cache(1, CurSub) = "2" Then
             S = "单选题"
+            cb1.Visible = True
+            cb2.Visible = True
             cb3.Visible = True
             cb4.Visible = True
+            tbAns.Visible = False
             RightAns = Cache(8, CurSub)
             Dim Ans(4) As String
             Ans(1) = Cache(4, CurSub)
@@ -96,8 +106,11 @@
         End If
         If Cache(1, CurSub) = "3" Then
             S = "多选题"
+            cb1.Visible = True
+            cb2.Visible = True
             cb3.Visible = True
             cb4.Visible = True
+            tbAns.Visible = False
             RightAns = Cache(8, CurSub)
             Dim Ans(4)
             Ans(1) = Cache(4, CurSub)
@@ -105,6 +118,18 @@
             Ans(3) = Cache(6, CurSub)
             Ans(4) = Cache(7, CurSub)
             sbGetRandomABCD(Ans)
+            btnOK.Visible = True
+        End If
+        If Cache(1, CurSub) = "4" Then
+            S = "填空/问答题"
+            cb1.Visible = False
+            cb2.Visible = False
+            cb3.Visible = False
+            cb4.Visible = False
+            tbAns.Text = ""
+            tbAns.Visible = True
+            RightAns = Cache(8, CurSub)
+            Dim Ans = Cache(4, CurSub)
             btnOK.Visible = True
         End If
 
@@ -180,38 +205,59 @@
 
     Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
         Dim MyAns As String = ""
-        If cb1.Checked = True Then MyAns &= "1"
-        If cb2.Checked = True Then MyAns &= "2"
-        If cb3.Checked = True Then MyAns &= "3"
-        If cb4.Checked = True Then MyAns &= "4"
-        If MyAns = RightAns Then
-            Label1.Text = "正确"
-            RightNum += 1
-            Label1.ForeColor = SystemColors.ControlText
-            Label1.Visible = True
-            btnNext.Visible = True
-            btnOK.Visible = False
-        Else
-            Label1.Text = "错误"
-            WrongNum += 1
-            Label1.ForeColor = Color.Red
-            Label1.Visible = True
-            btnNext.Visible = True
-            If InStr(RightAns, "1") > 0 Then
-                cb1.Font = New Font(cb1.Font, FontStyle.Bold)
-                cb1.ForeColor = Color.Red
+        If Cache(1, CurSub) = "1" OrElse
+            Cache(1, CurSub) = "2" OrElse
+            Cache(1, CurSub) = "3" Then
+            If cb1.Checked = True Then MyAns &= "1"
+            If cb2.Checked = True Then MyAns &= "2"
+            If cb3.Checked = True Then MyAns &= "3"
+            If cb4.Checked = True Then MyAns &= "4"
+            If MyAns = RightAns Then
+                Label1.Text = "正确"
+                RightNum += 1
+                Label1.ForeColor = SystemColors.ControlText
+                Label1.Visible = True
+                btnNext.Visible = True
+                btnOK.Visible = False
+            Else
+                Label1.Text = "错误"
+                WrongNum += 1
+                Label1.ForeColor = Color.Red
+                Label1.Visible = True
+                btnNext.Visible = True
+                If InStr(RightAns, "1") > 0 Then
+                    cb1.Font = New Font(cb1.Font, FontStyle.Bold)
+                    cb1.ForeColor = Color.Red
+                End If
+                If InStr(RightAns, "2") > 0 Then
+                    cb2.Font = New Font(cb1.Font, FontStyle.Bold)
+                    cb2.ForeColor = Color.Red
+                End If
+                If InStr(RightAns, "3") > 0 Then
+                    cb3.Font = New Font(cb1.Font, FontStyle.Bold)
+                    cb3.ForeColor = Color.Red
+                End If
+                If InStr(RightAns, "4") > 0 Then
+                    cb4.Font = New Font(cb1.Font, FontStyle.Bold)
+                    cb4.ForeColor = Color.Red
+                End If
             End If
-            If InStr(RightAns, "2") > 0 Then
-                cb2.Font = New Font(cb1.Font, FontStyle.Bold)
-                cb2.ForeColor = Color.Red
-            End If
-            If InStr(RightAns, "3") > 0 Then
-                cb3.Font = New Font(cb1.Font, FontStyle.Bold)
-                cb3.ForeColor = Color.Red
-            End If
-            If InStr(RightAns, "4") > 0 Then
-                cb4.Font = New Font(cb1.Font, FontStyle.Bold)
-                cb4.ForeColor = Color.Red
+        ElseIf Cache(1, CurSub) = "4" Then
+            MyAns = Trim(tbAns.Text)
+            If MyAns = RightAns Then
+                Label1.Text = "正确"
+                RightNum += 1
+                Label1.ForeColor = SystemColors.ControlText
+                Label1.Visible = True
+                btnNext.Visible = True
+                btnOK.Visible = False
+            Else
+                Label1.Text = "错误"
+                WrongNum += 1
+                Label1.ForeColor = Color.Red
+                Label1.Visible = True
+                btnNext.Visible = True
+                tbAns.Text &= vbCrLf & vbCrLf & "正确答案：" & vbCrLf & RightAns
             End If
         End If
         StatusToolStripMenuItem.Text = "正确:" & RightNum & " 错误:" & WrongNum & " 剩余:" & NumList.Count
