@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name     WebFixEx
-// @description 修正网页问题
+// @description 淇缃戦〉闂
 // @namespace   WebFixEx
 // @include     *www.moon-soft.com/book/*
 // @version  2020.05.22.0
@@ -8,7 +8,7 @@
 // @run-at      document-end
 // ==/UserScript==
 
-//判断网页网址
+//鍒ゆ柇缃戦〉缃戝潃
 var thisURL = document.URL;
 if (thisURL.indexOf("www.moon-soft.com/book/") > 0) {
     var newStyle = "table[width=\"673\"]{margin:auto;}";
@@ -16,7 +16,7 @@ if (thisURL.indexOf("www.moon-soft.com/book/") > 0) {
 };
 
 
-//应用样式
+//搴旂敤鏍峰紡
 function addStyle(newStyle) {
     var styleElement = document.createElement('style');
     styleElement.type = 'text/css';
