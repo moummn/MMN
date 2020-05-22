@@ -6,6 +6,8 @@
 // @version  2020.05.22.0
 // @grant    none
 // @run-at      document-end
+// @downloadURL https://raw.githubusercontent.com/moummn/MMN/master/jsWebFixEx/WebFixEx.user.js
+// @updateURL   https://raw.githubusercontent.com/moummn/MMN/master/jsWebFixEx/WebFixEx.user.js
 // ==/UserScript==
 
 //判断网页网址
