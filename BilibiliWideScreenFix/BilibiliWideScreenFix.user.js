@@ -1,14 +1,15 @@
 // ==UserScript==
 // @name         BilibiliWideScreenFix
 // @namespace    BilibiliWideScreenFix
-// @version      2018.10.09.0
+// @version      2020.05.26.0
 // @description  Bilibili宽屏修正
 // @author       M
 // @include      *.bilibili.com/video/av*
+// @include      *.bilibili.com/video/BV*
 // @grant        none
 // @run-at       document-end
-// @downloadURL  https://github.com/moummn/MMN/raw/master/BilibiliWideScreenFix/BilibiliWideScreenFix.user.js
-// @updateURL    https://github.com/moummn/MMN/raw/master/BilibiliWideScreenFix/BilibiliWideScreenFix.user.js
+// @downloadURL  https://raw.githubusercontent.com/moummn/MMN/master/BilibiliWideScreenFix/BilibiliWideScreenFix.user.js
+// @updateURL    https://raw.githubusercontent.com/moummn/MMN/master/BilibiliWideScreenFix/BilibiliWideScreenFix.user.js
 // ==/UserScript==
 
 //获得基本信息
