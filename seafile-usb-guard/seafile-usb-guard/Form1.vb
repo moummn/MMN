@@ -3,7 +3,7 @@
     Dim TestMode As Boolean = False '测试模式，不判断是否USB断开，直接执行脚本
     Dim Syslog As New EventLog("system")
     Dim entry As EventLogEntry = Nothing
-
+    Dim LastEnrayGeneratedDate As Date = Nothing '上一次的日志时间
     Dim L As Long = 1
     Private Sub sbCreateProcess(ByVal cmdString As String)
         Dim PATH As String = Application.StartupPath
@@ -86,10 +86,11 @@
                     sbCreateProcess(fnGetExeName() & "-bat.BAT")
                 End If
                     entry = Syslog.Entries(Syslog.Entries.Count - L)
-                If entry.TimeGenerated.AddMinutes(1).ToBinary < Now.ToBinary Then Exit Do
-                If entry.InstanceId = 3221225484 Then
+                If entry.TimeGenerated.AddSeconds(20).ToBinary < Now.ToBinary Then Exit Do
+                If entry.InstanceId = 3221225484 AndAlso LastEnrayGeneratedDate <> entry.TimeGenerated Then
                     'sbCreateProcess("shutdown /f /r /t 0 /c ""因USB断开，重启系统。""")
                     sbCreateProcess(fnGetExeName() & "-bat.BAT")
+                    LastEnrayGeneratedDate = entry.TimeGenerated
                 End If
             Catch ex As Exception
                 If SaveLog = True Then
