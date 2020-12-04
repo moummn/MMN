@@ -32,7 +32,7 @@ Namespace My
 
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()> _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.mWaveDb.Form1
+            Me.MainForm = Global.mWaveDb.frmWaveDb
         End Sub
     End Class
 End Namespace
