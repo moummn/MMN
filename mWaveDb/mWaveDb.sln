@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "mWaveDb", "mWaveDb\mWaveDb.vbproj", "{D42F12B0-B4F4-4288-A0CF-C2DE106774CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D42F12B0-B4F4-4288-A0CF-C2DE106774CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D42F12B0-B4F4-4288-A0CF-C2DE106774CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D42F12B0-B4F4-4288-A0CF-C2DE106774CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D42F12B0-B4F4-4288-A0CF-C2DE106774CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E1179A36-EE19-4028-AB3F-55C35E4775D3}
+	EndGlobalSection
+EndGlobal
