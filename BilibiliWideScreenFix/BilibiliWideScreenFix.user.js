@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BilibiliWideScreenFix
 // @namespace    BilibiliWideScreenFix
-// @version      2020.05.26.0
+// @version      2021.02.09.0
 // @description  Bilibili宽屏修正
 // @author       M
 // @include      *.bilibili.com/video/av*
