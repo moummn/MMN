@@ -5,13 +5,13 @@
     Dim wHdr1 As WAVEHDR '采集音频时包含数据缓存的结构体
     Dim wait As UInt32
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-
+        fnGetAudio()
 
 
     End Sub
     Public Function fnGetAudio() As Long
         fnGetAudio = 0
-        On Error GoTo ErrLine
+        'On Error GoTo ErrLine
         Dim sa As SECURITY_ATTRIBUTES
         Dim wait = CreateEvent(sa, 0, 0, vbNull)
         With waveform
@@ -24,11 +24,11 @@
             '.cbSize = 0 '一般为0
             'C++ Code: waveInOpen(&hWaveIn, WAVE_MAPPER, &waveform, (DWORD_PTR)wait, 0L, CALLBACK_EVENT);
         End With
-        waveInOpen(hWaveIn, WAVE_MAPPER, waveform, wait, CLng(0), CALLBACK_FUNCTION)
+        Label1.Text = waveInOpen(hWaveIn, WAVE_MAPPER, waveform, wait, CLng(0), CALLBACK_FUNCTION)
         Dim bufsize As UInt32 = 1024 '每次开辟1k的缓存存储录音数据
 
         '结合音频解码和网络传输可以修改为实时录音播放的机制以实现对讲功能
-        ReDim pBuffer1(bufsize)
+        ReDim pBuffer1(bufsize - 1)
 
         wHdr1.lpData = BitConverter.ToString(pBuffer1)
         wHdr1.dwBufferLength = bufsize
@@ -42,17 +42,17 @@
         waveInStart(hWaveIn) '开始录音
         Threading.Thread.Sleep(1000)
 
-        Dim mic As String
-        Dim sum As Integer = getPcmDB
-        Int sum = getPcmDB(pBuffer1, 1024);
-         mic.Format(_T("%d"), sum);
-         edit.SetWindowTextW(mic);
-         waveInReset(hWaveIn);//重置输入
-         delete[]pBuffer1;
-    // waveInClose(hWaveIn);
+        Dim sum As Integer = fngetPcmDB(pBuffer1, bufsize)
+        'Label1.Text = CStr(sum)
+        'mic.Format(_T("%d"), sum);
+        ' edit.SetWindowTextW(mic);
+        waveInReset(hWaveIn) ';//重置输入
+        'delete[]pBuffer1;
+        '// waveInClose(hWaveIn);
 
         Exit Function
-ErrLine:
-        Return Err.Number
+        'ErrLine:
+        '        MsgBox(Err.ToString)
+        '        Return Err.Number
     End Function
 End Class

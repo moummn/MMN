@@ -19,5 +19,5 @@ var t1 = setTimeout(function () { fnFix(); }, 5000);
 function fnFix(){
 var VWrapClass = document.getElementsByClassName("v-wrap");
 var FixContent = VWrapClass[0];
-FixContent.setAttribute('style','width: 100%; padding: 0px 5px;');
+    FixContent.setAttribute('style','width: 100%; padding: 0px 5px; justify-content: left;');
 };
