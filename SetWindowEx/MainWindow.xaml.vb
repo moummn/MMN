@@ -85,7 +85,7 @@
         Dim dt As New Data.DataTable
         dt = listView1.DataContext
         Dim hwnd As Integer = CInt(dt.Rows(listView1.SelectedIndex).Item(0))
-        SetWindowLong(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) Or Not WS_EX_TOOLWINDOW And WS_EX_APPWINDOW)
+        SetWindowLong(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) Or WS_EX_APPWINDOW And Not WS_EX_TOOLWINDOW)
 
     End Sub
 End Class
