@@ -35,9 +35,8 @@
     Private Const WS_EX_APPWINDOW = &H40000
     Private Const WS_EX_TOOLWINDOW = &H80
 
-
-    Private Sub MainWindow_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-        listView1.Items.Clear()
+    Private Sub RefreshLists()
+        listView1.DataContext = Nothing
         Dim dt As New Data.DataTable
         dt.Clear()
         dt.Columns.Add("HWND")
@@ -64,12 +63,29 @@
         listView1.DataContext = dt
         listView1.SetBinding(ListView.ItemsSourceProperty, New Binding())
     End Sub
+    Private Sub MainWindow_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+        RefreshLists()
+    End Sub
 
-    Private Sub button_Click(sender As Object, e As RoutedEventArgs) Handles button.Click
+    Private Sub btnHide_Click(sender As Object, e As RoutedEventArgs) Handles btnHide.Click
         If listView1.SelectedIndex = -1 Then Exit Sub
         Dim dt As New Data.DataTable
         dt = listView1.DataContext
         Dim hwnd As Integer = CInt(dt.Rows(listView1.SelectedIndex).Item(0))
         SetWindowLong(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) Or WS_EX_TOOLWINDOW And Not WS_EX_APPWINDOW)
+
+    End Sub
+
+    Private Sub btnRefresh_Click(sender As Object, e As RoutedEventArgs) Handles btnRefresh.Click
+        RefreshLists()
+    End Sub
+
+    Private Sub btnShow_Click(sender As Object, e As RoutedEventArgs) Handles btnShow.Click
+        If listView1.SelectedIndex = -1 Then Exit Sub
+        Dim dt As New Data.DataTable
+        dt = listView1.DataContext
+        Dim hwnd As Integer = CInt(dt.Rows(listView1.SelectedIndex).Item(0))
+        SetWindowLong(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) Or Not WS_EX_TOOLWINDOW And WS_EX_APPWINDOW)
+
     End Sub
 End Class

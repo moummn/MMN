@@ -8,7 +8,9 @@
         Title="SetWindowEx" Height="600" Width="800" WindowStartupLocation="CenterScreen">
     <DockPanel>
         <ToolBarPanel DockPanel.Dock="Top" Height="50" VerticalAlignment="Top" Background="#FFF0F0F0" HorizontalAlignment="Stretch" Orientation="Horizontal">
-            <Button x:Name="button" Content="Hide" Margin="10,10,10,10"/>
+            <Button x:Name="btnRefresh" Content="Refresh" Margin="10,10,10,10" Width="50"/>
+            <Button x:Name="btnHide" Content="Hide" Margin="10,10,10,10" Width="50"/>
+            <Button x:Name="btnShow" Content="Show" Margin="10,10,10,10" Width="50"/>
         </ToolBarPanel>
         <ListView x:Name="listView1">
             <ListView.View>
