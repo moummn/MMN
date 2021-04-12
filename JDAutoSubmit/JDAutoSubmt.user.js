@@ -3,7 +3,7 @@
 // @description 京东自动提交订单
 // @namespace   jdas
 // @include     *cart.jd.com*cart_index*
-// @version     2021.04.12.0
+// @version     2021.04.12.1
 // @grant       none
 // @run-at      document-end
 // @downloadURL https://github.com/moummn/MMN/raw/master/JDAutoSubmit/JDAutoSubmit.user.js
