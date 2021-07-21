@@ -30,7 +30,7 @@ Partial Class frmWindowList
         '
         'btnRefresh
         '
-        Me.btnRefresh.Location = New System.Drawing.Point(179, 12)
+        Me.btnRefresh.Location = New System.Drawing.Point(179, 8)
         Me.btnRefresh.Name = "btnRefresh"
         Me.btnRefresh.Size = New System.Drawing.Size(91, 30)
         Me.btnRefresh.TabIndex = 2
