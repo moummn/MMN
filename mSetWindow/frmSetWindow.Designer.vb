@@ -34,6 +34,8 @@ Partial Class frmSetWindow
         Me.lblHandle = New System.Windows.Forms.Label()
         Me.lblWS = New System.Windows.Forms.Label()
         Me.lblWSEX = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
@@ -93,6 +95,7 @@ Partial Class frmSetWindow
         Me.cbWS_EX_TOPMOST = New System.Windows.Forms.CheckBox()
         Me.cbWS_EX_TRANSPARENT = New System.Windows.Forms.CheckBox()
         Me.cbWS_EX_WINDOWEDGE = New System.Windows.Forms.CheckBox()
+        Me.Panel2 = New System.Windows.Forms.Panel()
         Me.Panel1.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
@@ -100,6 +103,7 @@ Partial Class frmSetWindow
         Me.TableLayoutPanel3.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.TableLayoutPanel4.SuspendLayout()
+        Me.Panel2.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
@@ -156,70 +160,73 @@ Partial Class frmSetWindow
         '
         'TableLayoutPanel1
         '
-        Me.TableLayoutPanel1.ColumnCount = 2
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 44.44444!))
+        Me.TableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
+        Me.TableLayoutPanel1.ColumnCount = 3
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 210.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.TableLayoutPanel1.Controls.Add(Me.Label4, 0, 2)
         Me.TableLayoutPanel1.Controls.Add(Me.Label2, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Label3, 0, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.lblHandle, 1, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.lblWS, 1, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.lblWSEX, 1, 2)
-        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(275, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.Label5, 2, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.Label6, 2, 1)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel1.Margin = New System.Windows.Forms.Padding(0)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 3
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33556!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33555!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33223!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33223!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(657, 70)
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(485, 67)
         Me.TableLayoutPanel1.TabIndex = 6
         '
         'Label4
         '
         Me.Label4.AutoSize = True
         Me.Label4.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Label4.Location = New System.Drawing.Point(0, 46)
+        Me.Label4.Location = New System.Drawing.Point(1, 44)
         Me.Label4.Margin = New System.Windows.Forms.Padding(0)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(131, 24)
+        Me.Label4.Size = New System.Drawing.Size(70, 22)
         Me.Label4.TabIndex = 5
-        Me.Label4.Text = "GWL_EXSTYLE"
-        Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Label4.Text = "EXSTYLE"
+        Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Label2
         '
         Me.Label2.AutoSize = True
         Me.Label2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Label2.Location = New System.Drawing.Point(0, 0)
+        Me.Label2.Location = New System.Drawing.Point(1, 1)
         Me.Label2.Margin = New System.Windows.Forms.Padding(0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(131, 23)
+        Me.Label2.Size = New System.Drawing.Size(70, 21)
         Me.Label2.TabIndex = 1
-        Me.Label2.Text = "窗体句柄"
-        Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Label2.Text = "HANDLE"
+        Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Label3
         '
         Me.Label3.AutoSize = True
         Me.Label3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Label3.Location = New System.Drawing.Point(0, 23)
+        Me.Label3.Location = New System.Drawing.Point(1, 23)
         Me.Label3.Margin = New System.Windows.Forms.Padding(0)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(131, 23)
+        Me.Label3.Size = New System.Drawing.Size(70, 20)
         Me.Label3.TabIndex = 3
-        Me.Label3.Text = "GWL_STYLE"
-        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Label3.Text = "STYLE"
+        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblHandle
         '
         Me.lblHandle.AutoSize = True
         Me.lblHandle.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblHandle.Location = New System.Drawing.Point(134, 0)
+        Me.lblHandle.Location = New System.Drawing.Point(75, 1)
         Me.lblHandle.Name = "lblHandle"
-        Me.lblHandle.Size = New System.Drawing.Size(520, 23)
+        Me.lblHandle.Size = New System.Drawing.Size(204, 21)
         Me.lblHandle.TabIndex = 6
         Me.lblHandle.Text = "0"
         Me.lblHandle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -228,9 +235,9 @@ Partial Class frmSetWindow
         '
         Me.lblWS.AutoSize = True
         Me.lblWS.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblWS.Location = New System.Drawing.Point(134, 23)
+        Me.lblWS.Location = New System.Drawing.Point(75, 23)
         Me.lblWS.Name = "lblWS"
-        Me.lblWS.Size = New System.Drawing.Size(520, 23)
+        Me.lblWS.Size = New System.Drawing.Size(204, 20)
         Me.lblWS.TabIndex = 7
         Me.lblWS.Text = "0"
         Me.lblWS.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -239,12 +246,30 @@ Partial Class frmSetWindow
         '
         Me.lblWSEX.AutoSize = True
         Me.lblWSEX.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblWSEX.Location = New System.Drawing.Point(134, 46)
+        Me.lblWSEX.Location = New System.Drawing.Point(75, 44)
         Me.lblWSEX.Name = "lblWSEX"
-        Me.lblWSEX.Size = New System.Drawing.Size(520, 24)
+        Me.lblWSEX.Size = New System.Drawing.Size(204, 22)
         Me.lblWSEX.TabIndex = 8
         Me.lblWSEX.Text = "0"
         Me.lblWSEX.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(286, 1)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(42, 20)
+        Me.Label5.TabIndex = 9
+        Me.Label5.Text = "PosX"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(286, 23)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(41, 20)
+        Me.Label6.TabIndex = 10
+        Me.Label6.Text = "PosY"
         '
         'TableLayoutPanel2
         '
@@ -253,13 +278,13 @@ Partial Class frmSetWindow
         Me.TableLayoutPanel2.Controls.Add(Me.GroupBox1, 0, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.GroupBox2, 0, 1)
         Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel2.Location = New System.Drawing.Point(275, 70)
+        Me.TableLayoutPanel2.Location = New System.Drawing.Point(275, 67)
         Me.TableLayoutPanel2.Margin = New System.Windows.Forms.Padding(0)
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
         Me.TableLayoutPanel2.RowCount = 2
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(657, 495)
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(657, 498)
         Me.TableLayoutPanel2.TabIndex = 7
         '
         'GroupBox1
@@ -268,7 +293,7 @@ Partial Class frmSetWindow
         Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GroupBox1.Location = New System.Drawing.Point(3, 3)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(651, 241)
+        Me.GroupBox1.Size = New System.Drawing.Size(651, 243)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "窗体样式（GWL_STYLE）"
@@ -321,7 +346,7 @@ Partial Class frmSetWindow
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111!))
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111!))
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel3.Size = New System.Drawing.Size(645, 217)
+        Me.TableLayoutPanel3.Size = New System.Drawing.Size(645, 219)
         Me.TableLayoutPanel3.TabIndex = 0
         '
         'cbWS_BORDER
@@ -451,7 +476,7 @@ Partial Class frmSetWindow
         Me.cbWS_GROUP.Location = New System.Drawing.Point(0, 192)
         Me.cbWS_GROUP.Margin = New System.Windows.Forms.Padding(0)
         Me.cbWS_GROUP.Name = "cbWS_GROUP"
-        Me.cbWS_GROUP.Size = New System.Drawing.Size(215, 25)
+        Me.cbWS_GROUP.Size = New System.Drawing.Size(215, 27)
         Me.cbWS_GROUP.TabIndex = 9
         Me.cbWS_GROUP.Text = "WS_GROUP"
         Me.cbWS_GROUP.UseVisualStyleBackColor = True
@@ -536,7 +561,7 @@ Partial Class frmSetWindow
         Me.cbWS_POPUP.Location = New System.Drawing.Point(215, 192)
         Me.cbWS_POPUP.Margin = New System.Windows.Forms.Padding(0)
         Me.cbWS_POPUP.Name = "cbWS_POPUP"
-        Me.cbWS_POPUP.Size = New System.Drawing.Size(215, 25)
+        Me.cbWS_POPUP.Size = New System.Drawing.Size(215, 27)
         Me.cbWS_POPUP.TabIndex = 18
         Me.cbWS_POPUP.Text = "WS_POPUP"
         Me.cbWS_POPUP.UseVisualStyleBackColor = True
@@ -644,7 +669,7 @@ Partial Class frmSetWindow
         Me.cbWS_VSCROLL.Location = New System.Drawing.Point(430, 192)
         Me.cbWS_VSCROLL.Margin = New System.Windows.Forms.Padding(0)
         Me.cbWS_VSCROLL.Name = "cbWS_VSCROLL"
-        Me.cbWS_VSCROLL.Size = New System.Drawing.Size(215, 25)
+        Me.cbWS_VSCROLL.Size = New System.Drawing.Size(215, 27)
         Me.cbWS_VSCROLL.TabIndex = 27
         Me.cbWS_VSCROLL.Text = "WS_VSCROLL"
         Me.cbWS_VSCROLL.UseVisualStyleBackColor = True
@@ -653,9 +678,9 @@ Partial Class frmSetWindow
         '
         Me.GroupBox2.Controls.Add(Me.TableLayoutPanel4)
         Me.GroupBox2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox2.Location = New System.Drawing.Point(3, 250)
+        Me.GroupBox2.Location = New System.Drawing.Point(3, 252)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(651, 242)
+        Me.GroupBox2.Size = New System.Drawing.Size(651, 243)
         Me.GroupBox2.TabIndex = 1
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "扩展样式（GWL_EXSTYLE）"
@@ -707,7 +732,7 @@ Partial Class frmSetWindow
         Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111!))
         Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111!))
         Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111!))
-        Me.TableLayoutPanel4.Size = New System.Drawing.Size(645, 218)
+        Me.TableLayoutPanel4.Size = New System.Drawing.Size(645, 219)
         Me.TableLayoutPanel4.TabIndex = 0
         '
         'cbWS_EX_LAYOUTRTL
@@ -717,7 +742,7 @@ Partial Class frmSetWindow
         Me.cbWS_EX_LAYOUTRTL.Location = New System.Drawing.Point(0, 192)
         Me.cbWS_EX_LAYOUTRTL.Margin = New System.Windows.Forms.Padding(0)
         Me.cbWS_EX_LAYOUTRTL.Name = "cbWS_EX_LAYOUTRTL"
-        Me.cbWS_EX_LAYOUTRTL.Size = New System.Drawing.Size(215, 26)
+        Me.cbWS_EX_LAYOUTRTL.Size = New System.Drawing.Size(215, 27)
         Me.cbWS_EX_LAYOUTRTL.TabIndex = 9
         Me.cbWS_EX_LAYOUTRTL.Text = "WS_EX_LAYOUTRTL"
         Me.cbWS_EX_LAYOUTRTL.UseVisualStyleBackColor = True
@@ -922,7 +947,7 @@ Partial Class frmSetWindow
         Me.cbWS_EX_OVERLAPPEDWINDOW.Location = New System.Drawing.Point(215, 192)
         Me.cbWS_EX_OVERLAPPEDWINDOW.Margin = New System.Windows.Forms.Padding(0)
         Me.cbWS_EX_OVERLAPPEDWINDOW.Name = "cbWS_EX_OVERLAPPEDWINDOW"
-        Me.cbWS_EX_OVERLAPPEDWINDOW.Size = New System.Drawing.Size(215, 26)
+        Me.cbWS_EX_OVERLAPPEDWINDOW.Size = New System.Drawing.Size(215, 27)
         Me.cbWS_EX_OVERLAPPEDWINDOW.TabIndex = 18
         Me.cbWS_EX_OVERLAPPEDWINDOW.Text = "WS_EX_OVERLAPPEDWINDOW"
         Me.cbWS_EX_OVERLAPPEDWINDOW.UseVisualStyleBackColor = True
@@ -1030,10 +1055,19 @@ Partial Class frmSetWindow
         Me.cbWS_EX_WINDOWEDGE.Location = New System.Drawing.Point(430, 192)
         Me.cbWS_EX_WINDOWEDGE.Margin = New System.Windows.Forms.Padding(0)
         Me.cbWS_EX_WINDOWEDGE.Name = "cbWS_EX_WINDOWEDGE"
-        Me.cbWS_EX_WINDOWEDGE.Size = New System.Drawing.Size(215, 26)
+        Me.cbWS_EX_WINDOWEDGE.Size = New System.Drawing.Size(215, 27)
         Me.cbWS_EX_WINDOWEDGE.TabIndex = 27
         Me.cbWS_EX_WINDOWEDGE.Text = "WS_EX_WINDOWEDGE"
         Me.cbWS_EX_WINDOWEDGE.UseVisualStyleBackColor = True
+        '
+        'Panel2
+        '
+        Me.Panel2.Controls.Add(Me.TableLayoutPanel1)
+        Me.Panel2.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Panel2.Location = New System.Drawing.Point(275, 0)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(657, 67)
+        Me.Panel2.TabIndex = 6
         '
         'frmSetWindow
         '
@@ -1041,7 +1075,7 @@ Partial Class frmSetWindow
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(932, 565)
         Me.Controls.Add(Me.TableLayoutPanel2)
-        Me.Controls.Add(Me.TableLayoutPanel1)
+        Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.Panel1)
         Me.MaximizeBox = False
         Me.Name = "frmSetWindow"
@@ -1058,6 +1092,7 @@ Partial Class frmSetWindow
         Me.GroupBox2.ResumeLayout(False)
         Me.TableLayoutPanel4.ResumeLayout(False)
         Me.TableLayoutPanel4.PerformLayout()
+        Me.Panel2.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -1133,4 +1168,7 @@ Partial Class frmSetWindow
     Friend WithEvents cbWS_TILEDWINDOW As CheckBox
     Friend WithEvents cbWS_VISIBLE As CheckBox
     Friend WithEvents cbWS_VSCROLL As CheckBox
+    Friend WithEvents Panel2 As Panel
+    Friend WithEvents Label5 As Label
+    Friend WithEvents Label6 As Label
 End Class

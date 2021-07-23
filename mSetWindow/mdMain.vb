@@ -78,4 +78,27 @@
     Public Const WS_EX_TOPMOST = &H8&
     Public Const WS_EX_TRANSPARENT = &H20&
     Public Const WS_EX_WINDOWEDGE = &H100&
+
+    '窗口位置
+    Public Declare Function GetWindowPlacement Lib "user32" Alias "GetWindowPlacement" (ByVal hwnd As Int32, lpwndpl As WINDOWPLACEMENT) As Int32
+    Public Declare Function SetWindowPos Lib "user32" Alias "SetWindowPos" (ByVal hwnd As Int32, ByVal hWndInsertAfter As Int32, ByVal x As Int32, ByVal y As Int32, ByVal cx As Int32, ByVal cy As Int32, ByVal wFlags As Int32) As Int32
+    Public Structure WINDOWPLACEMENT
+        Public Length As Int32
+        Public flags As Int32
+        Public showCmd As Int32
+        Public ptMinPosition As POINTAPI
+        Public ptMaxPosition As POINTAPI
+        Public rcNormalPosition As RECT
+    End Structure
+    Public Structure POINTAPI
+        Public X As Int32
+        Public Y As Int32
+    End Structure
+    Public Structure RECT
+        Public Left As Int32
+        Public Top As Int32
+        Public Right As Int32
+        Public Bottom As Int32
+    End Structure
+
 End Module
