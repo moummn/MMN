@@ -1,4 +1,4 @@
-﻿Public Class frmSetWindow
+﻿Public Class frmmSetWindow
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'If Me.Left - 300 > 0 Then
@@ -618,7 +618,7 @@
         cbWS_EX_LAYOUTRTL.Enabled = False
         'cbWS_EX_LEFT.Enabled = False
         cbWS_EX_LEFTSCROLLBAR.Enabled = False
-        cbWS_EX_LTRREADING.Enabled = False
+        'cbWS_EX_LTRREADING.Enabled = False
         cbWS_EX_MDICHILD.Enabled = False
         cbWS_EX_NOACTIVATE.Enabled = False
         cbWS_EX_NOINHERITLAYOUT.Enabled = False
@@ -627,7 +627,7 @@
         cbWS_EX_OVERLAPPEDWINDOW.Enabled = False
         cbWS_EX_PALETTEWINDOW.Enabled = False
         cbWS_EX_RIGHT.Enabled = False
-        cbWS_EX_RIGHTSCROLLBAR.Enabled = False
+        'cbWS_EX_RIGHTSCROLLBAR.Enabled = False
         cbWS_EX_RTLREADING.Enabled = False
         cbWS_EX_STATICEDGE.Enabled = False
         cbWS_EX_TOOLWINDOW.Enabled = False
@@ -679,7 +679,7 @@
         cbWS_EX_LAYOUTRTL.Enabled = True
         'cbWS_EX_LEFT.Enabled =True
         cbWS_EX_LEFTSCROLLBAR.Enabled = True
-        cbWS_EX_LTRREADING.Enabled = True
+        'cbWS_EX_LTRREADING.Enabled = True
         cbWS_EX_MDICHILD.Enabled = True
         cbWS_EX_NOACTIVATE.Enabled = True
         cbWS_EX_NOINHERITLAYOUT.Enabled = True
@@ -688,7 +688,7 @@
         cbWS_EX_OVERLAPPEDWINDOW.Enabled = True
         cbWS_EX_PALETTEWINDOW.Enabled = True
         cbWS_EX_RIGHT.Enabled = True
-        cbWS_EX_RIGHTSCROLLBAR.Enabled = True
+        'cbWS_EX_RIGHTSCROLLBAR.Enabled = True
         cbWS_EX_RTLREADING.Enabled = True
         cbWS_EX_STATICEDGE.Enabled = True
         cbWS_EX_TOOLWINDOW.Enabled = True
