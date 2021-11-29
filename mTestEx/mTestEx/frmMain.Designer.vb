@@ -25,28 +25,30 @@ Partial Class frmMain
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.选项OToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cb1 = New System.Windows.Forms.CheckBox()
-        Me.cb2 = New System.Windows.Forms.CheckBox()
-        Me.cb3 = New System.Windows.Forms.CheckBox()
-        Me.cb4 = New System.Windows.Forms.CheckBox()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.tbQuest = New System.Windows.Forms.TextBox()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
+        Me.panButton = New System.Windows.Forms.Panel()
+        Me.btnOK = New System.Windows.Forms.Button()
+        Me.btnNext = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.panAns = New System.Windows.Forms.Panel()
         Me.tbAns = New System.Windows.Forms.TextBox()
-        Me.panButton = New System.Windows.Forms.Panel()
-        Me.btnNext = New System.Windows.Forms.Button()
-        Me.btnOK = New System.Windows.Forms.Button()
         Me.tpCheckBox = New System.Windows.Forms.TableLayoutPanel()
+        Me.cb4 = New System.Windows.Forms.CheckBox()
+        Me.cb3 = New System.Windows.Forms.CheckBox()
+        Me.cb2 = New System.Windows.Forms.CheckBox()
+        Me.cb1 = New System.Windows.Forms.CheckBox()
+        Me.panButtomLeft = New System.Windows.Forms.Panel()
         Me.MenuStrip1.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.TableLayoutPanel3.SuspendLayout()
-        Me.panAns.SuspendLayout()
         Me.panButton.SuspendLayout()
+        Me.panAns.SuspendLayout()
         Me.tpCheckBox.SuspendLayout()
+        Me.panButtomLeft.SuspendLayout()
         Me.SuspendLayout()
         '
         'MenuStrip1
@@ -71,70 +73,19 @@ Partial Class frmMain
         Me.StatusToolStripMenuItem.Size = New System.Drawing.Size(64, 24)
         Me.StatusToolStripMenuItem.Text = "Status"
         '
-        'cb1
-        '
-        Me.cb1.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cb1.AutoSize = True
-        Me.cb1.Font = New System.Drawing.Font("宋体", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.cb1.Location = New System.Drawing.Point(4, 4)
-        Me.cb1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.cb1.Name = "cb1"
-        Me.cb1.Size = New System.Drawing.Size(207, 21)
-        Me.cb1.TabIndex = 1
-        Me.cb1.Text = "CheckBox1"
-        Me.cb1.UseVisualStyleBackColor = True
-        '
-        'cb2
-        '
-        Me.cb2.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cb2.AutoSize = True
-        Me.cb2.Font = New System.Drawing.Font("宋体", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.cb2.Location = New System.Drawing.Point(4, 34)
-        Me.cb2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.cb2.Name = "cb2"
-        Me.cb2.Size = New System.Drawing.Size(207, 21)
-        Me.cb2.TabIndex = 2
-        Me.cb2.Text = "CheckBox2"
-        Me.cb2.UseVisualStyleBackColor = True
-        '
-        'cb3
-        '
-        Me.cb3.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cb3.AutoSize = True
-        Me.cb3.Font = New System.Drawing.Font("宋体", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.cb3.Location = New System.Drawing.Point(4, 64)
-        Me.cb3.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.cb3.Name = "cb3"
-        Me.cb3.Size = New System.Drawing.Size(207, 21)
-        Me.cb3.TabIndex = 3
-        Me.cb3.Text = "CheckBox3"
-        Me.cb3.UseVisualStyleBackColor = True
-        '
-        'cb4
-        '
-        Me.cb4.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cb4.AutoSize = True
-        Me.cb4.Font = New System.Drawing.Font("宋体", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.cb4.Location = New System.Drawing.Point(4, 95)
-        Me.cb4.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.cb4.Name = "cb4"
-        Me.cb4.Size = New System.Drawing.Size(207, 21)
-        Me.cb4.TabIndex = 4
-        Me.cb4.Text = "CheckBox4"
-        Me.cb4.UseVisualStyleBackColor = True
-        '
         'TableLayoutPanel1
         '
         Me.TableLayoutPanel1.ColumnCount = 1
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.tbQuest, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.TableLayoutPanel2, 0, 1)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(23, 31)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 28)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 2
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(610, 183)
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(747, 427)
         Me.TableLayoutPanel1.TabIndex = 1000
         '
         'tbQuest
@@ -148,7 +99,7 @@ Partial Class frmMain
         Me.tbQuest.Name = "tbQuest"
         Me.tbQuest.ReadOnly = True
         Me.tbQuest.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.tbQuest.Size = New System.Drawing.Size(602, 83)
+        Me.tbQuest.Size = New System.Drawing.Size(739, 205)
         Me.tbQuest.TabIndex = 1000
         '
         'TableLayoutPanel2
@@ -157,37 +108,73 @@ Partial Class frmMain
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 75.0!))
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
         Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel3, 1, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.panButtomLeft, 0, 0)
         Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel2.Location = New System.Drawing.Point(3, 94)
+        Me.TableLayoutPanel2.Location = New System.Drawing.Point(3, 216)
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
         Me.TableLayoutPanel2.RowCount = 1
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(604, 86)
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(741, 208)
         Me.TableLayoutPanel2.TabIndex = 1001
         '
         'TableLayoutPanel3
         '
         Me.TableLayoutPanel3.ColumnCount = 1
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel3.Controls.Add(Me.panButton, 0, 1)
         Me.TableLayoutPanel3.Controls.Add(Me.Label1, 0, 0)
-        Me.TableLayoutPanel3.Location = New System.Drawing.Point(456, 3)
+        Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel3.Location = New System.Drawing.Point(558, 3)
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
         Me.TableLayoutPanel3.RowCount = 2
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel3.Size = New System.Drawing.Size(145, 80)
+        Me.TableLayoutPanel3.Size = New System.Drawing.Size(180, 202)
         Me.TableLayoutPanel3.TabIndex = 0
+        '
+        'panButton
+        '
+        Me.panButton.Controls.Add(Me.btnOK)
+        Me.panButton.Controls.Add(Me.btnNext)
+        Me.panButton.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.panButton.Location = New System.Drawing.Point(3, 104)
+        Me.panButton.Name = "panButton"
+        Me.panButton.Size = New System.Drawing.Size(174, 95)
+        Me.panButton.TabIndex = 1003
+        '
+        'btnOK
+        '
+        Me.btnOK.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnOK.Location = New System.Drawing.Point(0, 0)
+        Me.btnOK.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnOK.Name = "btnOK"
+        Me.btnOK.Size = New System.Drawing.Size(174, 95)
+        Me.btnOK.TabIndex = 9
+        Me.btnOK.Text = "确定(&O)"
+        Me.btnOK.UseVisualStyleBackColor = True
+        '
+        'btnNext
+        '
+        Me.btnNext.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnNext.Location = New System.Drawing.Point(0, 0)
+        Me.btnNext.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnNext.Name = "btnNext"
+        Me.btnNext.Size = New System.Drawing.Size(174, 95)
+        Me.btnNext.TabIndex = 8
+        Me.btnNext.Text = "下一题(&N)"
+        Me.btnNext.UseVisualStyleBackColor = True
         '
         'Label1
         '
-        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Label1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Label1.Font = New System.Drawing.Font("宋体", 21.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.Label1.Location = New System.Drawing.Point(36, 0)
+        Me.Label1.Location = New System.Drawing.Point(4, 0)
         Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(105, 40)
+        Me.Label1.Size = New System.Drawing.Size(172, 101)
         Me.Label1.TabIndex = 9
         Me.Label1.Text = "结果"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -195,10 +182,11 @@ Partial Class frmMain
         'panAns
         '
         Me.panAns.Controls.Add(Me.tbAns)
-        Me.panAns.Location = New System.Drawing.Point(214, 266)
+        Me.panAns.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.panAns.Location = New System.Drawing.Point(0, 0)
         Me.panAns.Name = "panAns"
-        Me.panAns.Size = New System.Drawing.Size(200, 100)
-        Me.panAns.TabIndex = 1001
+        Me.panAns.Size = New System.Drawing.Size(549, 202)
+        Me.panAns.TabIndex = 1005
         '
         'tbAns
         '
@@ -209,39 +197,8 @@ Partial Class frmMain
         Me.tbAns.Multiline = True
         Me.tbAns.Name = "tbAns"
         Me.tbAns.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.tbAns.Size = New System.Drawing.Size(200, 100)
+        Me.tbAns.Size = New System.Drawing.Size(549, 202)
         Me.tbAns.TabIndex = 7
-        '
-        'panButton
-        '
-        Me.panButton.Controls.Add(Me.btnOK)
-        Me.panButton.Controls.Add(Me.btnNext)
-        Me.panButton.Location = New System.Drawing.Point(491, 249)
-        Me.panButton.Name = "panButton"
-        Me.panButton.Size = New System.Drawing.Size(139, 104)
-        Me.panButton.TabIndex = 1002
-        '
-        'btnNext
-        '
-        Me.btnNext.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnNext.Location = New System.Drawing.Point(0, 0)
-        Me.btnNext.Margin = New System.Windows.Forms.Padding(4)
-        Me.btnNext.Name = "btnNext"
-        Me.btnNext.Size = New System.Drawing.Size(139, 104)
-        Me.btnNext.TabIndex = 8
-        Me.btnNext.Text = "下一题(&N)"
-        Me.btnNext.UseVisualStyleBackColor = True
-        '
-        'btnOK
-        '
-        Me.btnOK.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnOK.Location = New System.Drawing.Point(0, 0)
-        Me.btnOK.Margin = New System.Windows.Forms.Padding(4)
-        Me.btnOK.Name = "btnOK"
-        Me.btnOK.Size = New System.Drawing.Size(139, 104)
-        Me.btnOK.TabIndex = 9
-        Me.btnOK.Text = "确定(&O)"
-        Me.btnOK.UseVisualStyleBackColor = True
         '
         'tpCheckBox
         '
@@ -251,28 +208,88 @@ Partial Class frmMain
         Me.tpCheckBox.Controls.Add(Me.cb2, 0, 1)
         Me.tpCheckBox.Controls.Add(Me.cb3, 0, 2)
         Me.tpCheckBox.Controls.Add(Me.cb4, 0, 3)
-        Me.tpCheckBox.Location = New System.Drawing.Point(23, 249)
+        Me.tpCheckBox.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tpCheckBox.Location = New System.Drawing.Point(0, 0)
         Me.tpCheckBox.Name = "tpCheckBox"
         Me.tpCheckBox.RowCount = 4
         Me.tpCheckBox.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
         Me.tpCheckBox.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
         Me.tpCheckBox.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
         Me.tpCheckBox.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
-        Me.tpCheckBox.Size = New System.Drawing.Size(215, 122)
-        Me.tpCheckBox.TabIndex = 1003
+        Me.tpCheckBox.Size = New System.Drawing.Size(549, 202)
+        Me.tpCheckBox.TabIndex = 1004
+        '
+        'cb4
+        '
+        Me.cb4.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cb4.AutoSize = True
+        Me.cb4.Font = New System.Drawing.Font("宋体", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+        Me.cb4.Location = New System.Drawing.Point(4, 165)
+        Me.cb4.Margin = New System.Windows.Forms.Padding(4)
+        Me.cb4.Name = "cb4"
+        Me.cb4.Size = New System.Drawing.Size(541, 21)
+        Me.cb4.TabIndex = 4
+        Me.cb4.Text = "CheckBox4"
+        Me.cb4.UseVisualStyleBackColor = True
+        '
+        'cb3
+        '
+        Me.cb3.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cb3.AutoSize = True
+        Me.cb3.Font = New System.Drawing.Font("宋体", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+        Me.cb3.Location = New System.Drawing.Point(4, 114)
+        Me.cb3.Margin = New System.Windows.Forms.Padding(4)
+        Me.cb3.Name = "cb3"
+        Me.cb3.Size = New System.Drawing.Size(541, 21)
+        Me.cb3.TabIndex = 3
+        Me.cb3.Text = "CheckBox3"
+        Me.cb3.UseVisualStyleBackColor = True
+        '
+        'cb2
+        '
+        Me.cb2.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cb2.AutoSize = True
+        Me.cb2.Font = New System.Drawing.Font("宋体", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+        Me.cb2.Location = New System.Drawing.Point(4, 64)
+        Me.cb2.Margin = New System.Windows.Forms.Padding(4)
+        Me.cb2.Name = "cb2"
+        Me.cb2.Size = New System.Drawing.Size(541, 21)
+        Me.cb2.TabIndex = 2
+        Me.cb2.Text = "CheckBox2"
+        Me.cb2.UseVisualStyleBackColor = True
+        '
+        'cb1
+        '
+        Me.cb1.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cb1.AutoSize = True
+        Me.cb1.Font = New System.Drawing.Font("宋体", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+        Me.cb1.Location = New System.Drawing.Point(4, 14)
+        Me.cb1.Margin = New System.Windows.Forms.Padding(4)
+        Me.cb1.Name = "cb1"
+        Me.cb1.Size = New System.Drawing.Size(541, 21)
+        Me.cb1.TabIndex = 1
+        Me.cb1.Text = "CheckBox1"
+        Me.cb1.UseVisualStyleBackColor = True
+        '
+        'panButtomLeft
+        '
+        Me.panButtomLeft.Controls.Add(Me.tpCheckBox)
+        Me.panButtomLeft.Controls.Add(Me.panAns)
+        Me.panButtomLeft.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.panButtomLeft.Location = New System.Drawing.Point(3, 3)
+        Me.panButtomLeft.Name = "panButtomLeft"
+        Me.panButtomLeft.Size = New System.Drawing.Size(549, 202)
+        Me.panButtomLeft.TabIndex = 1
         '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(747, 455)
-        Me.Controls.Add(Me.tpCheckBox)
-        Me.Controls.Add(Me.panButton)
-        Me.Controls.Add(Me.panAns)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.MenuStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "frmMain"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "mTestEx"
@@ -282,11 +299,12 @@ Partial Class frmMain
         Me.TableLayoutPanel1.PerformLayout()
         Me.TableLayoutPanel2.ResumeLayout(False)
         Me.TableLayoutPanel3.ResumeLayout(False)
+        Me.panButton.ResumeLayout(False)
         Me.panAns.ResumeLayout(False)
         Me.panAns.PerformLayout()
-        Me.panButton.ResumeLayout(False)
         Me.tpCheckBox.ResumeLayout(False)
         Me.tpCheckBox.PerformLayout()
+        Me.panButtomLeft.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -294,20 +312,21 @@ Partial Class frmMain
 
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents 选项OToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents cb1 As CheckBox
-    Friend WithEvents cb2 As CheckBox
-    Friend WithEvents cb3 As CheckBox
-    Friend WithEvents cb4 As CheckBox
     Friend WithEvents StatusToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents tbQuest As TextBox
     Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
     Friend WithEvents TableLayoutPanel3 As TableLayoutPanel
     Friend WithEvents Label1 As Label
-    Friend WithEvents panAns As Panel
-    Friend WithEvents tbAns As TextBox
     Friend WithEvents panButton As Panel
     Friend WithEvents btnOK As Button
     Friend WithEvents btnNext As Button
+    Friend WithEvents panButtomLeft As Panel
     Friend WithEvents tpCheckBox As TableLayoutPanel
+    Friend WithEvents cb1 As CheckBox
+    Friend WithEvents cb2 As CheckBox
+    Friend WithEvents cb3 As CheckBox
+    Friend WithEvents cb4 As CheckBox
+    Friend WithEvents panAns As Panel
+    Friend WithEvents tbAns As TextBox
 End Class

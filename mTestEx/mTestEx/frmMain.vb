@@ -77,24 +77,38 @@
         NumList.RemoveAt(0)
         If Cache(1, CurSub) = "1" Then
             S = "判断题"
+
+            '答题区域外观变化刷新（隐藏不需要的内容、选项）
+            tpCheckBox.Visible = True
             cb1.Visible = True
             cb2.Visible = True
             cb3.Visible = False
             cb4.Visible = False
+
+            panAns.Visible = False
             tbAns.Visible = False
+
             cb1.Text = Cache(4, CurSub)
             cb2.Text = Cache(5, CurSub)
-            btnOK.Visible = False
-            RightAns = Cache(8, CurSub)
 
+            btnOK.Visible = False
+            btnNext.Visible = False
+
+            RightAns = Cache(8, CurSub)
         End If
         If Cache(1, CurSub) = "2" Then
             S = "单选题"
+
+            '答题区域外观变化刷新（隐藏不需要的内容、选项）
+            tpCheckBox.Visible = True
             cb1.Visible = True
             cb2.Visible = True
             cb3.Visible = True
             cb4.Visible = True
+
+            panAns.Visible = False
             tbAns.Visible = False
+
             RightAns = Cache(8, CurSub)
             Dim Ans(4) As String
             Ans(1) = Cache(4, CurSub)
@@ -102,15 +116,23 @@
             Ans(3) = Cache(6, CurSub)
             Ans(4) = Cache(7, CurSub)
             sbGetRandomABCD(Ans)
+
             btnOK.Visible = False
+            btnNext.Visible = False
         End If
         If Cache(1, CurSub) = "3" Then
             S = "多选题"
+
+            '答题区域外观变化刷新（隐藏不需要的内容、选项）
+            tpCheckBox.Visible = True
             cb1.Visible = True
             cb2.Visible = True
             cb3.Visible = True
             cb4.Visible = True
+
+            panAns.Visible = False
             tbAns.Visible = False
+
             RightAns = Cache(8, CurSub)
             Dim Ans(4)
             Ans(1) = Cache(4, CurSub)
@@ -119,18 +141,26 @@
             Ans(4) = Cache(7, CurSub)
             sbGetRandomABCD(Ans)
             btnOK.Visible = True
+            btnNext.Visible = False
         End If
         If Cache(1, CurSub) = "4" Then
             S = "填空/问答题"
+
+            '答题区域外观变化刷新（隐藏不需要的内容、选项）
+            tpCheckBox.Visible = False
             cb1.Visible = False
             cb2.Visible = False
             cb3.Visible = False
             cb4.Visible = False
+
+            panAns.Visible = True
             tbAns.Text = ""
             tbAns.Visible = True
             RightAns = Cache(8, CurSub)
             Dim Ans = Cache(4, CurSub)
+
             btnOK.Visible = True
+            btnNext.Visible = False
             tbAns.Focus()
         End If
 
@@ -204,7 +234,7 @@
 
     End Sub
 
-    Private Sub btnOK_Click(sender As Object, e As EventArgs)
+    Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
         Dim MyAns As String = ""
         If Cache(1, CurSub) = "1" OrElse
             Cache(1, CurSub) = "2" OrElse
@@ -270,7 +300,10 @@
         AcceptButton = btnNext
     End Sub
 
-    Private Sub cb_CheckedChanged(sender As Object, e As EventArgs) Handles cb1.CheckedChanged, cb2.CheckedChanged, cb3.CheckedChanged, cb4.CheckedChanged
+    Private Sub cb_CheckedChanged(sender As Object, e As EventArgs) Handles cb1.CheckedChanged,
+                                                                            cb2.CheckedChanged,
+                                                                            cb3.CheckedChanged,
+                                                                            cb4.CheckedChanged
         If GettingNewQuest = True Then Exit Sub
         If Cache(1, CurSub) = "3" Then Exit Sub
         If btnNext.Visible = True Then Exit Sub
@@ -314,7 +347,7 @@
         AcceptButton = btnNext
     End Sub
 
-    Private Sub btnNext_Click(sender As Object, e As EventArgs)
+    Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
         If fnGetNewQuest() <> 0 Then
             fnGetNewQuestList()
             fnGetNewQuest()
@@ -334,12 +367,14 @@
     End Sub
 
     Private Sub FrmMain_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
-        tbQuest.Height = Me.Height / 2 - 16
-        tbAns.Top = Me.Height / 2 + 20
-        tbAns.Height = Me.Height / 2 - 70
-        cb1.Top = Me.Height / 2 + 27
-        cb2.Top = Me.Height / 2 + 65 + Me.Height / 8 - 53
-        cb3.Top = Me.Height / 2 + 103 + Me.Height / 4 - 107
-        cb4.Top = Me.Height / 2 + 141 + Me.Height * 3 / 8 - 160
+        'tbQuest.Height = Me.Height / 2 - 16
+        'tbAns.Top = Me.Height / 2 + 20
+        'tbAns.Height = Me.Height / 2 - 70
+        'cb1.Top = Me.Height / 2 + 27
+        'cb2.Top = Me.Height / 2 + 65 + Me.Height / 8 - 53
+        'cb3.Top = Me.Height / 2 + 103 + Me.Height / 4 - 107
+        'cb4.Top = Me.Height / 2 + 141 + Me.Height * 3 / 8 - 160
     End Sub
+
+
 End Class
