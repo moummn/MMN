@@ -204,7 +204,7 @@
 
     End Sub
 
-    Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
+    Private Sub btnOK_Click(sender As Object, e As EventArgs)
         Dim MyAns As String = ""
         If Cache(1, CurSub) = "1" OrElse
             Cache(1, CurSub) = "2" OrElse
@@ -314,7 +314,7 @@
         AcceptButton = btnNext
     End Sub
 
-    Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
+    Private Sub btnNext_Click(sender As Object, e As EventArgs)
         If fnGetNewQuest() <> 0 Then
             fnGetNewQuestList()
             fnGetNewQuest()
