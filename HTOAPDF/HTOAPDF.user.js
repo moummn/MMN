@@ -2,9 +2,9 @@
 // @name        HTOAPDF
 // @description OA系统PDF页面修正
 // @namespace   HTOAPDF
-// @include     *223.100.151.35:8989/OAapp/HtTrace*
-// @include     *dlnewairport.com:8989/OAapp/HtTrace*
-// @version     2018.10.07.0
+// @include     *223.100.175.23:8989/OAapp/HtTrace*
+// @include     *mfile.123nat.com:8989/OAapp/HtTrace*
+// @version     2022.01.24.0
 // @grant       none
 // @run-at      document-end
 // @downloadURL https://github.com/moummn/MMN/raw/master/HTOAPDF/HTOAPDF.user.js
