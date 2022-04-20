@@ -47,8 +47,8 @@ KEEPALIVELINE:
             For Each S In FN
                 cWL(Now.ToString & " - " & S)
                 sbKeepAlive(S)
-                Sleepex(TimeWait * 1000)
             Next
+            Sleepex(TimeWait * 1000)
         Loop
 
 SHOWHELPLINE:
