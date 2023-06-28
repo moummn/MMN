@@ -22,11 +22,9 @@ Partial Class frmLotNum
     '不要使用代码编辑器修改它。
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Me.lblLotName = New System.Windows.Forms.Label()
         Me.btnStartStop = New System.Windows.Forms.Button()
         Me.btnClose = New System.Windows.Forms.Button()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.btnMenu = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
@@ -36,8 +34,9 @@ Partial Class frmLotNum
         Me.lblLotName.Font = New System.Drawing.Font("宋体", 144.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.lblLotName.ForeColor = System.Drawing.Color.White
         Me.lblLotName.Location = New System.Drawing.Point(0, 0)
+        Me.lblLotName.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblLotName.Name = "lblLotName"
-        Me.lblLotName.Size = New System.Drawing.Size(624, 442)
+        Me.lblLotName.Size = New System.Drawing.Size(728, 516)
         Me.lblLotName.TabIndex = 2
         Me.lblLotName.Text = " "
         Me.lblLotName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -47,9 +46,10 @@ Partial Class frmLotNum
         Me.btnStartStop.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.btnStartStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnStartStop.ForeColor = System.Drawing.Color.White
-        Me.btnStartStop.Location = New System.Drawing.Point(269, 356)
+        Me.btnStartStop.Location = New System.Drawing.Point(314, 415)
+        Me.btnStartStop.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.btnStartStop.Name = "btnStartStop"
-        Me.btnStartStop.Size = New System.Drawing.Size(89, 31)
+        Me.btnStartStop.Size = New System.Drawing.Size(104, 36)
         Me.btnStartStop.TabIndex = 0
         Me.btnStartStop.Text = "开始/停止(&S)"
         Me.btnStartStop.UseVisualStyleBackColor = True
@@ -60,24 +60,22 @@ Partial Class frmLotNum
         Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnClose.ForeColor = System.Drawing.Color.White
-        Me.btnClose.Location = New System.Drawing.Point(584, 12)
+        Me.btnClose.Location = New System.Drawing.Point(681, 14)
+        Me.btnClose.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.btnClose.Name = "btnClose"
-        Me.btnClose.Size = New System.Drawing.Size(28, 28)
+        Me.btnClose.Size = New System.Drawing.Size(33, 33)
         Me.btnClose.TabIndex = 4
         Me.btnClose.Text = "X"
         Me.btnClose.UseVisualStyleBackColor = True
-        '
-        'Timer1
-        '
-        Me.Timer1.Interval = 1
         '
         'btnMenu
         '
         Me.btnMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnMenu.ForeColor = System.Drawing.Color.White
-        Me.btnMenu.Location = New System.Drawing.Point(12, 12)
+        Me.btnMenu.Location = New System.Drawing.Point(14, 14)
+        Me.btnMenu.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.btnMenu.Name = "btnMenu"
-        Me.btnMenu.Size = New System.Drawing.Size(23, 23)
+        Me.btnMenu.Size = New System.Drawing.Size(27, 27)
         Me.btnMenu.TabIndex = 5
         Me.btnMenu.Text = "≡"
         Me.btnMenu.UseVisualStyleBackColor = True
@@ -85,16 +83,17 @@ Partial Class frmLotNum
         'frmLotNum
         '
         Me.AcceptButton = Me.btnStartStop
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(255, Byte), Integer))
         Me.CancelButton = Me.btnClose
-        Me.ClientSize = New System.Drawing.Size(624, 442)
+        Me.ClientSize = New System.Drawing.Size(728, 516)
         Me.Controls.Add(Me.btnMenu)
         Me.Controls.Add(Me.btnClose)
         Me.Controls.Add(Me.btnStartStop)
         Me.Controls.Add(Me.lblLotName)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Name = "frmLotNum"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "随机摇号"
@@ -106,6 +105,5 @@ Partial Class frmLotNum
     Friend WithEvents lblLotName As Label
     Friend WithEvents btnStartStop As Button
     Friend WithEvents btnClose As Button
-    Friend WithEvents Timer1 As Timer
     Friend WithEvents btnMenu As Button
 End Class

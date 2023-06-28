@@ -25,7 +25,7 @@ NX:
         CO = UBound(LNList)
         Do
             I += Int(Rnd(Now.Millisecond + 1) * CO / 10 + 1)
-            If I >= CO Then I -= CO
+            If I > CO Then I = I - CO - 1
             lblLotName.Text = LNList(I)
             Application.DoEvents()
         Loop Until LotState = False
@@ -40,6 +40,12 @@ NX:
         Dim S As String
         frmOptions.lvLN.Clear()
         FileOpen(1, Application.StartupPath & "\LotName.txt", OpenMode.Binary)
+        If LOF(1) < 1 Then
+            S = "名称1" & vbCrLf & "名称2" & vbCrLf & "名称3" & vbCrLf
+            FileSystem.FilePut(1, S)
+            FileSystem.Seek(1, 1)
+            S = ""
+        End If
         Do
             Try
                 S = LineInput(1)
@@ -75,7 +81,6 @@ NX:
         frmOptions.Left = Me.Left
         frmOptions.Top = Me.Top
         frmOptions.Height = Screen.FromHandle(Me.Handle).Bounds.Height
-        Timer1.Enabled = False
         frmOptions.ShowDialog()
         btnStartStop.Focus()
     End Sub
@@ -90,7 +95,4 @@ NX:
 
     End Sub
 
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-
-    End Sub
 End Class
