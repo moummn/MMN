@@ -34,7 +34,7 @@ Partial Class frmLotNum
         'lblLotName
         '
         Me.lblLotName.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblLotName.Font = New System.Drawing.Font("宋体", 144.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+        Me.lblLotName.Font = New System.Drawing.Font("宋体", 120.2143!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.lblLotName.ForeColor = System.Drawing.Color.White
         Me.lblLotName.Location = New System.Drawing.Point(0, 0)
         Me.lblLotName.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
@@ -87,10 +87,10 @@ Partial Class frmLotNum
         '
         Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("宋体", 7.071428!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.Label1.Location = New System.Drawing.Point(-1, 505)
+        Me.Label1.Font = New System.Drawing.Font("宋体", 7.714285!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+        Me.Label1.Location = New System.Drawing.Point(-1, 504)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(11, 11)
+        Me.Label1.Size = New System.Drawing.Size(11, 12)
         Me.Label1.TabIndex = 6
         Me.Label1.Text = "0"
         Me.Label1.Visible = False

@@ -43,7 +43,7 @@ NX:
         frmOptions.lvLN.Clear()
         FileOpen(1, Application.StartupPath & "\LotName.txt", OpenMode.Binary)
         If LOF(1) < 1 Then
-            S = "名称1" & vbCrLf & "名称2" & vbCrLf & "名称3" & vbCrLf
+            S = "名称1" & vbCrLf & "名称2" & vbCrLf & "名称3" & vbCrLf & "名称4" & vbCrLf & "名称5" & vbCrLf
             FileSystem.FilePut(1, S)
             FileSystem.Seek(1, 1)
             S = ""
@@ -97,16 +97,21 @@ NX:
 
     End Sub
 
-    Private Sub btnStartStop_KeyPress(sender As Object, e As KeyPressEventArgs) Handles btnStartStop.KeyPress
+    Private Sub btnStartStop_KeyPress(sender As Object, e As KeyPressEventArgs) Handles btnStartStop.KeyPress, btnClose.KeyPress, btnMenu.KeyPress
         If e.KeyChar = "z" OrElse e.KeyChar = "Z" Then
             Dim L As Long = Int(Val(Label1.Text))
             L += 1
-            If L > frmOptions.lvLN.Items.Count Then L = 0
+            If L > frmOptions.lvLN.CheckedItems.Count Then L = 0
             Label1.Visible = True
             Label1.Text = L.ToString
             Timer1.Enabled = False
             Timer1.Enabled = True
-            End If
+        End If
+        If e.KeyChar = "x" OrElse e.KeyChar = "X" Then
+            Label1.Text = "0"
+            Timer1.Enabled = False
+            Timer1.Enabled = True
+        End If
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
