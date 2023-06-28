@@ -29,7 +29,9 @@ NX:
             lblLotName.Text = LNList(I)
             Application.DoEvents()
         Loop Until LotState = False
-
+        If Int(Val(Label1.Text)) > 0 Then
+            lblLotName.Text = LNList(Int(Val(Label1.Text)) - 1)
+        End If
     End Sub
     Private Sub frmLotNum_Load(sender As Object, e As EventArgs) Handles Me.Load
         '初始化
@@ -95,4 +97,19 @@ NX:
 
     End Sub
 
+    Private Sub btnStartStop_KeyPress(sender As Object, e As KeyPressEventArgs) Handles btnStartStop.KeyPress
+        If e.KeyChar = "z" OrElse e.KeyChar = "Z" Then
+            Dim L As Long = Int(Val(Label1.Text))
+            L += 1
+            If L > frmOptions.lvLN.Items.Count Then L = 0
+            Label1.Visible = True
+            Label1.Text = L.ToString
+            Timer1.Enabled = False
+            Timer1.Enabled = True
+            End If
+    End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        Label1.Visible = False
+    End Sub
 End Class
