@@ -30,4 +30,22 @@
     Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click
         Me.Close()
     End Sub
+
+    Private Sub btnSelectAll_Click_1(sender As Object, e As EventArgs) Handles btnSelectAll.Click
+        For I As Integer = 0 To lvLN.Items.Count - 1
+            lvLN.Items.Item(I).Checked = True
+        Next
+    End Sub
+
+    Private Sub btnReverse_Click(sender As Object, e As EventArgs) Handles btnReverse.Click
+        For I As Integer = 0 To lvLN.Items.Count - 1
+            lvLN.Items.Item(I).Checked = Not (lvLN.Items.Item(I).Checked)
+        Next
+    End Sub
+
+    Private Sub btnCleanAll_Click_1(sender As Object, e As EventArgs) Handles btnCleanAll.Click
+        For I As Integer = 0 To lvLN.Items.Count - 1
+            lvLN.Items.Item(I).Checked = False
+        Next
+    End Sub
 End Class
