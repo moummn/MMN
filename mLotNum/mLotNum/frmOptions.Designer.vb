@@ -27,7 +27,7 @@ Partial Class frmOptions
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.btnSelectAll = New System.Windows.Forms.Button()
         Me.btnCleanAll = New System.Windows.Forms.Button()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.btnReverse = New System.Windows.Forms.Button()
         Me.lvLN = New System.Windows.Forms.ListView()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
@@ -55,40 +55,38 @@ Partial Class frmOptions
         Me.TableLayoutPanel1.Margin = New System.Windows.Forms.Padding(0)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 2
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24.0!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(226, 525)
         Me.TableLayoutPanel1.TabIndex = 7
         '
         'TableLayoutPanel2
         '
-        Me.TableLayoutPanel2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TableLayoutPanel2.ColumnCount = 3
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
         Me.TableLayoutPanel2.Controls.Add(Me.btnSelectAll, 0, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.btnCleanAll, 2, 0)
-        Me.TableLayoutPanel2.Controls.Add(Me.Button1, 1, 0)
-        Me.TableLayoutPanel2.Location = New System.Drawing.Point(1, 1)
-        Me.TableLayoutPanel2.Margin = New System.Windows.Forms.Padding(1)
+        Me.TableLayoutPanel2.Controls.Add(Me.btnReverse, 1, 0)
+        Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel2.Location = New System.Drawing.Point(0, 0)
+        Me.TableLayoutPanel2.Margin = New System.Windows.Forms.Padding(0)
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
-        Me.TableLayoutPanel2.Padding = New System.Windows.Forms.Padding(1)
         Me.TableLayoutPanel2.RowCount = 1
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(224, 18)
-        Me.TableLayoutPanel2.TabIndex = 7
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(226, 24)
+        Me.TableLayoutPanel2.TabIndex = 9
         '
         'btnSelectAll
         '
         Me.btnSelectAll.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnSelectAll.Location = New System.Drawing.Point(1, 1)
+        Me.btnSelectAll.Location = New System.Drawing.Point(0, 0)
         Me.btnSelectAll.Margin = New System.Windows.Forms.Padding(0)
         Me.btnSelectAll.Name = "btnSelectAll"
         Me.btnSelectAll.Padding = New System.Windows.Forms.Padding(1)
-        Me.btnSelectAll.Size = New System.Drawing.Size(73, 16)
+        Me.btnSelectAll.Size = New System.Drawing.Size(75, 24)
         Me.btnSelectAll.TabIndex = 10
         Me.btnSelectAll.Text = "全选(&S)"
         Me.btnSelectAll.UseVisualStyleBackColor = True
@@ -96,26 +94,26 @@ Partial Class frmOptions
         'btnCleanAll
         '
         Me.btnCleanAll.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnCleanAll.Location = New System.Drawing.Point(147, 1)
+        Me.btnCleanAll.Location = New System.Drawing.Point(150, 0)
         Me.btnCleanAll.Margin = New System.Windows.Forms.Padding(0)
         Me.btnCleanAll.Name = "btnCleanAll"
         Me.btnCleanAll.Padding = New System.Windows.Forms.Padding(1)
-        Me.btnCleanAll.Size = New System.Drawing.Size(76, 16)
+        Me.btnCleanAll.Size = New System.Drawing.Size(76, 24)
         Me.btnCleanAll.TabIndex = 9
         Me.btnCleanAll.Text = "清除(&C)"
         Me.btnCleanAll.UseVisualStyleBackColor = True
         '
-        'Button1
+        'btnReverse
         '
-        Me.Button1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Button1.Location = New System.Drawing.Point(74, 1)
-        Me.Button1.Margin = New System.Windows.Forms.Padding(0)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Padding = New System.Windows.Forms.Padding(1)
-        Me.Button1.Size = New System.Drawing.Size(73, 16)
-        Me.Button1.TabIndex = 8
-        Me.Button1.Text = "全选(&S)"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.btnReverse.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnReverse.Location = New System.Drawing.Point(75, 0)
+        Me.btnReverse.Margin = New System.Windows.Forms.Padding(0)
+        Me.btnReverse.Name = "btnReverse"
+        Me.btnReverse.Padding = New System.Windows.Forms.Padding(1)
+        Me.btnReverse.Size = New System.Drawing.Size(75, 24)
+        Me.btnReverse.TabIndex = 8
+        Me.btnReverse.Text = "反选(&R)"
+        Me.btnReverse.UseVisualStyleBackColor = True
         '
         'lvLN
         '
@@ -125,12 +123,12 @@ Partial Class frmOptions
         Me.lvLN.AutoArrange = False
         Me.lvLN.CheckBoxes = True
         Me.lvLN.HideSelection = False
-        Me.lvLN.Location = New System.Drawing.Point(4, 24)
-        Me.lvLN.Margin = New System.Windows.Forms.Padding(4)
+        Me.lvLN.Location = New System.Drawing.Point(1, 25)
+        Me.lvLN.Margin = New System.Windows.Forms.Padding(1)
         Me.lvLN.MultiSelect = False
         Me.lvLN.Name = "lvLN"
-        Me.lvLN.Size = New System.Drawing.Size(218, 497)
-        Me.lvLN.TabIndex = 8
+        Me.lvLN.Size = New System.Drawing.Size(224, 499)
+        Me.lvLN.TabIndex = 11
         Me.lvLN.UseCompatibleStateImageBehavior = False
         Me.lvLN.View = System.Windows.Forms.View.SmallIcon
         '
@@ -159,5 +157,5 @@ Partial Class frmOptions
     Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
     Friend WithEvents btnSelectAll As Button
     Friend WithEvents btnCleanAll As Button
-    Friend WithEvents Button1 As Button
+    Friend WithEvents btnReverse As Button
 End Class
