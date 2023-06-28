@@ -22,11 +22,100 @@ Partial Class frmOptions
     '不要使用代码编辑器修改它。
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.lvLN = New System.Windows.Forms.ListView()
+        Me.btnClose = New System.Windows.Forms.Button()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.btnSelectAll = New System.Windows.Forms.Button()
         Me.btnCleanAll = New System.Windows.Forms.Button()
-        Me.btnClose = New System.Windows.Forms.Button()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.lvLN = New System.Windows.Forms.ListView()
+        Me.TableLayoutPanel1.SuspendLayout()
+        Me.TableLayoutPanel2.SuspendLayout()
         Me.SuspendLayout()
+        '
+        'btnClose
+        '
+        Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnClose.Location = New System.Drawing.Point(-1, -1)
+        Me.btnClose.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnClose.Name = "btnClose"
+        Me.btnClose.Size = New System.Drawing.Size(1, 1)
+        Me.btnClose.TabIndex = 3
+        Me.btnClose.Text = "X"
+        Me.btnClose.UseVisualStyleBackColor = True
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.ColumnCount = 1
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.lvLN, 0, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.TableLayoutPanel2, 0, 0)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
+        Me.TableLayoutPanel1.Margin = New System.Windows.Forms.Padding(0)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 2
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(226, 525)
+        Me.TableLayoutPanel1.TabIndex = 7
+        '
+        'TableLayoutPanel2
+        '
+        Me.TableLayoutPanel2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TableLayoutPanel2.ColumnCount = 3
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
+        Me.TableLayoutPanel2.Controls.Add(Me.btnSelectAll, 0, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.btnCleanAll, 2, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.Button1, 1, 0)
+        Me.TableLayoutPanel2.Location = New System.Drawing.Point(1, 1)
+        Me.TableLayoutPanel2.Margin = New System.Windows.Forms.Padding(1)
+        Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
+        Me.TableLayoutPanel2.Padding = New System.Windows.Forms.Padding(1)
+        Me.TableLayoutPanel2.RowCount = 1
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(224, 18)
+        Me.TableLayoutPanel2.TabIndex = 7
+        '
+        'btnSelectAll
+        '
+        Me.btnSelectAll.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnSelectAll.Location = New System.Drawing.Point(1, 1)
+        Me.btnSelectAll.Margin = New System.Windows.Forms.Padding(0)
+        Me.btnSelectAll.Name = "btnSelectAll"
+        Me.btnSelectAll.Padding = New System.Windows.Forms.Padding(1)
+        Me.btnSelectAll.Size = New System.Drawing.Size(73, 16)
+        Me.btnSelectAll.TabIndex = 10
+        Me.btnSelectAll.Text = "全选(&S)"
+        Me.btnSelectAll.UseVisualStyleBackColor = True
+        '
+        'btnCleanAll
+        '
+        Me.btnCleanAll.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnCleanAll.Location = New System.Drawing.Point(147, 1)
+        Me.btnCleanAll.Margin = New System.Windows.Forms.Padding(0)
+        Me.btnCleanAll.Name = "btnCleanAll"
+        Me.btnCleanAll.Padding = New System.Windows.Forms.Padding(1)
+        Me.btnCleanAll.Size = New System.Drawing.Size(76, 16)
+        Me.btnCleanAll.TabIndex = 9
+        Me.btnCleanAll.Text = "清除(&C)"
+        Me.btnCleanAll.UseVisualStyleBackColor = True
+        '
+        'Button1
+        '
+        Me.Button1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Button1.Location = New System.Drawing.Point(74, 1)
+        Me.Button1.Margin = New System.Windows.Forms.Padding(0)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Padding = New System.Windows.Forms.Padding(1)
+        Me.Button1.Size = New System.Drawing.Size(73, 16)
+        Me.Button1.TabIndex = 8
+        Me.Button1.Text = "全选(&S)"
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'lvLN
         '
@@ -35,63 +124,40 @@ Partial Class frmOptions
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lvLN.AutoArrange = False
         Me.lvLN.CheckBoxes = True
-        Me.lvLN.Location = New System.Drawing.Point(0, 22)
+        Me.lvLN.HideSelection = False
+        Me.lvLN.Location = New System.Drawing.Point(4, 24)
+        Me.lvLN.Margin = New System.Windows.Forms.Padding(4)
         Me.lvLN.MultiSelect = False
         Me.lvLN.Name = "lvLN"
-        Me.lvLN.Size = New System.Drawing.Size(122, 428)
-        Me.lvLN.TabIndex = 0
+        Me.lvLN.Size = New System.Drawing.Size(218, 497)
+        Me.lvLN.TabIndex = 8
         Me.lvLN.UseCompatibleStateImageBehavior = False
         Me.lvLN.View = System.Windows.Forms.View.SmallIcon
         '
-        'btnSelectAll
-        '
-        Me.btnSelectAll.Location = New System.Drawing.Point(0, 0)
-        Me.btnSelectAll.Name = "btnSelectAll"
-        Me.btnSelectAll.Size = New System.Drawing.Size(61, 23)
-        Me.btnSelectAll.TabIndex = 1
-        Me.btnSelectAll.Text = "全选(&S)"
-        Me.btnSelectAll.UseVisualStyleBackColor = True
-        '
-        'btnCleanAll
-        '
-        Me.btnCleanAll.Location = New System.Drawing.Point(61, 0)
-        Me.btnCleanAll.Name = "btnCleanAll"
-        Me.btnCleanAll.Size = New System.Drawing.Size(61, 23)
-        Me.btnCleanAll.TabIndex = 2
-        Me.btnCleanAll.Text = "清除(&C)"
-        Me.btnCleanAll.UseVisualStyleBackColor = True
-        '
-        'btnClose
-        '
-        Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnClose.Location = New System.Drawing.Point(-1, -1)
-        Me.btnClose.Name = "btnClose"
-        Me.btnClose.Size = New System.Drawing.Size(1, 1)
-        Me.btnClose.TabIndex = 3
-        Me.btnClose.Text = "X"
-        Me.btnClose.UseVisualStyleBackColor = True
-        '
         'frmOptions
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnClose
-        Me.ClientSize = New System.Drawing.Size(122, 450)
+        Me.ClientSize = New System.Drawing.Size(226, 525)
+        Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.btnClose)
-        Me.Controls.Add(Me.btnCleanAll)
-        Me.Controls.Add(Me.btnSelectAll)
-        Me.Controls.Add(Me.lvLN)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
+        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Name = "frmOptions"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
-        Me.Text = "选择人员"
+        Me.Text = "选择内容"
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.TableLayoutPanel2.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
-
+    Friend WithEvents btnClose As Button
+    Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents lvLN As ListView
+    Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
     Friend WithEvents btnSelectAll As Button
     Friend WithEvents btnCleanAll As Button
-    Friend WithEvents btnClose As Button
+    Friend WithEvents Button1 As Button
 End Class

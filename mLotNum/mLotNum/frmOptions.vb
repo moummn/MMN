@@ -14,13 +14,13 @@
         My.Settings.Save()
     End Sub
 
-    Private Sub BtnSelectAll_Click(sender As Object, e As EventArgs) Handles btnSelectAll.Click
+    Private Sub BtnSelectAll_Click(sender As Object, e As EventArgs)
         For I As Integer = 0 To lvLN.Items.Count - 1
             lvLN.Items(I).Checked = True
         Next
     End Sub
 
-    Private Sub BtnCleanAll_Click(sender As Object, e As EventArgs) Handles btnCleanAll.Click
+    Private Sub BtnCleanAll_Click(sender As Object, e As EventArgs)
         For I As Integer = 0 To lvLN.Items.Count - 1
             lvLN.Items(I).Checked = False
         Next
