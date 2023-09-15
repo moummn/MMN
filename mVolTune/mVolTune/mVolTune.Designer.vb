@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class mVolTune
     Inherits System.Windows.Forms.Form
 
     'Form 重写 Dispose，以清理组件列表。
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,38 +20,17 @@ Partial Class mVolTune
     '注意: 以下过程是 Windows 窗体设计器所必需的
     '可以使用 Windows 窗体设计器修改它。  
     '不要使用代码编辑器修改它。
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.btnVolUp = New System.Windows.Forms.Button()
-        Me.btnVolDown = New System.Windows.Forms.Button()
         Me.SuspendLayout()
-        '
-        'btnVolUp
-        '
-        Me.btnVolUp.Location = New System.Drawing.Point(22, 40)
-        Me.btnVolUp.Name = "btnVolUp"
-        Me.btnVolUp.Size = New System.Drawing.Size(75, 23)
-        Me.btnVolUp.TabIndex = 0
-        Me.btnVolUp.Text = "Vol&Up"
-        Me.btnVolUp.UseVisualStyleBackColor = True
-        '
-        'btnVolDown
-        '
-        Me.btnVolDown.Location = New System.Drawing.Point(125, 40)
-        Me.btnVolDown.Name = "btnVolDown"
-        Me.btnVolDown.Size = New System.Drawing.Size(75, 23)
-        Me.btnVolDown.TabIndex = 1
-        Me.btnVolDown.Text = "Vol&Down"
-        Me.btnVolDown.UseVisualStyleBackColor = True
         '
         'mVolTune
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(238, 124)
-        Me.Controls.Add(Me.btnVolDown)
-        Me.Controls.Add(Me.btnVolUp)
+        Me.ClientSize = New System.Drawing.Size(278, 145)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "mVolTune"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
@@ -59,7 +38,4 @@ Partial Class mVolTune
         Me.ResumeLayout(False)
 
     End Sub
-
-    Friend WithEvents btnVolUp As Button
-    Friend WithEvents btnVolDown As Button
 End Class
