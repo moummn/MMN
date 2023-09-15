@@ -19,10 +19,13 @@
         (ByVal hwnd As IntPtr, ByVal id As Integer) As Boolean
 
     Private Sub mVolTune_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'TODO
+        Dim S As String = My.Application.CommandLineArgs.Item(0)
+        MsgBox(S)
         '注册全局热键
-        RegisterHotKey(Handle, 0, MOD_CONTROL + MOD_ALT, Keys.Up) '第一个热键
+        RegisterHotKey(Handle, 0, MOD_CONTROL + MOD_ALT, Keys.Right) '第一个热键
         'RegisterHotKey(Handle, 1, Nothing, Keys.F4) '第二个热键
-        RegisterHotKey(Handle, 1, MOD_CONTROL + MOD_ALT, Keys.Down) '第二个热键
+        RegisterHotKey(Handle, 1, MOD_CONTROL + MOD_ALT, Keys.Left) '第二个热键
     End Sub
     Private Sub mVolTune_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         '注销全局热键
@@ -35,9 +38,9 @@
             'MsgBox("在这里添加你要执行的代码", MsgBoxStyle.Information, "全局热键")
             Debug.Print(m.ToString)
             Select Case m.LParam
-                Case &H260003
+                Case &H270003
                     SendMessage(Me.Handle, WM_APPCOMMAND, Me.Handle, APPCOMMAND_VOLUME_UP)
-                Case &H280003
+                Case &H250003
                     SendMessage(Me.Handle, WM_APPCOMMAND, Me.Handle, APPCOMMAND_VOLUME_DOWN)
             End Select
         End If
