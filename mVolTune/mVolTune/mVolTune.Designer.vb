@@ -26,11 +26,11 @@ Partial Class mVolTune
         '
         'mVolTune
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 14.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(12.0!, 24.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(446, 385)
+        Me.ClientSize = New System.Drawing.Size(765, 660)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4)
+        Me.Margin = New System.Windows.Forms.Padding(7)
         Me.MaximizeBox = False
         Me.Name = "mVolTune"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

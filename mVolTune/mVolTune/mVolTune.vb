@@ -19,9 +19,7 @@
         (ByVal hwnd As IntPtr, ByVal id As Integer) As Boolean
 
     Private Sub mVolTune_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'TODO
-        Dim S As String = My.Application.CommandLineArgs.Item(0)
-        MsgBox(S)
+
         '注册全局热键
         RegisterHotKey(Handle, 0, MOD_CONTROL + MOD_ALT, Keys.Right) '第一个热键
         'RegisterHotKey(Handle, 1, Nothing, Keys.F4) '第二个热键
@@ -47,4 +45,16 @@
         MyBase.WndProc(m)
     End Sub
 
+    Private Sub mVolTune_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
+        Dim S As String = vbNullString
+        For I As Integer = 0 To My.Application.CommandLineArgs.Count - 1
+            S = My.Application.CommandLineArgs.Item(I)
+            S = UCase(S)
+            Debug.Print("启动参数:" & S)
+            If S = "/S" Then
+                Debug.Print("隐藏主窗口")
+                Me.Visible = False
+            End If
+        Next
+    End Sub
 End Class
