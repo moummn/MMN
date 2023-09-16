@@ -34,7 +34,7 @@ Partial Class mVolTune
         Me.MaximizeBox = False
         Me.Name = "mVolTune"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "frmMain"
+        Me.Text = "mVolTune"
         Me.ResumeLayout(False)
 
     End Sub
