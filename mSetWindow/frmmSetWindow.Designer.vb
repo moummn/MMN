@@ -24,6 +24,7 @@ Partial Class frmmSetWindow
     Private Sub InitializeComponent()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.ListView1 = New System.Windows.Forms.ListView()
+        Me.Title = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnRefresh = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
@@ -93,7 +94,6 @@ Partial Class frmmSetWindow
         Me.cbWS_EX_TOPMOST = New System.Windows.Forms.CheckBox()
         Me.cbWS_EX_TRANSPARENT = New System.Windows.Forms.CheckBox()
         Me.cbWS_EX_WINDOWEDGE = New System.Windows.Forms.CheckBox()
-        Me.Title = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Panel1.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
@@ -133,6 +133,11 @@ Partial Class frmmSetWindow
         Me.ListView1.TabIndex = 2
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
+        '
+        'Title
+        '
+        Me.Title.Text = "标题"
+        Me.Title.Width = 234
         '
         'btnRefresh
         '
@@ -346,6 +351,7 @@ Partial Class frmmSetWindow
         '
         Me.cbWS_CAPTION.AutoSize = True
         Me.cbWS_CAPTION.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbWS_CAPTION.Enabled = False
         Me.cbWS_CAPTION.Location = New System.Drawing.Point(0, 24)
         Me.cbWS_CAPTION.Margin = New System.Windows.Forms.Padding(0)
         Me.cbWS_CAPTION.Name = "cbWS_CAPTION"
@@ -527,6 +533,7 @@ Partial Class frmmSetWindow
         '
         Me.cbWS_OVERLAPPEDWINDOW.AutoSize = True
         Me.cbWS_OVERLAPPEDWINDOW.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbWS_OVERLAPPEDWINDOW.Enabled = False
         Me.cbWS_OVERLAPPEDWINDOW.Location = New System.Drawing.Point(248, 168)
         Me.cbWS_OVERLAPPEDWINDOW.Margin = New System.Windows.Forms.Padding(0)
         Me.cbWS_OVERLAPPEDWINDOW.Name = "cbWS_OVERLAPPEDWINDOW"
@@ -550,7 +557,9 @@ Partial Class frmmSetWindow
         'cbWS_POPUPWINDOW
         '
         Me.cbWS_POPUPWINDOW.AutoSize = True
+        Me.cbWS_POPUPWINDOW.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
         Me.cbWS_POPUPWINDOW.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbWS_POPUPWINDOW.Enabled = False
         Me.cbWS_POPUPWINDOW.Location = New System.Drawing.Point(496, 0)
         Me.cbWS_POPUPWINDOW.Margin = New System.Windows.Forms.Padding(0)
         Me.cbWS_POPUPWINDOW.Name = "cbWS_POPUPWINDOW"
@@ -623,6 +632,7 @@ Partial Class frmmSetWindow
         '
         Me.cbWS_TILEDWINDOW.AutoSize = True
         Me.cbWS_TILEDWINDOW.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbWS_TILEDWINDOW.Enabled = False
         Me.cbWS_TILEDWINDOW.Location = New System.Drawing.Point(496, 144)
         Me.cbWS_TILEDWINDOW.Margin = New System.Windows.Forms.Padding(0)
         Me.cbWS_TILEDWINDOW.Name = "cbWS_TILEDWINDOW"
@@ -926,6 +936,7 @@ Partial Class frmmSetWindow
         '
         Me.cbWS_EX_OVERLAPPEDWINDOW.AutoSize = True
         Me.cbWS_EX_OVERLAPPEDWINDOW.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbWS_EX_OVERLAPPEDWINDOW.Enabled = False
         Me.cbWS_EX_OVERLAPPEDWINDOW.Location = New System.Drawing.Point(248, 192)
         Me.cbWS_EX_OVERLAPPEDWINDOW.Margin = New System.Windows.Forms.Padding(0)
         Me.cbWS_EX_OVERLAPPEDWINDOW.Name = "cbWS_EX_OVERLAPPEDWINDOW"
@@ -938,6 +949,7 @@ Partial Class frmmSetWindow
         '
         Me.cbWS_EX_PALETTEWINDOW.AutoSize = True
         Me.cbWS_EX_PALETTEWINDOW.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbWS_EX_PALETTEWINDOW.Enabled = False
         Me.cbWS_EX_PALETTEWINDOW.Location = New System.Drawing.Point(496, 0)
         Me.cbWS_EX_PALETTEWINDOW.Margin = New System.Windows.Forms.Padding(0)
         Me.cbWS_EX_PALETTEWINDOW.Name = "cbWS_EX_PALETTEWINDOW"
@@ -1042,11 +1054,6 @@ Partial Class frmmSetWindow
         Me.cbWS_EX_WINDOWEDGE.TabIndex = 26
         Me.cbWS_EX_WINDOWEDGE.Text = "WS_EX_WINDOWEDGE"
         Me.cbWS_EX_WINDOWEDGE.UseVisualStyleBackColor = True
-        '
-        'Title
-        '
-        Me.Title.Text = "标题"
-        Me.Title.Width = 234
         '
         'frmmSetWindow
         '
