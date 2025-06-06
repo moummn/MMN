@@ -52,6 +52,8 @@
         If Not Me.Visible Then
             Me.Show()
         End If
+        Me.BringToFront() ' 确保OSD在最上层
+
         hideTimer.Stop()
         hideTimer.Start()
     End Sub
