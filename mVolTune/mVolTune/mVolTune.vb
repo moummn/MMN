@@ -2,7 +2,7 @@
 Imports System.Management
 Public Class mVolTune
 
-    Private osdForm As BrightnessOSD
+    Private osdForm As New BrightnessOSD()
     '音量调节相关API
     Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" _
         (ByVal hwnd As Integer, ByVal wMsg As Integer, ByVal wParam As Integer, lParam As Integer) As Long
@@ -71,6 +71,10 @@ Public Class mVolTune
         UnRegisterHotKey(Handle, HOTKEY_ID_VOL_DOWN)
         UnRegisterHotKey(Handle, HOTKEY_ID_BRIGHTNESS_UP)
         UnRegisterHotKey(Handle, HOTKEY_ID_BRIGHTNESS_DOWN)
+        If osdForm IsNot Nothing Then
+            osdForm.Close()
+            osdForm.Dispose()
+        End If
     End Sub
 
     Protected Overrides Sub WndProc(ByRef m As Message)

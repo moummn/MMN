@@ -1,5 +1,9 @@
 ﻿Public Class BrightnessOSD
+
+    Private Const BottomMargin As Integer = 40
+
     Private hideTimer As New Timer()
+    Private lblBrightness As Label
     Protected Overrides ReadOnly Property ShowWithoutActivation() As Boolean
         Get
             Return True
@@ -26,29 +30,28 @@
         Me.Width = 200
         Me.Height = 80
 
+        lblBrightness = New Label With {
+    .ForeColor = Color.White,
+    .Font = New Font("微软雅黑", 24, FontStyle.Bold),
+    .AutoSize = False,
+    .TextAlign = ContentAlignment.MiddleCenter,
+    .Dock = DockStyle.Fill
+}
+        Me.Controls.Add(lblBrightness)
         hideTimer.Interval = 1000 ' 1秒后自动隐藏
         AddHandler hideTimer.Tick, AddressOf HideTimer_Tick
     End Sub
 
     Public Sub ShowBrightness(value As Integer)
-        Me.Controls.Clear()
-        Dim lbl As New Label With {
-        .Text = $"亮度: {value}%",
-        .ForeColor = Color.White,
-        .Font = New Font("微软雅黑", 24, FontStyle.Bold),
-        .AutoSize = False,
-        .TextAlign = ContentAlignment.MiddleCenter,
-        .Dock = DockStyle.Fill
-    }
-        Me.Controls.Add(lbl)
-
+        lblBrightness.Text = $"亮度: {value}%"
         ' 计算底部中间位置
         Dim screen = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea
         Me.Left = screen.Left + (screen.Width - Me.Width) \ 2
-        Me.Top = screen.Top + screen.Height - Me.Height - 40
+        Me.Top = screen.Top + screen.Height - Me.Height - BottomMargin
 
-        Me.Hide() ' 关键：先隐藏，确保位置生效
-        Me.Show()
+        If Not Me.Visible Then
+            Me.Show()
+        End If
         hideTimer.Stop()
         hideTimer.Start()
     End Sub
