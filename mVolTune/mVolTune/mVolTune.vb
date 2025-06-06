@@ -1,6 +1,8 @@
 ﻿'Imports System.ComponentModel.Design.Serialization
 Imports System.Management
 Public Class mVolTune
+
+    Private osdForm As BrightnessOSD
     '音量调节相关API
     Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" _
         (ByVal hwnd As Integer, ByVal wMsg As Integer, ByVal wParam As Integer, lParam As Integer) As Long
@@ -40,6 +42,12 @@ Public Class mVolTune
                 For Each methodInstance As ManagementObject In mclassMethods.GetInstances()
                     methodInstance.InvokeMethod("WmiSetBrightness", New Object() {1, newBrightness})
                 Next
+
+                ' 显示OSD
+                If osdForm Is Nothing OrElse osdForm.IsDisposed Then
+                    osdForm = New BrightnessOSD()
+                End If
+                osdForm.ShowBrightness(newBrightness)
             Next
         Catch ex As Exception
             Debug.Print("调节亮度失败: " & ex.Message)
@@ -84,9 +92,9 @@ Public Class mVolTune
                 Case HOTKEY_ID_VOL_DOWN
                     SendMessage(Me.Handle, WM_APPCOMMAND, Me.Handle, APPCOMMAND_VOLUME_DOWN)
                 Case HOTKEY_ID_BRIGHTNESS_UP
-                    AdjustBrightness(10)
+                    AdjustBrightness(1)
                 Case HOTKEY_ID_BRIGHTNESS_DOWN
-                    AdjustBrightness(-10)
+                    AdjustBrightness(-1)
             End Select
         End If
         MyBase.WndProc(m)

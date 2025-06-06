@@ -59,6 +59,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BrightnessOSD.Designer.vb">
+      <DependentUpon>BrightnessOSD.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BrightnessOSD.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="mVolTune.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -84,6 +90,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="BrightnessOSD.resx">
+      <DependentUpon>BrightnessOSD.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="mVolTune.resx">
       <DependentUpon>mVolTune.vb</DependentUpon>
     </EmbeddedResource>
