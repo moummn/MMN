@@ -22,15 +22,26 @@ Partial Class mVolTune
     '不要使用代码编辑器修改它。
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.btnBackRun = New System.Windows.Forms.Button()
         Me.SuspendLayout()
+        '
+        'btnBackRun
+        '
+        Me.btnBackRun.Location = New System.Drawing.Point(12, 12)
+        Me.btnBackRun.Name = "btnBackRun"
+        Me.btnBackRun.Size = New System.Drawing.Size(259, 47)
+        Me.btnBackRun.TabIndex = 0
+        Me.btnBackRun.Text = "&BackRun"
+        Me.btnBackRun.UseVisualStyleBackColor = True
         '
         'mVolTune
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(12.0!, 24.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 17.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(765, 660)
+        Me.ClientSize = New System.Drawing.Size(283, 71)
+        Me.Controls.Add(Me.btnBackRun)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(7)
+        Me.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.MaximizeBox = False
         Me.Name = "mVolTune"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
@@ -38,4 +49,6 @@ Partial Class mVolTune
         Me.ResumeLayout(False)
 
     End Sub
+
+    Friend WithEvents btnBackRun As Button
 End Class

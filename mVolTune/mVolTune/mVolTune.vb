@@ -53,24 +53,46 @@ Public Class mVolTune
             Debug.Print("调节亮度失败: " & ex.Message)
         End Try
     End Sub
-
-    ''调节显示器亮度API（测试）
+    ' 检测是否支持亮度调节
+    Private brightnessSupported As Boolean = False
+    Private Function IsBrightnessSupported() As Boolean
+        Try
+            Dim mclass As New ManagementClass("WmiMonitorBrightness")
+            mclass.Scope = New ManagementScope("root\wmi")
+            Dim instances = mclass.GetInstances()
+            For Each instance As ManagementObject In instances
+                Return True ' 有实例即支持
+            Next
+        Catch ex As Exception
+            ' 忽略异常，返回不支持
+        End Try
+        Return False
+    End Function
+    ''调节显示器亮度API（测试，弃用）
     'Private Declare Auto Function SetMonitorBrightness Lib "dxva2.dll" Alias "SetMonitorBrightness" _
     '    (ByVal hMonitor As Integer, ByVal dwNewBrightness As UInteger)
 
     Private Sub mVolTune_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         '注册全局热键
         RegisterHotKey(Handle, HOTKEY_ID_VOL_UP, MOD_CONTROL + MOD_ALT, Keys.Right)
         RegisterHotKey(Handle, HOTKEY_ID_VOL_DOWN, MOD_CONTROL + MOD_ALT, Keys.Left)
-        RegisterHotKey(Handle, HOTKEY_ID_BRIGHTNESS_UP, MOD_CONTROL + MOD_ALT, Keys.Up)
-        RegisterHotKey(Handle, HOTKEY_ID_BRIGHTNESS_DOWN, MOD_CONTROL + MOD_ALT, Keys.Down)
+
+        ' 仅在支持时注册亮度热键
+        If brightnessSupported Then
+            RegisterHotKey(Handle, HOTKEY_ID_BRIGHTNESS_UP, MOD_CONTROL + MOD_ALT, Keys.Up)
+            RegisterHotKey(Handle, HOTKEY_ID_BRIGHTNESS_DOWN, MOD_CONTROL + MOD_ALT, Keys.Down)
+        End If
     End Sub
     Private Sub mVolTune_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         '注销全局热键
         UnRegisterHotKey(Handle, HOTKEY_ID_VOL_UP)
         UnRegisterHotKey(Handle, HOTKEY_ID_VOL_DOWN)
-        UnRegisterHotKey(Handle, HOTKEY_ID_BRIGHTNESS_UP)
-        UnRegisterHotKey(Handle, HOTKEY_ID_BRIGHTNESS_DOWN)
+        ' 注销亮度热键（只在支持时注销）
+        If brightnessSupported Then
+            UnRegisterHotKey(Handle, HOTKEY_ID_BRIGHTNESS_UP)
+            UnRegisterHotKey(Handle, HOTKEY_ID_BRIGHTNESS_DOWN)
+        End If
         If osdForm IsNot Nothing Then
             osdForm.Close()
             osdForm.Dispose()
@@ -115,5 +137,10 @@ Public Class mVolTune
                 Me.Visible = False
             End If
         Next
+    End Sub
+
+    Private Sub btnBackRun_Click(sender As Object, e As EventArgs) Handles btnBackRun.Click
+        Debug.Print("隐藏主窗口")
+        Me.Visible = False
     End Sub
 End Class
