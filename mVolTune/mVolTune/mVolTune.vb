@@ -61,9 +61,11 @@ Public Class mVolTune
             mclass.Scope = New ManagementScope("root\wmi")
             Dim instances = mclass.GetInstances()
             For Each instance As ManagementObject In instances
+                Debug.Print("支持亮度调节")
                 Return True ' 有实例即支持
             Next
         Catch ex As Exception
+            Debug.Print("不支持亮度调节:")
             ' 忽略异常，返回不支持
         End Try
         Return False
@@ -79,6 +81,7 @@ Public Class mVolTune
         RegisterHotKey(Handle, HOTKEY_ID_VOL_DOWN, MOD_CONTROL + MOD_ALT, Keys.Left)
 
         ' 仅在支持时注册亮度热键
+        brightnessSupported = IsBrightnessSupported()
         If brightnessSupported Then
             RegisterHotKey(Handle, HOTKEY_ID_BRIGHTNESS_UP, MOD_CONTROL + MOD_ALT, Keys.Up)
             RegisterHotKey(Handle, HOTKEY_ID_BRIGHTNESS_DOWN, MOD_CONTROL + MOD_ALT, Keys.Down)
