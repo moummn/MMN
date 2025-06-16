@@ -108,6 +108,7 @@ NX:
             Timer1.Enabled = True
         End If
         If e.KeyChar = "x" OrElse e.KeyChar = "X" Then
+            Label1.Visible = True
             Label1.Text = "0"
             Timer1.Enabled = False
             Timer1.Enabled = True
