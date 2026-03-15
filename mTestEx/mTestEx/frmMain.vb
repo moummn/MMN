@@ -189,11 +189,22 @@
         GettingNewQuest = False
     End Function
     Private Sub sbGetSubjects()
+        Dim S As String
         If System.IO.File.Exists("mTestEx.dbt") = False Then
-            MsgBox("mTestEx.dbt文件不存在", vbCritical)
-            End
+            Dim mr As MsgBoxResult = MsgBox("mTestEx.dbt文件不存在，是否创建默认数据库？", MsgBoxStyle.Question & MsgBoxStyle.YesNo, "提示")
+            If mr = MsgBoxResult.No Then End
+            '创建默认数据库
+            S = "1	1	判断题正文	错误	正确			2" & vbCrLf &
+                "1	2	判断题正文	错误	正确			1" & vbCrLf &
+                "2	1	单选题正文	答案A	答案B	答案C	答案D	3" & vbCrLf &
+                "2	2	单选题正文	答案A	答案B	答案C	答案D	1" & vbCrLf &
+                "3	1	多选题正文	答案A	答案B	答案C	答案D	1234" & vbCrLf &
+                "3	2	多选题正文	答案A	答案B	答案C	答案D	234" & vbCrLf &
+                "4	1	简答填空题正文					答案内容" & vbCrLf &
+                "4	2	简答填空题正文					答案内容" & vbCrLf
+            System.IO.File.WriteAllText("mTestEx.dbt", S, System.Text.Encoding.Default)
         End If
-        Dim S As String = System.IO.File.ReadAllText("mTestEx.dbt", System.Text.Encoding.Default)
+        S = System.IO.File.ReadAllText("mTestEx.dbt", System.Text.Encoding.Default)
         Dim C() As String = Split(S, vbCrLf)
         AllSubjects = UBound(C)
         Try

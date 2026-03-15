@@ -19,10 +19,7 @@
         CheckBox4.Checked = frmMain.AllowTianKong
     End Sub
 
-    Private Sub CheckBox_CheckedChanged1(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged,
-                                                                                   CheckBox2.CheckedChanged,
-                                                                                   CheckBox3.CheckedChanged,
-                                                                                   CheckBox4.CheckedChanged
+    Private Sub CheckBox_CheckedChanged1(sender As Object, e As EventArgs)
         If CheckBox1.Checked = False AndAlso CheckBox2.Checked = False AndAlso CheckBox3.Checked = False Then
             sender.Checked = True
         End If
