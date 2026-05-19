@@ -1,5 +1,5 @@
-﻿'Imports System.ComponentModel.Design.Serialization
-Imports System.Management
+﻿Imports System.Management
+Imports System.Runtime.InteropServices
 Public Class mVolTune
 
     Private osdForm As New BrightnessOSD()
@@ -22,6 +22,14 @@ Public Class mVolTune
     Private Declare Auto Function UnRegisterHotKey Lib "user32.dll" Alias "UnregisterHotKey" _
         (ByVal hwnd As IntPtr, ByVal id As Integer) As Boolean
 
+    ' GDI gamma 调整（软件亮度）
+    Private Declare Function SetDeviceGammaRamp Lib "gdi32.dll" (ByVal hdc As IntPtr, ByVal lpRamp As IntPtr) As Boolean
+    Private Declare Function GetDC Lib "user32.dll" (ByVal hwnd As IntPtr) As IntPtr
+    Private Declare Function ReleaseDC Lib "user32.dll" (ByVal hwnd As IntPtr, ByVal hdc As IntPtr) As Integer
+
+    Private softwareMode As Boolean = False
+    Private softwareBrightness As Integer = -1
+
     '热键常量
     Private Const HOTKEY_ID_VOL_UP As Integer = 0
     Private Const HOTKEY_ID_VOL_DOWN As Integer = 1
@@ -31,17 +39,112 @@ Public Class mVolTune
     '亮度调节相关API
     Private Sub AdjustBrightness(delta As Integer)
         Try
-            Dim mclass As New ManagementClass("WmiMonitorBrightness")
-            mclass.Scope = New ManagementScope("root\wmi")
-            Dim instances = mclass.GetInstances()
-            For Each instance As ManagementObject In instances
-                Dim currentBrightness As Byte = CByte(instance("CurrentBrightness"))
-                Dim newBrightness As Integer = Math.Max(0, Math.Min(100, currentBrightness + delta))
-                Dim mclassMethods As New ManagementClass("WmiMonitorBrightnessMethods")
-                mclassMethods.Scope = New ManagementScope("root\wmi")
-                For Each methodInstance As ManagementObject In mclassMethods.GetInstances()
-                    methodInstance.InvokeMethod("WmiSetBrightness", New Object() {1, newBrightness})
-                Next
+            Dim brightnessClass As New ManagementClass("WmiMonitorBrightness")
+            brightnessClass.Scope = New ManagementScope("root\wmi")
+            Dim brightnessInstances = brightnessClass.GetInstances()
+
+            Dim methodsClass As New ManagementClass("WmiMonitorBrightnessMethods")
+            methodsClass.Scope = New ManagementScope("root\wmi")
+            Dim methodsInstances = methodsClass.GetInstances()
+
+            For Each instance As ManagementObject In brightnessInstances
+                Dim currentBrightness As Integer = Convert.ToInt32(instance("CurrentBrightness"))
+                Dim newBrightness As Integer = currentBrightness
+
+                ' 如果 WMI 提供支持级别（Level 数组），则选择下一个/上一个支持的级别
+                Dim supportedLevels As Integer() = Nothing
+                If instance("Level") IsNot Nothing Then
+                    Try
+                        Dim levelObj As Object = instance("Level")
+                        Dim tmpLevels As Integer() = Nothing
+
+                        Dim levelArr As Array = TryCast(levelObj, Array)
+                        If levelArr Is Nothing Then
+                            ' 单个值的情况
+                            ReDim tmpLevels(0)
+                            tmpLevels(0) = Convert.ToInt32(levelObj)
+                        Else
+                            tmpLevels = New Integer(levelArr.Length - 1) {}
+                            For i As Integer = 0 To levelArr.Length - 1
+                                tmpLevels(i) = Convert.ToInt32(levelArr.GetValue(i))
+                            Next
+                        End If
+
+                        Array.Sort(tmpLevels)
+                        supportedLevels = tmpLevels
+                    Catch
+                        supportedLevels = Nothing
+                    End Try
+                End If
+
+                If supportedLevels IsNot Nothing AndAlso supportedLevels.Length > 0 Then
+                    ' 检查硬件是否支持 1% 步进
+                    If HardwareSupportsOnePercent(supportedLevels) Then
+                        ' 使用硬件级别变化（硬件支持 1%）
+                        softwareMode = False
+                        If delta > 0 Then
+                            Dim foundUp As Boolean = False
+                            For Each level As Integer In supportedLevels
+                                If level > currentBrightness Then
+                                    newBrightness = level
+                                    foundUp = True
+                                    Exit For
+                                End If
+                            Next
+                            If Not foundUp Then
+                                newBrightness = supportedLevels(supportedLevels.Length - 1)
+                            End If
+                        ElseIf delta < 0 Then
+                            Dim foundDown As Boolean = False
+                            For i As Integer = supportedLevels.Length - 1 To 0 Step -1
+                                If supportedLevels(i) < currentBrightness Then
+                                    newBrightness = supportedLevels(i)
+                                    foundDown = True
+                                    Exit For
+                                End If
+                            Next
+                            If Not foundDown Then
+                                newBrightness = supportedLevels(0)
+                            End If
+                        End If
+                    Else
+                        ' 硬件不支持 1% 步进，使用软件伽马来实现每次 1% 调节
+                        If Not softwareMode Then
+                            softwareMode = True
+                            softwareBrightness = currentBrightness
+                        End If
+                        softwareBrightness = Math.Max(0, Math.Min(100, softwareBrightness + delta))
+                        ApplySoftwareBrightness(softwareBrightness)
+                        newBrightness = softwareBrightness
+                    End If
+                Else
+                    newBrightness = Math.Max(0, Math.Min(100, currentBrightness + delta))
+                End If
+
+                ' 优先找匹配的 InstanceName 并调用对应方法
+                Dim targetName As String = Nothing
+                If instance("InstanceName") IsNot Nothing Then targetName = instance("InstanceName").ToString()
+                Dim invoked As Boolean = False
+                If Not String.IsNullOrEmpty(targetName) Then
+                    For Each methodInstance As ManagementObject In methodsInstances
+                        If methodInstance("InstanceName") IsNot Nothing AndAlso methodInstance("InstanceName").ToString() = targetName Then
+                            methodInstance.InvokeMethod("WmiSetBrightness", New Object() {CUInt(1), CUInt(newBrightness)})
+                            invoked = True
+                            Exit For
+                        End If
+                    Next
+                End If
+
+                ' 如果没有找到匹配的 InstanceName，回退到对所有方法实例调用（兼容某些驱动）
+                If Not invoked Then
+                    For Each methodInstance As ManagementObject In methodsInstances
+                        Try
+                            methodInstance.InvokeMethod("WmiSetBrightness", New Object() {CUInt(1), CUInt(newBrightness)})
+                        Catch
+                            ' 忽略单个调用失败，继续尝试其他实例
+                        End Try
+                    Next
+                End If
 
                 ' 显示OSD
                 If osdForm Is Nothing OrElse osdForm.IsDisposed Then
@@ -100,6 +203,61 @@ Public Class mVolTune
             osdForm.Close()
             osdForm.Dispose()
         End If
+    End Sub
+
+    ' 判断支持级别数组是否包含所有 0..100 的连续步进（即支持 1% 步进）
+    Private Function HardwareSupportsOnePercent(levels As Integer()) As Boolean
+        If levels Is Nothing OrElse levels.Length = 0 Then Return False
+        ' 如果 levels 包含 0 到 100 中的每个值则认为支持 1% 步进
+        If levels.Length < 101 Then Return False
+        For i As Integer = 0 To 100
+            Dim found As Boolean = False
+            For Each lv As Integer In levels
+                If lv = i Then
+                    found = True
+                    Exit For
+                End If
+            Next
+            If Not found Then Return False
+        Next
+        Return True
+    End Function
+
+    ' 使用 GDI SetDeviceGammaRamp 模拟亮度（软件亮度）
+    Private Sub ApplySoftwareBrightness(brightnessPercent As Integer)
+        If brightnessPercent < 0 Then brightnessPercent = 0
+        If brightnessPercent > 100 Then brightnessPercent = 100
+
+        ' 构造 gamma ramp：256 级，每项为 WORD（0..65535）
+        ' 使用字节缓冲区以避免将超出 Int16 范围的值强制转换为 Short 导致溢出
+        Dim channels As Integer = 3
+        Dim entries As Integer = 256
+        Dim sizeInBytes As Integer = entries * channels * 2 ' 每项 2 字节
+        Dim buffer(sizeInBytes - 1) As Byte
+
+        Dim scale As Double = brightnessPercent / 100.0
+        For i As Integer = 0 To entries - 1
+            Dim value As Integer = CInt(Math.Min(65535, Math.Max(0, (i * 256) * scale)))
+            Dim v As UShort = CUShort(value)
+            Dim b() As Byte = BitConverter.GetBytes(v)
+            For ch As Integer = 0 To channels - 1
+                Dim pos As Integer = ((ch * entries) + i) * 2
+                buffer(pos) = b(0)
+                buffer(pos + 1) = b(1)
+            Next
+        Next
+
+        Dim pRamp As IntPtr = Marshal.AllocHGlobal(sizeInBytes)
+        Try
+            Marshal.Copy(buffer, 0, pRamp, sizeInBytes)
+            Dim hdc As IntPtr = GetDC(IntPtr.Zero)
+            If hdc <> IntPtr.Zero Then
+                SetDeviceGammaRamp(hdc, pRamp)
+                ReleaseDC(IntPtr.Zero, hdc)
+            End If
+        Finally
+            Marshal.FreeHGlobal(pRamp)
+        End Try
     End Sub
 
     Protected Overrides Sub WndProc(ByRef m As Message)
