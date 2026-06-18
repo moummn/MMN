@@ -81,7 +81,7 @@
     <Compile Include="frmRes.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="mdUAC.vb" />
+    <Compile Include="mdUACRun.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

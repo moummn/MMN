@@ -1,11 +1,12 @@
 ﻿Imports System.Runtime.InteropServices
 Imports System.Diagnostics
 Imports System.IO
+Imports System.Runtime.Remoting.Messaging
 
 ''' <summary>
 ''' UAC 降权辅助模块（仅提供从高权限进程以普通权限启动子进程的功能）
 ''' </summary>
-Public Module mdUAC
+Public Module mdUACRun
 
 
     ' ---------- API 常量 ----------
@@ -171,9 +172,10 @@ Public Module mdUAC
     ''' <param name="args">命令行参数（可为空字符串）</param>
     ''' <param name="workingDirectory">工作目录（若为空，则使用 appPath 所在目录）</param>
     ''' <exception cref="Exception">启动失败时抛出，包含详细错误信息</exception>
-    Public Sub StartAsNormalUser_Advanced(appPath As String,
+    Public Function StartAsNormalUser_Advanced(appPath As String,
                                           Optional args As String = "",
-                                          Optional workingDirectory As String = "")
+                                          Optional workingDirectory As String = "") As Int32
+
         Dim shellToken As IntPtr = IntPtr.Zero
         Dim primaryToken As IntPtr = IntPtr.Zero
         Dim shellProcessHandle As IntPtr = IntPtr.Zero
@@ -250,7 +252,28 @@ Public Module mdUAC
                 pi)
 
             If Not success Then
-                Throw New Exception("CreateProcessWithTokenW 失败。错误代码: " & Marshal.GetLastWin32Error())
+                Dim err As Integer = Marshal.GetLastWin32Error()
+                If err = 740 Then
+                    ' 目标要求提升，降权失败 -> 回退为以当前权限启动（UseCurrent）
+                    Try
+                        Dim psi As New ProcessStartInfo()
+                        psi.FileName = appPath
+                        psi.Arguments = args
+                        psi.WorkingDirectory = dir
+                        psi.UseShellExecute = True
+                        Process.Start(psi)
+
+                    Catch exStart As Exception
+                        Throw New Exception("CreateProcessWithTokenW 返回 740，尝试以当前权限启动失败: " & exStart.Message)
+                    End Try
+                Else
+                    Throw New Exception("CreateProcessWithTokenW 失败。错误代码: " & err)
+                End If
+            End If
+            If Not success Then
+                Dim errCode As Integer = Marshal.GetLastWin32Error()
+                ' 不抛出异常：返回错误码给调用方，由调用方决定回退策略
+                Return errCode
             End If
 
             ' 关闭新进程的线程句柄（进程句柄可选关闭，此处关闭以避免句柄泄漏）
@@ -265,7 +288,8 @@ Public Module mdUAC
             If primaryToken <> IntPtr.Zero Then CloseHandle(primaryToken)
             If shellProcessHandle <> IntPtr.Zero Then CloseHandle(shellProcessHandle)
         End Try
-    End Sub
+        Return 0
+    End Function
     <System.Runtime.InteropServices.DllImport("shell32.dll", SetLastError:=True, CharSet:=System.Runtime.InteropServices.CharSet.Auto)>
     Private Function ShellExecuteEx(ByRef lpExecInfo As SHELLEXECUTEINFO) As Boolean
     End Function
@@ -369,89 +393,16 @@ Public Module mdUAC
                     End If
 
                 Case RunMode.ForceDemote强制降权
+                    Dim retCode As Integer = StartAsNormalUser_Advanced(appPath, args, dir)
+                    If retCode <> 0 Then
+                        If retCode = 740 Then
+                            ' 降权失败且需要提升：回退为以当前权限启动（不抛出异常）
+                            RunApp(appPath, args, dir, RunMode.UseCurrent当前权限)
+                        Else
+                            Throw New Exception("高级降权启动失败。错误代码: " & retCode)
+                        End If
+                    End If
 
-                    StartAsNormalUser_Advanced(appPath, args, dir)
-                    ' 强制降权：尝试使用 explorer 的令牌通过 CreateProcessWithTokenW 创建非提升进程
-                    'Dim shellToken As IntPtr = IntPtr.Zero
-                    'Dim primaryToken As IntPtr = IntPtr.Zero
-                    'Dim shellProcessHandle As IntPtr = IntPtr.Zero
-                    'Dim pi As PROCESS_INFORMATION
-                    'Dim created As Boolean = False
-                    'Try
-                    '    Dim hShellWnd As IntPtr = GetShellWindow()
-                    '    If hShellWnd = IntPtr.Zero Then
-                    '        Throw New Exception("无法获取 Shell 窗口句柄。")
-                    '    End If
-
-                    '    Dim shellPid As Integer = 0
-                    '    GetWindowThreadProcessId(hShellWnd, shellPid)
-                    '    If shellPid = 0 Then
-                    '        Throw New Exception("无法获取 Shell 进程 ID。")
-                    '    End If
-
-                    '    shellProcessHandle = OpenProcess(PROCESS_QUERY_INFORMATION, False, shellPid)
-                    '    If shellProcessHandle = IntPtr.Zero Then
-                    '        Throw New Exception("无法打开 Shell 进程。错误代码: " & Marshal.GetLastWin32Error())
-                    '    End If
-
-                    '    Dim ok As Boolean = OpenProcessToken(shellProcessHandle, TOKEN_DUPLICATE, shellToken)
-                    '    If Not ok OrElse shellToken = IntPtr.Zero Then
-                    '        Throw New Exception("无法获取 Shell 进程的令牌。错误代码: " & Marshal.GetLastWin32Error())
-                    '    End If
-
-                    '    Dim desiredAccess As UInteger = TOKEN_QUERY Or TOKEN_ASSIGN_PRIMARY Or TOKEN_DUPLICATE Or TOKEN_ADJUST_DEFAULT Or TOKEN_ADJUST_SESSIONID
-                    '    ok = DuplicateTokenEx(shellToken, desiredAccess, IntPtr.Zero, SecurityImpersonation, TokenPrimary, primaryToken)
-                    '    If Not ok OrElse primaryToken = IntPtr.Zero Then
-                    '        Throw New Exception("无法复制并转换令牌。错误代码: " & Marshal.GetLastWin32Error())
-                    '    End If
-
-                    '    Dim si As New STARTUPINFO()
-                    '    si.cb = Marshal.SizeOf(GetType(STARTUPINFO))
-                    '    si.lpDesktop = "winsta0\default"
-
-
-                    '    ' 尝试为目标进程创建环境块，并用 CreateProcessWithTokenW 启动
-                    '    Dim envBlock As IntPtr = IntPtr.Zero
-                    '    Dim creationFlags As UInteger = CREATE_NEW_CONSOLE Or CREATE_UNICODE_ENVIRONMENT
-                    '    Try
-                    '        If Not CreateEnvironmentBlock(envBlock, primaryToken, False) Then
-                    '            envBlock = IntPtr.Zero
-                    '        End If
-
-                    '        ' 把应用路径作为 lpApplicationName，命令行仅传递参数（避免命令行解析问题）
-                    '        Dim appName As String = appPath
-                    '        Dim cmdLine As String = If(String.IsNullOrEmpty(args), Nothing, args)
-
-                    '        created = CreateProcessWithTokenW(primaryToken, 0, appName, cmdLine, creationFlags, envBlock, dir, si, pi)
-                    '    Finally
-                    '        If envBlock <> IntPtr.Zero Then DestroyEnvironmentBlock(envBlock)
-                    '    End Try
-
-                    '    If Not created Then
-                    '        Dim err As Integer = Marshal.GetLastWin32Error()
-                    '        If err = 740 Then
-                    '            ' ERROR_ELEVATION_REQUIRED：目标需要提升，改用当前权限启动（UseCurrent）
-                    '            Dim psiFall As New ProcessStartInfo()
-                    '            psiFall.FileName = appPath
-                    '            psiFall.Arguments = args
-                    '            psiFall.WorkingDirectory = dir
-                    '            psiFall.UseShellExecute = True
-                    '            Process.Start(psiFall)
-                    '            created = True
-                    '        Else
-                    '            Throw New Exception("CreateProcessWithTokenW 失败。错误代码: " & err)
-                    '        End If
-                    '    Else
-                    '        ' 成功创建，关闭句柄
-                    '        If pi.hThread <> IntPtr.Zero Then CloseHandle(pi.hThread)
-                    '        If pi.hProcess <> IntPtr.Zero Then CloseHandle(pi.hProcess)
-                    '    End If
-
-                    'Finally
-                    '    If shellToken <> IntPtr.Zero Then CloseHandle(shellToken)
-                    '    If primaryToken <> IntPtr.Zero Then CloseHandle(primaryToken)
-                    '    If shellProcessHandle <> IntPtr.Zero Then CloseHandle(shellProcessHandle)
-                    'End Try
 
                 Case RunMode.UseCurrent当前权限
                     ' 使用当前进程权限运行：直接 Process.Start，子进程将继承当前权限
