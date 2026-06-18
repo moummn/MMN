@@ -44,58 +44,6 @@ Public Module mdUAC
         Public hStdError As IntPtr
     End Structure
 
-    Private Function TryLaunchAsUser(appPath As String, args As String, dir As String) As Boolean
-        Dim userToken As IntPtr = IntPtr.Zero
-        Dim primaryToken As IntPtr = IntPtr.Zero
-        Dim envBlock As IntPtr = IntPtr.Zero
-        Dim pi As PROCESS_INFORMATION
-        Try
-            Dim sessionId As UInteger = WTSGetActiveConsoleSessionId()
-            If sessionId = &HFFFFFFFFUI Then
-                Return False
-            End If
-
-            Dim ok As Boolean = WTSQueryUserToken(sessionId, userToken)
-            If Not ok OrElse userToken = IntPtr.Zero Then
-                Return False
-            End If
-
-            Dim desiredAccess As UInteger = TOKEN_QUERY Or TOKEN_DUPLICATE Or TOKEN_ASSIGN_PRIMARY Or TOKEN_ADJUST_DEFAULT Or TOKEN_ADJUST_SESSIONID
-            ok = DuplicateTokenEx(userToken, desiredAccess, IntPtr.Zero, SecurityImpersonation, TokenPrimary, primaryToken)
-            If Not ok OrElse primaryToken = IntPtr.Zero Then
-                Return False
-            End If
-
-            ' 创建环境块
-            If Not CreateEnvironmentBlock(envBlock, primaryToken, False) Then
-                envBlock = IntPtr.Zero
-            End If
-
-            Dim si As New STARTUPINFO()
-            si.cb = Marshal.SizeOf(GetType(STARTUPINFO))
-            si.lpDesktop = "winsta0\default"
-
-            Dim commandLine As String = If(String.IsNullOrEmpty(args), String.Format("""{0}""", appPath), String.Format("""{0}"""" {1}", appPath, args))
-
-            Dim creationFlags As UInteger = CREATE_NEW_CONSOLE Or CREATE_UNICODE_ENVIRONMENT
-
-            Dim success As Boolean = CreateProcessAsUserW(primaryToken, Nothing, commandLine, IntPtr.Zero, IntPtr.Zero, False, creationFlags, envBlock, dir, si, pi)
-            If Not success Then
-                Return False
-            End If
-
-            ' 关闭进程线程句柄
-            If pi.hProcess <> IntPtr.Zero Then CloseHandle(pi.hProcess)
-            If pi.hThread <> IntPtr.Zero Then CloseHandle(pi.hThread)
-
-            Return True
-        Finally
-            If envBlock <> IntPtr.Zero Then DestroyEnvironmentBlock(envBlock)
-            If primaryToken <> IntPtr.Zero Then CloseHandle(primaryToken)
-            If userToken <> IntPtr.Zero Then CloseHandle(userToken)
-        End Try
-    End Function
-
     Private Structure PROCESS_INFORMATION
         Public hProcess As IntPtr
         Public hThread As IntPtr
@@ -155,13 +103,169 @@ Public Module mdUAC
         ByRef lpdwProcessId As Integer) As Integer
     End Function
 
+    Private Function TryLaunchAsUser(appPath As String, args As String, dir As String) As Boolean
+        Dim userToken As IntPtr = IntPtr.Zero
+        Dim primaryToken As IntPtr = IntPtr.Zero
+        Dim envBlock As IntPtr = IntPtr.Zero
+        Dim pi As PROCESS_INFORMATION
+        Try
+            Dim sessionId As UInteger = WTSGetActiveConsoleSessionId()
+            If sessionId = &HFFFFFFFFUI Then
+                Return False
+            End If
+
+            Dim ok As Boolean = WTSQueryUserToken(sessionId, userToken)
+            If Not ok OrElse userToken = IntPtr.Zero Then
+                Return False
+            End If
+
+            Dim desiredAccess As UInteger = TOKEN_QUERY Or TOKEN_DUPLICATE Or TOKEN_ASSIGN_PRIMARY Or TOKEN_ADJUST_DEFAULT Or TOKEN_ADJUST_SESSIONID
+            ok = DuplicateTokenEx(userToken, desiredAccess, IntPtr.Zero, SecurityImpersonation, TokenPrimary, primaryToken)
+            If Not ok OrElse primaryToken = IntPtr.Zero Then
+                Return False
+            End If
+
+            ' 创建环境块
+            If Not CreateEnvironmentBlock(envBlock, primaryToken, False) Then
+                envBlock = IntPtr.Zero
+            End If
+
+            Dim si As New STARTUPINFO()
+            si.cb = Marshal.SizeOf(GetType(STARTUPINFO))
+            si.lpDesktop = "winsta0\default"
+
+            Dim commandLine As String = If(String.IsNullOrEmpty(args), String.Format("""{0}""", appPath), String.Format("""{0}"""" {1}", appPath, args))
+
+            Dim creationFlags As UInteger = CREATE_NEW_CONSOLE Or CREATE_UNICODE_ENVIRONMENT
+
+            Dim success As Boolean = CreateProcessAsUserW(primaryToken, Nothing, commandLine, IntPtr.Zero, IntPtr.Zero, False, creationFlags, envBlock, dir, si, pi)
+            If Not success Then
+                Return False
+            End If
+
+            ' 关闭进程线程句柄
+            If pi.hProcess <> IntPtr.Zero Then CloseHandle(pi.hProcess)
+            If pi.hThread <> IntPtr.Zero Then CloseHandle(pi.hThread)
+
+            Return True
+        Finally
+            If envBlock <> IntPtr.Zero Then DestroyEnvironmentBlock(envBlock)
+            If primaryToken <> IntPtr.Zero Then CloseHandle(primaryToken)
+            If userToken <> IntPtr.Zero Then CloseHandle(userToken)
+        End Try
+    End Function
+
+    ' ---- CreateProcessWithTokenW 相关 P/Invoke ----
+
+    Private Const PROCESS_VM_READ As UInteger = &H10
+    Private Const PROCESS_QUERY_LIMITED_INFORMATION As UInteger = &H1000
+    Private Const TOKEN_READ As UInteger = &H20008
+
     ' ---------- 公共方法 ----------
-    ' ShellExecuteEx P/Invoke 定义和相关常量
+
     ''' <summary>
-    ''' 使用 ShellExecuteEx(runas) 来触发 UAC 
+    ''' 以普通用户权限启动一个程序（支持传递命令行参数和工作目录）
+    ''' 原理：从当前会话的 explorer.exe 获取普通权限令牌，然后用该令牌创建进程
     ''' </summary>
-    ''' <param name="lpExecInfo"></param>
-    ''' <returns></returns>
+    ''' <param name="appPath">可执行文件的完整路径</param>
+    ''' <param name="args">命令行参数（可为空字符串）</param>
+    ''' <param name="workingDirectory">工作目录（若为空，则使用 appPath 所在目录）</param>
+    ''' <exception cref="Exception">启动失败时抛出，包含详细错误信息</exception>
+    Public Sub StartAsNormalUser_Advanced(appPath As String,
+                                          Optional args As String = "",
+                                          Optional workingDirectory As String = "")
+        Dim shellToken As IntPtr = IntPtr.Zero
+        Dim primaryToken As IntPtr = IntPtr.Zero
+        Dim shellProcessHandle As IntPtr = IntPtr.Zero
+
+        Try
+            ' 1. 获取 Shell 窗口 (explorer.exe) 的句柄
+            Dim hShellWnd As IntPtr = GetShellWindow()
+            If hShellWnd = IntPtr.Zero Then
+                Throw New Exception("无法获取 Shell 窗口句柄。")
+            End If
+
+            ' 2. 获取 explorer.exe 的进程 ID
+            Dim shellPid As Integer = 0
+            GetWindowThreadProcessId(hShellWnd, shellPid)
+            If shellPid = 0 Then
+                Throw New Exception("无法获取 Shell 进程 ID。")
+            End If
+
+            ' 3. 打开 explorer.exe 进程（只请求查询信息权限）
+            shellProcessHandle = OpenProcess(PROCESS_QUERY_INFORMATION, False, shellPid)
+            If shellProcessHandle = IntPtr.Zero Then
+                Throw New Exception("无法打开 Shell 进程。错误代码: " & Marshal.GetLastWin32Error())
+            End If
+
+            ' 4. 获取其访问令牌（此为模拟令牌）
+            Dim success As Boolean = OpenProcessToken(shellProcessHandle, TOKEN_DUPLICATE, shellToken)
+            If Not success Then
+                Throw New Exception("无法获取 Shell 进程的令牌。错误代码: " & Marshal.GetLastWin32Error())
+            End If
+
+            ' 5. 将模拟令牌复制并转换为主令牌 (Primary Token)
+            Dim desiredAccess As UInteger = TOKEN_QUERY Or
+                                            TOKEN_ASSIGN_PRIMARY Or
+                                            TOKEN_DUPLICATE Or
+                                            TOKEN_ADJUST_DEFAULT Or
+                                            TOKEN_ADJUST_SESSIONID
+            success = DuplicateTokenEx(shellToken,
+                                       desiredAccess,
+                                       IntPtr.Zero,
+                                       SecurityImpersonation,
+                                       TokenPrimary,
+                                       primaryToken)
+            If Not success Then
+                Throw New Exception("无法复制并转换令牌。错误代码: " & Marshal.GetLastWin32Error())
+            End If
+
+            ' 6. 准备启动信息
+            Dim si As New STARTUPINFO()
+            si.cb = Marshal.SizeOf(GetType(STARTUPINFO))
+            Dim pi As New PROCESS_INFORMATION()
+
+            ' 构建完整命令行（路径含空格时用引号包裹）
+            Dim commandLine As String = """" & appPath & """"
+            If Not String.IsNullOrEmpty(args) Then
+                commandLine &= " " & args
+            End If
+
+            ' 确定工作目录（若未指定则使用 appPath 所在目录）
+            Dim dir As String = workingDirectory
+            If String.IsNullOrEmpty(dir) Then
+                dir = Path.GetDirectoryName(appPath)
+            End If
+
+            ' 7. 使用主令牌创建进程
+            success = CreateProcessWithTokenW(
+                primaryToken,
+                0,
+                Nothing,                ' 应用程序名从 commandLine 解析
+                commandLine,
+                CREATE_NEW_CONSOLE,     ' 新进程创建新控制台窗口
+                IntPtr.Zero,
+                dir,
+                si,
+                pi)
+
+            If Not success Then
+                Throw New Exception("CreateProcessWithTokenW 失败。错误代码: " & Marshal.GetLastWin32Error())
+            End If
+
+            ' 关闭新进程的线程句柄（进程句柄可选关闭，此处关闭以避免句柄泄漏）
+            CloseHandle(pi.hThread)
+            CloseHandle(pi.hProcess)
+
+        Catch ex As Exception
+            Throw New Exception("高级降权启动失败: " & ex.Message)
+        Finally
+            ' 清理所有打开的资源
+            If shellToken <> IntPtr.Zero Then CloseHandle(shellToken)
+            If primaryToken <> IntPtr.Zero Then CloseHandle(primaryToken)
+            If shellProcessHandle <> IntPtr.Zero Then CloseHandle(shellProcessHandle)
+        End Try
+    End Sub
     <System.Runtime.InteropServices.DllImport("shell32.dll", SetLastError:=True, CharSet:=System.Runtime.InteropServices.CharSet.Auto)>
     Private Function ShellExecuteEx(ByRef lpExecInfo As SHELLEXECUTEINFO) As Boolean
     End Function
@@ -230,12 +334,12 @@ Public Module mdUAC
     End Enum
 
     ''' <summary>
-    ''' 启动程序的三种模式：强制提权、强制降权（若目标需要 UAC 则会弹窗）、按当前权限运行
+    ''' 启动程序的三种模式：按当前权限运行、强制提权、强制降权（若目标需要 UAC 则会弹窗）
     ''' </summary>
-    Public Sub StartAsNormalUser_Advanced(appPath As String,
-                                          Optional args As String = "",
-                                          Optional workingDirectory As String = "",
-                                          Optional mode As RunMode = RunMode.UseCurrent当前权限)
+    Public Sub RunApp(appPath As String,
+                      Optional args As String = "",
+                      Optional workingDirectory As String = "",
+                      Optional mode As RunMode = RunMode.UseCurrent当前权限)
         Try
             ' 确定工作目录（若未指定则使用 appPath 所在目录）
             Dim dir As String = workingDirectory
@@ -265,37 +369,89 @@ Public Module mdUAC
                     End If
 
                 Case RunMode.ForceDemote强制降权
-                    ' 强制降权：优先尝试在交互用户会话创建非提升进程（WTSQueryUserToken + CreateProcessAsUser）
-                    Dim launched As Boolean = False
-                    Try
-                        launched = TryLaunchAsUser(appPath, args, dir)
-                    Catch exLaunch As Exception
-                        launched = False
-                    End Try
 
-                    If Not launched Then
-                        ' 回退到 explorer 的 Shell.Application（在某些场景下可能有效）
-                        Try
-                            Dim shell = CreateObject("Shell.Application")
-                            If shell IsNot Nothing Then
-                                shell.ShellExecute(appPath, If(String.IsNullOrEmpty(args), Nothing, args), dir, Nothing, SW_SHOWNORMAL)
-                            Else
-                                Dim psiFall As New ProcessStartInfo()
-                                psiFall.FileName = appPath
-                                psiFall.Arguments = args
-                                psiFall.WorkingDirectory = dir
-                                psiFall.UseShellExecute = True
-                                Process.Start(psiFall)
-                            End If
-                        Catch exShell As Exception
-                            Dim psiFall As New ProcessStartInfo()
-                            psiFall.FileName = appPath
-                            psiFall.Arguments = args
-                            psiFall.WorkingDirectory = dir
-                            psiFall.UseShellExecute = True
-                            Process.Start(psiFall)
-                        End Try
-                    End If
+                    StartAsNormalUser_Advanced(appPath, args, dir)
+                    ' 强制降权：尝试使用 explorer 的令牌通过 CreateProcessWithTokenW 创建非提升进程
+                    'Dim shellToken As IntPtr = IntPtr.Zero
+                    'Dim primaryToken As IntPtr = IntPtr.Zero
+                    'Dim shellProcessHandle As IntPtr = IntPtr.Zero
+                    'Dim pi As PROCESS_INFORMATION
+                    'Dim created As Boolean = False
+                    'Try
+                    '    Dim hShellWnd As IntPtr = GetShellWindow()
+                    '    If hShellWnd = IntPtr.Zero Then
+                    '        Throw New Exception("无法获取 Shell 窗口句柄。")
+                    '    End If
+
+                    '    Dim shellPid As Integer = 0
+                    '    GetWindowThreadProcessId(hShellWnd, shellPid)
+                    '    If shellPid = 0 Then
+                    '        Throw New Exception("无法获取 Shell 进程 ID。")
+                    '    End If
+
+                    '    shellProcessHandle = OpenProcess(PROCESS_QUERY_INFORMATION, False, shellPid)
+                    '    If shellProcessHandle = IntPtr.Zero Then
+                    '        Throw New Exception("无法打开 Shell 进程。错误代码: " & Marshal.GetLastWin32Error())
+                    '    End If
+
+                    '    Dim ok As Boolean = OpenProcessToken(shellProcessHandle, TOKEN_DUPLICATE, shellToken)
+                    '    If Not ok OrElse shellToken = IntPtr.Zero Then
+                    '        Throw New Exception("无法获取 Shell 进程的令牌。错误代码: " & Marshal.GetLastWin32Error())
+                    '    End If
+
+                    '    Dim desiredAccess As UInteger = TOKEN_QUERY Or TOKEN_ASSIGN_PRIMARY Or TOKEN_DUPLICATE Or TOKEN_ADJUST_DEFAULT Or TOKEN_ADJUST_SESSIONID
+                    '    ok = DuplicateTokenEx(shellToken, desiredAccess, IntPtr.Zero, SecurityImpersonation, TokenPrimary, primaryToken)
+                    '    If Not ok OrElse primaryToken = IntPtr.Zero Then
+                    '        Throw New Exception("无法复制并转换令牌。错误代码: " & Marshal.GetLastWin32Error())
+                    '    End If
+
+                    '    Dim si As New STARTUPINFO()
+                    '    si.cb = Marshal.SizeOf(GetType(STARTUPINFO))
+                    '    si.lpDesktop = "winsta0\default"
+
+
+                    '    ' 尝试为目标进程创建环境块，并用 CreateProcessWithTokenW 启动
+                    '    Dim envBlock As IntPtr = IntPtr.Zero
+                    '    Dim creationFlags As UInteger = CREATE_NEW_CONSOLE Or CREATE_UNICODE_ENVIRONMENT
+                    '    Try
+                    '        If Not CreateEnvironmentBlock(envBlock, primaryToken, False) Then
+                    '            envBlock = IntPtr.Zero
+                    '        End If
+
+                    '        ' 把应用路径作为 lpApplicationName，命令行仅传递参数（避免命令行解析问题）
+                    '        Dim appName As String = appPath
+                    '        Dim cmdLine As String = If(String.IsNullOrEmpty(args), Nothing, args)
+
+                    '        created = CreateProcessWithTokenW(primaryToken, 0, appName, cmdLine, creationFlags, envBlock, dir, si, pi)
+                    '    Finally
+                    '        If envBlock <> IntPtr.Zero Then DestroyEnvironmentBlock(envBlock)
+                    '    End Try
+
+                    '    If Not created Then
+                    '        Dim err As Integer = Marshal.GetLastWin32Error()
+                    '        If err = 740 Then
+                    '            ' ERROR_ELEVATION_REQUIRED：目标需要提升，改用当前权限启动（UseCurrent）
+                    '            Dim psiFall As New ProcessStartInfo()
+                    '            psiFall.FileName = appPath
+                    '            psiFall.Arguments = args
+                    '            psiFall.WorkingDirectory = dir
+                    '            psiFall.UseShellExecute = True
+                    '            Process.Start(psiFall)
+                    '            created = True
+                    '        Else
+                    '            Throw New Exception("CreateProcessWithTokenW 失败。错误代码: " & err)
+                    '        End If
+                    '    Else
+                    '        ' 成功创建，关闭句柄
+                    '        If pi.hThread <> IntPtr.Zero Then CloseHandle(pi.hThread)
+                    '        If pi.hProcess <> IntPtr.Zero Then CloseHandle(pi.hProcess)
+                    '    End If
+
+                    'Finally
+                    '    If shellToken <> IntPtr.Zero Then CloseHandle(shellToken)
+                    '    If primaryToken <> IntPtr.Zero Then CloseHandle(primaryToken)
+                    '    If shellProcessHandle <> IntPtr.Zero Then CloseHandle(shellProcessHandle)
+                    'End Try
 
                 Case RunMode.UseCurrent当前权限
                     ' 使用当前进程权限运行：直接 Process.Start，子进程将继承当前权限
@@ -315,6 +471,6 @@ Public Module mdUAC
         End Try
     End Sub
 
-    ' 尝试在当前控制台会话中以交互用户身份创建非提升进程，失败则返回 Fals
+
 
 End Module
