@@ -1,4 +1,1 @@
 ﻿'2个核心功能：UAC提权运行（免去UAC弹窗）、右下角图标快捷运行
-Public Class frmRes
-
-End Class

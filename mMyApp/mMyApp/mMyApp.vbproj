@@ -78,9 +78,7 @@
     <Compile Include="frmRes.Designer.vb">
       <DependentUpon>frmRes.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmRes.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmRes.vb" />
     <Compile Include="mdUACRun.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
