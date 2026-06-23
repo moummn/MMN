@@ -21,6 +21,10 @@ Public Class frmMain
     Private Shared Function DestroyIcon(hIcon As IntPtr) As Boolean
     End Function
 
+    <Runtime.InteropServices.DllImport("shell32.dll", CharSet:=Runtime.InteropServices.CharSet.Auto)>
+    Private Shared Function ExtractIconEx(pszFile As String, nIconIndex As Integer, ByRef phiconLarge As IntPtr, ByRef phiconSmall As IntPtr, nIcons As UInteger) As UInteger
+    End Function
+
     Private Const SHGFI_ICON As UInteger = &H100
     Private Const SHGFI_SMALLICON As UInteger = &H1
     Private Const SHGFI_USEFILEATTRIBUTES As UInteger = &H10
@@ -42,6 +46,92 @@ Public Class frmMain
                 DestroyIcon(shfi.hIcon)
                 Return ico
             End If
+        Catch
+        End Try
+        Return Nothing
+    End Function
+
+    Private Function GetIconFromFileWithIndex(filePath As String, index As Integer) As Drawing.Icon
+        Try
+            Dim hLarge As IntPtr = IntPtr.Zero
+            Dim hSmall As IntPtr = IntPtr.Zero
+            Dim got = ExtractIconEx(filePath, index, hLarge, hSmall, 1)
+            If hSmall <> IntPtr.Zero Then
+                Dim ico As Drawing.Icon = Drawing.Icon.FromHandle(hSmall).Clone()
+                DestroyIcon(hSmall)
+                If hLarge <> IntPtr.Zero Then DestroyIcon(hLarge)
+                Return ico
+            ElseIf hLarge <> IntPtr.Zero Then
+                Dim ico2 As Drawing.Icon = Drawing.Icon.FromHandle(hLarge).Clone()
+                DestroyIcon(hLarge)
+                Return ico2
+            End If
+        Catch
+        End Try
+        Return Nothing
+    End Function
+
+    Private Function GetCustomFolderIcon(folderPath As String) As Drawing.Icon
+        Try
+            Dim iniPath = System.IO.Path.Combine(folderPath, "desktop.ini")
+            If Not System.IO.File.Exists(iniPath) Then Return Nothing
+
+            Dim lines() As String = System.IO.File.ReadAllLines(iniPath, System.Text.Encoding.Default)
+            Dim inShellClass As Boolean = False
+            Dim iconFile As String = Nothing
+            Dim iconIndex As Integer = 0
+            For Each raw In lines
+                Dim line = raw.Trim()
+                If line.StartsWith("[") Then
+                    inShellClass = line.Equals("[.ShellClassInfo]", StringComparison.OrdinalIgnoreCase)
+                    Continue For
+                End If
+                If Not inShellClass Then Continue For
+                If line.StartsWith("IconResource", StringComparison.OrdinalIgnoreCase) OrElse line.StartsWith("IconFile", StringComparison.OrdinalIgnoreCase) Then
+                    Dim parts() As String = line.Split(New Char() {"="c}, 2)
+                    If parts.Length >= 2 Then
+                        Dim val = parts(1).Trim().Trim(""""c)
+                        ' IconResource may be "file,index"
+                        If val.Contains(",") Then
+                            Dim p = val.Split(New Char() {","c}, 2)
+                            iconFile = System.Environment.ExpandEnvironmentVariables(p(0).Trim())
+                            Integer.TryParse(p(1).Trim(), iconIndex)
+                        Else
+                            iconFile = System.Environment.ExpandEnvironmentVariables(val)
+                        End If
+                    End If
+                ElseIf line.StartsWith("IconIndex", StringComparison.OrdinalIgnoreCase) Then
+                    Dim parts() As String = line.Split(New Char() {"="c}, 2)
+                    If parts.Length >= 2 Then Integer.TryParse(parts(1).Trim(), iconIndex)
+                End If
+            Next
+
+            If String.IsNullOrEmpty(iconFile) Then Return Nothing
+            ' If relative path, combine with folder
+            If Not System.IO.Path.IsPathRooted(iconFile) Then
+                iconFile = System.IO.Path.Combine(folderPath, iconFile)
+            End If
+            iconFile = System.IO.Path.GetFullPath(iconFile)
+            If Not System.IO.File.Exists(iconFile) Then Return Nothing
+
+            Dim ext = System.IO.Path.GetExtension(iconFile)
+            If String.Equals(ext, ".ico", StringComparison.OrdinalIgnoreCase) Then
+                Try
+                    Return New Drawing.Icon(iconFile)
+                Catch
+                End Try
+            End If
+
+            ' Try extract by index
+            Dim icoExtract = GetIconFromFileWithIndex(iconFile, iconIndex)
+            If icoExtract IsNot Nothing Then Return icoExtract
+
+            ' Fallback: Extract associated icon
+            Try
+                Dim assoc = Drawing.Icon.ExtractAssociatedIcon(iconFile)
+                If assoc IsNot Nothing Then Return assoc
+            Catch
+            End Try
         Catch
         End Try
         Return Nothing
@@ -145,7 +235,31 @@ Public Class frmMain
                         node = folderNodeMap(currentPath)
                     Else
                         node = New TreeNode(seg)
-                        node.Tag = System.IO.Path.Combine(root, currentPath)
+                        Dim nodeFolderPath = System.IO.Path.Combine(root, currentPath)
+                        node.Tag = nodeFolderPath
+                        ' 尝试读取 desktop.ini 指定的自定义图标
+                        Try
+                            Dim lower = nodeFolderPath.ToLowerInvariant()
+                            If Not sharedIconKeyMap.ContainsKey(lower) Then
+                                Dim customIco = GetCustomFolderIcon(nodeFolderPath)
+                                If customIco IsNot Nothing Then
+                                    Dim folderKey = "f_" & Math.Abs(nodeFolderPath.GetHashCode()).ToString()
+                                    If Not sharedImgList.Images.ContainsKey(folderKey) Then
+                                        sharedImgList.Images.Add(folderKey, customIco)
+                                    End If
+                                    sharedIconKeyMap(lower) = folderKey
+                                    node.ImageKey = folderKey
+                                    node.SelectedImageKey = folderKey
+                                End If
+                            Else
+                                Dim k = sharedIconKeyMap(lower)
+                                If sharedImgList.Images.ContainsKey(k) Then
+                                    node.ImageKey = k
+                                    node.SelectedImageKey = k
+                                End If
+                            End If
+                        Catch
+                        End Try
                         If parentNode Is Nothing Then
                             twAppList.Nodes.Add(node)
                         Else
@@ -225,10 +339,10 @@ Public Class frmMain
                 End If
             Next
 
-            ' 为所有文件夹节点设置文件夹图标（如果存在）
+            ' 为所有未设置图标的文件夹节点设置默认文件夹图标（如果存在）
             For Each kvp In folderNodeMap
                 Dim fn As TreeNode = kvp.Value
-                If sharedImgList.Images.ContainsKey(folderIconKey) Then
+                If (String.IsNullOrEmpty(fn.ImageKey) OrElse Not sharedImgList.Images.ContainsKey(fn.ImageKey)) AndAlso sharedImgList.Images.ContainsKey(folderIconKey) Then
                     fn.ImageKey = folderIconKey
                     fn.SelectedImageKey = folderIconKey
                 End If
@@ -464,4 +578,5 @@ Public Class frmMain
             ' 忽略保存错误或提示用户（此处静默）
         End Try
     End Sub
+
 End Class

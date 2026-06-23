@@ -66,7 +66,7 @@ Partial Class frmMain
         '
         Me.muRightClick.ImageScalingSize = New System.Drawing.Size(19, 19)
         Me.muRightClick.Name = "muRightClick"
-        Me.muRightClick.Size = New System.Drawing.Size(61, 4)
+        Me.muRightClick.Size = New System.Drawing.Size(201, 30)
         '
         'cbWorkFolder
         '
