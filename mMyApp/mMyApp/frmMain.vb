@@ -141,7 +141,6 @@ Public Class frmMain
     Private notifyIcon As NotifyIcon
     Private sharedImgList As ImageList = Nothing
     Private sharedIconKeyMap As New System.Collections.Generic.Dictionary(Of String, String)(StringComparer.OrdinalIgnoreCase)
-    Private expandedFolders As New System.Collections.Generic.Dictionary(Of String, Boolean)(StringComparer.OrdinalIgnoreCase)
     Private allowExit As Boolean = False
     Private Sub btnViewWorkFolder_Click(sender As Object, e As EventArgs) Handles btnViewWorkFolder.Click
         Using dlg As New FolderBrowserDialog()
@@ -176,8 +175,6 @@ Public Class frmMain
             Return
         End If
 
-        ' 保存当前展开状态，以便刷新后恢复
-        SaveExpandedState()
         twAppList.BeginUpdate()
         Try
             twAppList.Nodes.Clear()
@@ -189,6 +186,8 @@ Public Class frmMain
                 sharedImgList.ColorDepth = ColorDepth.Depth32Bit
             Else
                 sharedImgList.Images.Clear()
+                ' 清除与 ImageList 对应的键缓存，避免使用已失效的键导致图标丢失
+                sharedIconKeyMap.Clear()
             End If
             twAppList.ImageList = sharedImgList
 
@@ -348,9 +347,9 @@ Public Class frmMain
                 End If
             Next
 
-            ' 刷新后恢复展开状态
-            RestoreExpandedState()
-            ' 同时填充右键菜单（按照 TreeView 层级）
+            ' 刷新完成
+            ' 展开所有节点并同时填充右键菜单（按照 TreeView 层级）
+            twAppList.ExpandAll()
             PopulateContextMenuFromTree()
             ' 刷新完成后，检测配置变化并保存
             If Not String.Equals(cbWorkFolder.Text, lastSavedWorkFolder, StringComparison.OrdinalIgnoreCase) Then
@@ -377,6 +376,7 @@ Public Class frmMain
             ' 自动刷新一次
             btnRefresh.PerformClick()
         End If
+
     End Sub
 
     Private Sub NotifyIcon_MouseClick(sender As Object, e As MouseEventArgs)
@@ -391,6 +391,11 @@ Public Class frmMain
                                                          Me.Visible = True
                                                          Me.BringToFront()
                                                          Me.Activate()
+                                                         ' 恢复时展开全部节点
+                                                         Try
+                                                             If twAppList IsNot Nothing Then twAppList.ExpandAll()
+                                                         Catch
+                                                         End Try
                                                      Catch
                                                      End Try
                                                  End Sub))
@@ -406,7 +411,6 @@ Public Class frmMain
             e.Cancel = True
             Try
                 Me.ShowInTaskbar = False
-                SaveExpandedState()
                 Me.Hide()
             Catch
             End Try
@@ -431,6 +435,11 @@ Public Class frmMain
                 Me.Hide()
             Else
                 Me.ShowInTaskbar = True
+                ' 恢复显示时展开所有节点
+                Try
+                    If twAppList IsNot Nothing Then twAppList.ExpandAll()
+                Catch
+                End Try
             End If
         Catch
         End Try
@@ -456,54 +465,6 @@ Public Class frmMain
         Me.Close()
     End Sub
 
-    Private Sub SaveExpandedState()
-        Try
-            expandedFolders.Clear()
-            For Each tn As TreeNode In twAppList.Nodes
-                SaveNodeExpandedStateRecursive(tn)
-            Next
-        Catch
-        End Try
-    End Sub
-
-    Private Sub SaveNodeExpandedStateRecursive(tn As TreeNode)
-        Try
-            Dim path = TryCast(tn.Tag, String)
-            If Not String.IsNullOrEmpty(path) AndAlso System.IO.Directory.Exists(path) Then
-                If tn.IsExpanded Then
-                    expandedFolders(path) = True
-                End If
-            End If
-            For Each child As TreeNode In tn.Nodes
-                SaveNodeExpandedStateRecursive(child)
-            Next
-        Catch
-        End Try
-    End Sub
-
-    Private Sub RestoreExpandedState()
-        Try
-            For Each tn As TreeNode In twAppList.Nodes
-                RestoreNodeExpandedStateRecursive(tn)
-            Next
-        Catch
-        End Try
-    End Sub
-
-    Private Sub RestoreNodeExpandedStateRecursive(tn As TreeNode)
-        Try
-            Dim path = TryCast(tn.Tag, String)
-            If Not String.IsNullOrEmpty(path) AndAlso expandedFolders.ContainsKey(path) Then
-                tn.Expand()
-            Else
-                tn.Collapse()
-            End If
-            For Each child As TreeNode In tn.Nodes
-                RestoreNodeExpandedStateRecursive(child)
-            Next
-        Catch
-        End Try
-    End Sub
 
     Private Sub AddNodeToMenu(tn As TreeNode, items As ToolStripItemCollection)
         Dim menu As ToolStripMenuItem = New ToolStripMenuItem(tn.Text)
@@ -623,5 +584,4 @@ Public Class frmMain
             ' 忽略保存错误或提示用户（此处静默）
         End Try
     End Sub
-
 End Class

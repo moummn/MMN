@@ -64,9 +64,8 @@ Partial Class frmMain
         '
         'muRightClick
         '
-        Me.muRightClick.ImageScalingSize = New System.Drawing.Size(19, 19)
         Me.muRightClick.Name = "muRightClick"
-        Me.muRightClick.Size = New System.Drawing.Size(61, 4)
+        Me.muRightClick.Size = New System.Drawing.Size(201, 30)
         '
         'cbWorkFolder
         '
@@ -85,6 +84,7 @@ Partial Class frmMain
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.twAppList.Location = New System.Drawing.Point(12, 76)
         Me.twAppList.Name = "twAppList"
+        Me.twAppList.ShowPlusMinus = False
         Me.twAppList.Size = New System.Drawing.Size(558, 362)
         Me.twAppList.TabIndex = 7
         '
