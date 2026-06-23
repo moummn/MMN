@@ -531,15 +531,60 @@ Public Class frmMain
         If mi Is Nothing Then Return
         Dim tag = TryCast(mi.Tag, String)
         If String.IsNullOrEmpty(tag) Then Return
+        ' 优先尝试通过 mdUACRun 强制降权启动（解析 .lnk 获取目标、参数和工作目录）
         Try
-            System.Diagnostics.Process.Start(tag)
-        Catch ex As Exception
+            Dim launchPath As String = tag
+            Dim launchArgs As String = String.Empty
+            Dim launchWorkDir As String = String.Empty
+
+            If String.Equals(System.IO.Path.GetExtension(tag), ".lnk", StringComparison.OrdinalIgnoreCase) Then
+                Try
+                    Dim wsh = CreateObject("WScript.Shell")
+                    Dim sc = wsh.CreateShortcut(tag)
+                    If sc IsNot Nothing Then
+                        launchPath = If(sc.TargetPath, String.Empty)
+                        launchArgs = If(sc.Arguments, String.Empty)
+                        launchWorkDir = If(sc.WorkingDirectory, If(String.IsNullOrEmpty(sc.WorkingDirectory), System.IO.Path.GetDirectoryName(If(sc.TargetPath, String.Empty)), sc.WorkingDirectory))
+                    End If
+                Catch
+                End Try
+            End If
+
+            ' 尝试使用 mdUACRun 强制降权启动（若可用）
+            If Not String.IsNullOrEmpty(launchPath) Then
+                Try
+                    mdUACRun.RunApp(launchPath, launchArgs, launchWorkDir, mdUACRun.RunMode.ForceDemote强制降权)
+                    Return
+                Catch
+                    ' 降权启动失败，继续回退逻辑
+                End Try
+            End If
+
+            ' 回退：若解析得到目标则使用 Process.Start(path, args)，否则直接尝试 Process.Start(tag)（支持 .lnk）
             Try
-                ' 如果直接启动失败，尝试使用 WScript.Shell 的 Run
-                Dim wsh = CreateObject("WScript.Shell")
-                wsh.Run($"""{tag}""")
+                If Not String.IsNullOrEmpty(launchPath) AndAlso (Not String.Equals(launchPath, tag, StringComparison.OrdinalIgnoreCase) OrElse Not String.IsNullOrEmpty(launchArgs)) Then
+                    System.Diagnostics.Process.Start(launchPath, launchArgs)
+                Else
+                    System.Diagnostics.Process.Start(tag)
+                End If
+                Return
             Catch
             End Try
+
+            ' 最后使用 WScript.Shell.Run 作为后备（组合路径与参数）
+            Try
+                Dim wsh2 = CreateObject("WScript.Shell")
+                If Not String.IsNullOrEmpty(launchPath) Then
+                    Dim cmd = """" & launchPath & """"
+                    If Not String.IsNullOrEmpty(launchArgs) Then cmd &= " " & launchArgs
+                    wsh2.Run(cmd)
+                Else
+                    wsh2.Run("""" & tag & """")
+                End If
+            Catch
+            End Try
+        Catch
+            ' 忽略所有启动错误
         End Try
     End Sub
 
