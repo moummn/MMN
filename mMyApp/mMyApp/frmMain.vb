@@ -351,7 +351,11 @@ Public Class frmMain
             Next
 
             ' 刷新完成
-            ' 展开所有节点并同时填充右键菜单（按照 TreeView 层级）
+            ' 对 TreeView 节点按名称排序（对子节点递归处理），然后展开并同时填充右键菜单
+            Try
+                SortTreeNodes(twAppList.Nodes)
+            Catch
+            End Try
             twAppList.ExpandAll()
             PopulateContextMenuFromTree()
             ' 刷新完成后，检测配置变化并保存
@@ -491,6 +495,28 @@ Public Class frmMain
                 Catch
                 End Try
             End If
+        Catch
+        End Try
+    End Sub
+
+    Private Sub SortTreeNodes(nodes As TreeNodeCollection)
+        Try
+            ' 将子节点按其 Text 进行排序，使用不区分大小写的比较
+            Dim list As New System.Collections.Generic.List(Of TreeNode)()
+            For Each tn As TreeNode In nodes
+                list.Add(tn)
+            Next
+            list.Sort(Function(a, b) String.Compare(a.Text, b.Text, StringComparison.OrdinalIgnoreCase))
+            nodes.Clear()
+            For Each tn2 In list
+                nodes.Add(tn2)
+            Next
+            ' 对每个节点的子节点递归排序
+            For Each tn As TreeNode In nodes
+                If tn.Nodes IsNot Nothing AndAlso tn.Nodes.Count > 0 Then
+                    SortTreeNodes(tn.Nodes)
+                End If
+            Next
         Catch
         End Try
     End Sub
