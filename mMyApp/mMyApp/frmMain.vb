@@ -376,6 +376,11 @@ Public Class frmMain
             notifyIcon.Visible = True
             notifyIcon.ContextMenuStrip = muRightClick
             AddHandler notifyIcon.MouseClick, AddressOf NotifyIcon_MouseClick
+            ' 确保即使在应用列表为空时也有退出菜单
+            Try
+                PopulateContextMenuFromTree()
+            Catch
+            End Try
         Catch
         End Try
 
