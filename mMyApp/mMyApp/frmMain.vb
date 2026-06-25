@@ -142,6 +142,9 @@ Public Class frmMain
     Private sharedImgList As ImageList = Nothing
     Private sharedIconKeyMap As New System.Collections.Generic.Dictionary(Of String, String)(StringComparer.OrdinalIgnoreCase)
     Private allowExit As Boolean = False
+    ' 应用运行时的配置：是否尝试以管理员运行
+    Private appAdminMap As New System.Collections.Generic.Dictionary(Of String, Boolean)(StringComparer.OrdinalIgnoreCase)
+    Private suppressCbRunAdminEvents As Boolean = False
     Private Sub btnViewWorkFolder_Click(sender As Object, e As EventArgs) Handles btnViewWorkFolder.Click
         Using dlg As New FolderBrowserDialog()
             dlg.Description = "请选择工作文件夹"
@@ -405,6 +408,48 @@ Public Class frmMain
         ' 右键菜单由 ContextMenuStrip 处理
     End Sub
 
+    Private Sub twAppList_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles twAppList.AfterSelect
+        ' 当用户选择节点时，尝试加载该项目的提权设置到 cbRunAdmin
+        Try
+            Dim tn As TreeNode = e.Node
+            If tn Is Nothing Then Return
+            Dim target As String = ResolveTargetFromNode(tn)
+            suppressCbRunAdminEvents = True
+            Try
+                Dim val As Boolean = False
+                If Not String.IsNullOrEmpty(target) AndAlso appAdminMap.TryGetValue(target, val) Then
+                    cbRunAdmin.Checked = val
+                Else
+                    cbRunAdmin.Checked = False
+                End If
+            Finally
+                suppressCbRunAdminEvents = False
+            End Try
+        Catch
+        End Try
+    End Sub
+
+    Private Function ResolveTargetFromNode(tn As TreeNode) As String
+        Try
+            Dim tag = TryCast(tn.Tag, String)
+            If String.IsNullOrEmpty(tag) Then Return String.Empty
+            If String.Equals(System.IO.Path.GetExtension(tag), ".lnk", StringComparison.OrdinalIgnoreCase) Then
+                Try
+                    Dim wsh = CreateObject("WScript.Shell")
+                    Dim sc = wsh.CreateShortcut(tag)
+                    If sc IsNot Nothing Then
+                        Return If(sc.TargetPath, String.Empty)
+                    End If
+                Catch
+                End Try
+            End If
+            ' 如果 tag 本身是可执行或文件则返回
+            If System.IO.File.Exists(tag) Then Return tag
+        Catch
+        End Try
+        Return String.Empty
+    End Function
+
     Private Sub frmMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         ' 如果不是通过退出菜单触发的关闭，则取消关闭并隐藏到托盘
         If Not allowExit Then
@@ -511,13 +556,26 @@ Public Class frmMain
                 End Try
             End If
 
-            ' 尝试使用 mdUACRun 强制降权启动（若可用）
+            ' 尝试使用 mdUACRun 启动（根据配置决定是否尝试提权或降权）
             If Not String.IsNullOrEmpty(launchPath) Then
                 Try
-                    mdUACRun.RunApp(launchPath, launchArgs, launchWorkDir, mdUACRun.RunMode.ForceDemote强制降权)
+                    Dim runMode As mdUACRun.RunMode = mdUACRun.RunMode.ForceDemote强制降权
+                    Try
+                        Dim tryVal As Boolean = False
+                        If appAdminMap.TryGetValue(launchPath, tryVal) Then
+                            If tryVal Then
+                                runMode = mdUACRun.RunMode.UseCurrent当前权限
+                            Else
+                                runMode = mdUACRun.RunMode.ForceDemote强制降权
+                            End If
+                        End If
+                    Catch
+                    End Try
+
+                    mdUACRun.RunApp(launchPath, launchArgs, launchWorkDir, runMode)
                     Return
                 Catch
-                    ' 降权启动失败，继续回退逻辑
+                    ' 启动失败，继续回退逻辑
                 End Try
             End If
 
@@ -551,6 +609,7 @@ Public Class frmMain
 
     Private Sub LoadConfig()
         Try
+            appAdminMap.Clear()
             If System.IO.File.Exists(configPath) Then
                 Dim xd As New System.Xml.XmlDocument()
                 xd.Load(configPath)
@@ -562,26 +621,72 @@ Public Class frmMain
                         lastSavedWorkFolder = path
                     End If
                 End If
+                ' 读取每个 App 的设置
+                Dim appNodes As System.Xml.XmlNodeList = xd.SelectNodes("/Config/AppSettings/App")
+                If appNodes IsNot Nothing Then
+                    For Each an As System.Xml.XmlNode In appNodes
+                        Dim pathAttr = an.Attributes?.GetNamedItem("Path")
+                        If pathAttr Is Nothing Then Continue For
+                        Dim p = pathAttr.Value
+                        Dim raNode = an.SelectSingleNode("RunAdmin")
+                        Dim val As Boolean = False
+                        If raNode IsNot Nothing Then
+                            If raNode.InnerText = "1" OrElse String.Equals(raNode.InnerText, "true", StringComparison.OrdinalIgnoreCase) Then
+                                val = True
+                            End If
+                        End If
+                        If Not String.IsNullOrEmpty(p) Then appAdminMap(p) = val
+                    Next
+                End If
             End If
         Catch ex As Exception
             ' 忽略配置读取错误
         End Try
     End Sub
 
-    Private Sub SaveConfig(workFolder As String)
+    Private Sub cbRunAdmin_CheckedChanged(sender As Object, e As EventArgs) Handles cbRunAdmin.CheckedChanged
+        If suppressCbRunAdminEvents Then Return
         Try
+            Dim tn As TreeNode = twAppList.SelectedNode
+            If tn Is Nothing Then Return
+            Dim target = ResolveTargetFromNode(tn)
+            If String.IsNullOrEmpty(target) Then Return
+            ' 更新内存并保存全部配置
+            appAdminMap(target) = cbRunAdmin.Checked
+            SaveConfig()
+        Catch
+        End Try
+    End Sub
+
+    Private Sub SaveConfig(Optional workFolder As String = Nothing)
+        Try
+            If Not String.IsNullOrEmpty(workFolder) Then lastSavedWorkFolder = workFolder
             Dim xd As New System.Xml.XmlDocument()
             Dim decl = xd.CreateXmlDeclaration("1.0", "utf-8", Nothing)
             xd.AppendChild(decl)
             Dim root = xd.CreateElement("Config")
             xd.AppendChild(root)
             Dim wf = xd.CreateElement("WorkFolder")
-            wf.InnerText = workFolder
+            wf.InnerText = lastSavedWorkFolder
             root.AppendChild(wf)
+            ' 写入 AppSettings
+            Dim appsNode = xd.CreateElement("AppSettings")
+            For Each kvp In appAdminMap
+                Dim appNode = xd.CreateElement("App")
+                Dim attr = xd.CreateAttribute("Path")
+                attr.Value = kvp.Key
+                appNode.Attributes.SetNamedItem(attr)
+                Dim ra = xd.CreateElement("RunAdmin")
+                ra.InnerText = If(kvp.Value, "1", "0")
+                appNode.AppendChild(ra)
+                appsNode.AppendChild(appNode)
+            Next
+            root.AppendChild(appsNode)
             xd.Save(configPath)
-            lastSavedWorkFolder = workFolder
+            ' lastSavedWorkFolder 已在开始时更新
         Catch ex As Exception
             ' 忽略保存错误或提示用户（此处静默）
         End Try
     End Sub
+
 End Class

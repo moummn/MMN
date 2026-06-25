@@ -64,8 +64,9 @@ Partial Class frmMain
         '
         'muRightClick
         '
+        Me.muRightClick.ImageScalingSize = New System.Drawing.Size(19, 19)
         Me.muRightClick.Name = "muRightClick"
-        Me.muRightClick.Size = New System.Drawing.Size(201, 30)
+        Me.muRightClick.Size = New System.Drawing.Size(61, 4)
         '
         'cbWorkFolder
         '
@@ -92,7 +93,6 @@ Partial Class frmMain
         '
         Me.cbRunAdmin.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbRunAdmin.AutoSize = True
-        Me.cbRunAdmin.Enabled = False
         Me.cbRunAdmin.Location = New System.Drawing.Point(576, 79)
         Me.cbRunAdmin.Name = "cbRunAdmin"
         Me.cbRunAdmin.Size = New System.Drawing.Size(103, 18)
