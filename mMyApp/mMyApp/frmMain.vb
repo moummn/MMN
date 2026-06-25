@@ -380,6 +380,24 @@ Public Class frmMain
             btnRefresh.PerformClick()
         End If
 
+        ' 启动参数：若包含 -s 则启动后最小化到托盘
+        Try
+            Dim args = Environment.GetCommandLineArgs()
+            For i = 0 To args.Length - 1
+                If String.Equals(args(i), "-s", StringComparison.OrdinalIgnoreCase) Then
+                    ' 延迟执行最小化到托盘，确保窗体加载完成
+                    Me.BeginInvoke(New MethodInvoker(Sub()
+                                                         Try
+                                                             MinimizeToTray()
+                                                         Catch
+                                                         End Try
+                                                     End Sub))
+                    Exit For
+                End If
+            Next
+        Catch
+        End Try
+
     End Sub
 
     Private Sub NotifyIcon_MouseClick(sender As Object, e As MouseEventArgs)
@@ -388,17 +406,7 @@ Public Class frmMain
             Try
                 Me.BeginInvoke(New MethodInvoker(Sub()
                                                      Try
-                                                         Me.ShowInTaskbar = True
-                                                         Me.Show()
-                                                         Me.WindowState = FormWindowState.Normal
-                                                         Me.Visible = True
-                                                         Me.BringToFront()
-                                                         Me.Activate()
-                                                         ' 恢复时展开全部节点
-                                                         Try
-                                                             If twAppList IsNot Nothing Then twAppList.ExpandAll()
-                                                         Catch
-                                                         End Try
+                                                         RestoreFromTray()
                                                      Catch
                                                      End Try
                                                  End Sub))
@@ -455,8 +463,7 @@ Public Class frmMain
         If Not allowExit Then
             e.Cancel = True
             Try
-                Me.ShowInTaskbar = False
-                Me.Hide()
+                MinimizeToTray()
             Catch
             End Try
             Return
@@ -475,9 +482,7 @@ Public Class frmMain
     Private Sub frmMain_Resize(sender As Object, e As EventArgs) Handles Me.Resize
         Try
             If Me.WindowState = FormWindowState.Minimized Then
-                ' 最小化时只保留托盘图标，隐藏任务栏图标
-                Me.ShowInTaskbar = False
-                Me.Hide()
+                MinimizeToTray()
             Else
                 Me.ShowInTaskbar = True
                 ' 恢复显示时展开所有节点
@@ -502,9 +507,37 @@ Public Class frmMain
         Dim miExit As New ToolStripMenuItem("退出应用(&X)")
         AddHandler miExit.Click, AddressOf ExitMenu_Click
         muRightClick.Items.Add(miExit)
+
     End Sub
 
-    Private Sub ExitMenu_Click(sender As Object, e As EventArgs)
+    ' 将主窗口最小化到托盘（隐藏任务栏图标并隐藏窗口）
+    Private Sub MinimizeToTray()
+        Try
+            Me.ShowInTaskbar = False
+            Me.Hide()
+        Catch
+        End Try
+    End Sub
+
+    ' 从托盘恢复主窗口
+    Private Sub RestoreFromTray()
+        Try
+            Me.ShowInTaskbar = True
+            Me.Show()
+            Me.WindowState = FormWindowState.Normal
+            Me.Visible = True
+            Me.BringToFront()
+            Me.Activate()
+            ' 恢复时展开全部节点
+            Try
+                If twAppList IsNot Nothing Then twAppList.ExpandAll()
+            Catch
+            End Try
+        Catch
+        End Try
+    End Sub
+
+    Private Sub ExitMenu_Click()
         ' 标记允许退出，然后关闭窗体（将触发 FormClosing）
         allowExit = True
         Me.Close()

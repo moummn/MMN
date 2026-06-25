@@ -64,7 +64,6 @@ Partial Class frmMain
         '
         'muRightClick
         '
-        Me.muRightClick.ImageScalingSize = New System.Drawing.Size(19, 19)
         Me.muRightClick.Name = "muRightClick"
         Me.muRightClick.Size = New System.Drawing.Size(61, 4)
         '
@@ -111,6 +110,7 @@ Partial Class frmMain
         Me.cbRunUser.TabIndex = 9
         Me.cbRunUser.Text = "尝试降权(&U)"
         Me.cbRunUser.UseVisualStyleBackColor = True
+        Me.cbRunUser.Visible = False
         '
         'frmMain
         '
