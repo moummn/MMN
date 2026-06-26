@@ -145,6 +145,8 @@ Public Class frmMain
     ' 应用运行时的配置：是否尝试以管理员运行
     Private appAdminMap As New System.Collections.Generic.Dictionary(Of String, Boolean)(StringComparer.OrdinalIgnoreCase)
     Private suppressCbRunAdminEvents As Boolean = False
+    ' 记录用户上一次明确设置的勾选状态（用于在文件夹显示为 Indeterminate 时，点击切换到上一次的相反状态）
+
     Private Sub btnViewWorkFolder_Click(sender As Object, e As EventArgs) Handles btnViewWorkFolder.Click
         Using dlg As New FolderBrowserDialog()
             dlg.Description = "请选择工作文件夹"
@@ -369,6 +371,12 @@ Public Class frmMain
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadConfig()
+        ' 默认禁用 cbRunAdmin，避免对初始状态误操作；启用三态以支持文件夹混合状态显示
+        Try
+            cbRunAdmin.Enabled = False
+            cbRunAdmin.ThreeState = True
+        Catch
+        End Try
         ' 初始化托盘图标
         Try
             notifyIcon = New NotifyIcon()
@@ -430,14 +438,56 @@ Public Class frmMain
         Try
             Dim tn As TreeNode = e.Node
             If tn Is Nothing Then Return
-            Dim target As String = ResolveTargetFromNode(tn)
             suppressCbRunAdminEvents = True
             Try
-                Dim val As Boolean = False
-                If Not String.IsNullOrEmpty(target) AndAlso appAdminMap.TryGetValue(target, val) Then
-                    cbRunAdmin.Checked = val
+                ' 默认：当有节点被选中时启用 cbRunAdmin
+                cbRunAdmin.Enabled = True
+
+                ' 判断是否为文件：优先认为叶子节点为文件，或使用 IsNodeAFile 进一步确认
+                Dim isFile As Boolean = False
+                Try
+                    If tn.Nodes IsNot Nothing AndAlso tn.Nodes.Count = 0 Then isFile = True
+                    If Not isFile AndAlso IsNodeAFile(tn) Then isFile = True
+                Catch
+                End Try
+
+                If isFile Then
+                    ' 文件：解析目标并显示其状态（使用 CheckState 明确设置，避免遗留的 Indeterminate）
+                    Dim resolvedTarget As String = ResolveTargetFromNode(tn)
+                    If String.IsNullOrEmpty(resolvedTarget) Then
+                        Dim tagStr = TryCast(tn.Tag, String)
+                        If Not String.IsNullOrEmpty(tagStr) AndAlso System.IO.File.Exists(tagStr) Then
+                            resolvedTarget = tagStr
+                        End If
+                    End If
+                    Dim val As Boolean = False
+                    If Not String.IsNullOrEmpty(resolvedTarget) AndAlso appAdminMap.TryGetValue(resolvedTarget, val) Then
+                        cbRunAdmin.CheckState = If(val, CheckState.Checked, CheckState.Unchecked)
+                        cbRunAdmin.CheckState = If(val, CheckState.Checked, CheckState.Unchecked)
+                    Else
+                        cbRunAdmin.CheckState = CheckState.Unchecked
+                    End If
                 Else
-                    cbRunAdmin.Checked = False
+                    ' 文件夹：检查子节点状态，设置三态显示
+                    Dim targets = GetTargetsUnderNode(tn)
+                    Dim anyChecked As Boolean = False
+                    Dim anyUnchecked As Boolean = False
+                    For Each t In targets
+                        Dim v As Boolean = False
+                        If appAdminMap.TryGetValue(t, v) Then
+                            If v Then anyChecked = True Else anyUnchecked = True
+                        Else
+                            anyUnchecked = True
+                        End If
+                        If anyChecked AndAlso anyUnchecked Then Exit For
+                    Next
+                    If anyChecked AndAlso anyUnchecked Then
+                        cbRunAdmin.CheckState = CheckState.Indeterminate
+                    ElseIf anyChecked Then
+                        cbRunAdmin.CheckState = CheckState.Checked
+                    Else
+                        cbRunAdmin.CheckState = CheckState.Unchecked
+                    End If
                 End If
             Finally
                 suppressCbRunAdminEvents = False
@@ -713,14 +763,114 @@ Public Class frmMain
         Try
             Dim tn As TreeNode = twAppList.SelectedNode
             If tn Is Nothing Then Return
-            Dim target = ResolveTargetFromNode(tn)
-            If String.IsNullOrEmpty(target) Then Return
-            ' 更新内存并保存全部配置
-            appAdminMap(target) = cbRunAdmin.Checked
-            SaveConfig()
+
+            ' 在任何选择时都启用 cbRunAdmin（UI 状态由 AfterSelect 设置）
+            Try
+                cbRunAdmin.Enabled = True
+            Catch
+            End Try
+
+            ' 以 CheckState 决定目标状态；Checked -> True；Unchecked/Indeterminate -> False
+            Dim newVal As Boolean = (cbRunAdmin.CheckState = CheckState.Checked)
+
+            Dim isFile As Boolean = IsNodeAFile(tn)
+
+            If isFile Then
+                ' 选中文件时：仅应用到该文件自身
+                Dim resolvedTarget As String = ResolveTargetFromNode(tn)
+                If String.IsNullOrEmpty(resolvedTarget) Then
+                    Dim tagStr = TryCast(tn.Tag, String)
+                    If Not String.IsNullOrEmpty(tagStr) AndAlso System.IO.File.Exists(tagStr) Then
+                        resolvedTarget = tagStr
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(resolvedTarget) Then
+                    appAdminMap(resolvedTarget) = newVal
+                    SaveConfig()
+                End If
+            Else
+                ' 选中的是文件夹：应用到该文件夹下所有文件
+                Dim targets = GetTargetsUnderNode(tn)
+                For Each t In targets
+                    If Not String.IsNullOrEmpty(t) Then appAdminMap(t) = newVal
+                Next
+                SaveConfig()
+            End If
         Catch
         End Try
     End Sub
+
+    ' 当处于 Indeterminate 时，用户点击应直接取消勾选（设为 Unchecked）
+    Private Sub cbRunAdmin_Click(sender As Object, e As EventArgs) Handles cbRunAdmin.Click
+        Try
+            If cbRunAdmin.CheckState = CheckState.Indeterminate Then
+                cbRunAdmin.CheckState = CheckState.Unchecked
+            End If
+        Catch
+        End Try
+    End Sub
+
+    Private Function IsNodeAFile(tn As TreeNode) As Boolean
+        Try
+            If tn Is Nothing Then Return False
+            Dim tag = TryCast(tn.Tag, String)
+            If Not String.IsNullOrEmpty(tag) Then
+                If String.Equals(System.IO.Path.GetExtension(tag), ".lnk", StringComparison.OrdinalIgnoreCase) Then
+                    Try
+                        Dim wsh = CreateObject("WScript.Shell")
+                        Dim sc = wsh.CreateShortcut(tag)
+                        If sc IsNot Nothing Then
+                            If Not String.IsNullOrEmpty(sc.TargetPath) AndAlso System.IO.File.Exists(sc.TargetPath) Then
+                                Return True
+                            End If
+                        End If
+                    Catch
+                    End Try
+                ElseIf System.IO.File.Exists(tag) Then
+                    Return True
+                End If
+            End If
+        Catch
+        End Try
+        Return False
+    End Function
+
+    Private Function IsDirectoryNode(tn As TreeNode) As Boolean
+        Try
+            If tn Is Nothing Then Return False
+            Dim tag = TryCast(tn.Tag, String)
+            If Not String.IsNullOrEmpty(tag) AndAlso System.IO.Directory.Exists(tag) Then Return True
+        Catch
+        End Try
+        Return False
+    End Function
+
+    Private Function GetTargetsUnderNode(tn As TreeNode) As System.Collections.Generic.List(Of String)
+        Dim result As New System.Collections.Generic.List(Of String)()
+        Try
+            If tn Is Nothing Then Return result
+            ' 如果节点自身是文件，则返回自身的 target
+            If IsNodeAFile(tn) Then
+                Dim t = ResolveTargetFromNode(tn)
+                If Not String.IsNullOrEmpty(t) Then result.Add(t)
+                Return result
+            End If
+            ' 否则递归遍历子节点，收集所有文件目标
+            For Each child As TreeNode In tn.Nodes
+                If IsNodeAFile(child) Then
+                    Dim t = ResolveTargetFromNode(child)
+                    If Not String.IsNullOrEmpty(t) Then result.Add(t)
+                Else
+                    Dim sublist = GetTargetsUnderNode(child)
+                    For Each s In sublist
+                        result.Add(s)
+                    Next
+                End If
+            Next
+        Catch
+        End Try
+        Return result
+    End Function
 
     Private Sub SaveConfig(Optional workFolder As String = Nothing)
         Try
