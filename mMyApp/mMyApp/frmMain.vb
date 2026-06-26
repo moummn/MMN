@@ -370,6 +370,10 @@ Public Class frmMain
     End Sub
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        '初始化一些参数
+        muRightClick.ImageScalingSize = New Size(16, 16)
+
+
         LoadConfig()
         ' 默认禁用 cbRunAdmin，避免对初始状态误操作；启用三态以支持文件夹混合状态显示
         Try

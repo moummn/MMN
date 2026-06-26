@@ -36,9 +36,10 @@ Partial Class frmMain
         'btnViewWorkFolder
         '
         Me.btnViewWorkFolder.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnViewWorkFolder.Location = New System.Drawing.Point(576, 9)
+        Me.btnViewWorkFolder.Location = New System.Drawing.Point(987, 15)
+        Me.btnViewWorkFolder.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.btnViewWorkFolder.Name = "btnViewWorkFolder"
-        Me.btnViewWorkFolder.Size = New System.Drawing.Size(95, 29)
+        Me.btnViewWorkFolder.Size = New System.Drawing.Size(163, 50)
         Me.btnViewWorkFolder.TabIndex = 0
         Me.btnViewWorkFolder.Text = "浏览(&V)..."
         Me.btnViewWorkFolder.UseVisualStyleBackColor = True
@@ -46,36 +47,38 @@ Partial Class frmMain
         'lblWorkFolder
         '
         Me.lblWorkFolder.AutoSize = True
-        Me.lblWorkFolder.Location = New System.Drawing.Point(12, 16)
+        Me.lblWorkFolder.Location = New System.Drawing.Point(21, 27)
+        Me.lblWorkFolder.Margin = New System.Windows.Forms.Padding(5, 0, 5, 0)
         Me.lblWorkFolder.Name = "lblWorkFolder"
-        Me.lblWorkFolder.Size = New System.Drawing.Size(91, 14)
+        Me.lblWorkFolder.Size = New System.Drawing.Size(154, 24)
         Me.lblWorkFolder.TabIndex = 2
         Me.lblWorkFolder.Text = "工作文件夹："
         '
         'btnRefresh
         '
         Me.btnRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnRefresh.Location = New System.Drawing.Point(576, 44)
+        Me.btnRefresh.Location = New System.Drawing.Point(987, 75)
+        Me.btnRefresh.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.btnRefresh.Name = "btnRefresh"
-        Me.btnRefresh.Size = New System.Drawing.Size(95, 29)
+        Me.btnRefresh.Size = New System.Drawing.Size(163, 50)
         Me.btnRefresh.TabIndex = 3
         Me.btnRefresh.Text = "刷新(&R)"
         Me.btnRefresh.UseVisualStyleBackColor = True
         '
         'muRightClick
         '
-        Me.muRightClick.ImageScalingSize = New System.Drawing.Size(19, 19)
         Me.muRightClick.Name = "muRightClick"
-        Me.muRightClick.Size = New System.Drawing.Size(61, 4)
+        Me.muRightClick.Size = New System.Drawing.Size(301, 48)
         '
         'cbWorkFolder
         '
         Me.cbWorkFolder.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbWorkFolder.FormattingEnabled = True
-        Me.cbWorkFolder.Location = New System.Drawing.Point(12, 48)
+        Me.cbWorkFolder.Location = New System.Drawing.Point(21, 82)
+        Me.cbWorkFolder.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.cbWorkFolder.Name = "cbWorkFolder"
-        Me.cbWorkFolder.Size = New System.Drawing.Size(558, 22)
+        Me.cbWorkFolder.Size = New System.Drawing.Size(954, 32)
         Me.cbWorkFolder.TabIndex = 5
         '
         'twAppList
@@ -83,10 +86,11 @@ Partial Class frmMain
         Me.twAppList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.twAppList.Location = New System.Drawing.Point(12, 76)
+        Me.twAppList.Location = New System.Drawing.Point(21, 130)
+        Me.twAppList.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.twAppList.Name = "twAppList"
         Me.twAppList.ShowPlusMinus = False
-        Me.twAppList.Size = New System.Drawing.Size(558, 362)
+        Me.twAppList.Size = New System.Drawing.Size(954, 618)
         Me.twAppList.TabIndex = 7
         '
         'cbRunAdmin
@@ -94,9 +98,10 @@ Partial Class frmMain
         Me.cbRunAdmin.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbRunAdmin.AutoSize = True
         Me.cbRunAdmin.Enabled = False
-        Me.cbRunAdmin.Location = New System.Drawing.Point(576, 79)
+        Me.cbRunAdmin.Location = New System.Drawing.Point(990, 135)
+        Me.cbRunAdmin.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.cbRunAdmin.Name = "cbRunAdmin"
-        Me.cbRunAdmin.Size = New System.Drawing.Size(103, 18)
+        Me.cbRunAdmin.Size = New System.Drawing.Size(174, 28)
         Me.cbRunAdmin.TabIndex = 8
         Me.cbRunAdmin.Text = "尝试提权(&A)"
         Me.cbRunAdmin.UseVisualStyleBackColor = True
@@ -106,9 +111,10 @@ Partial Class frmMain
         Me.cbRunUser.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbRunUser.AutoSize = True
         Me.cbRunUser.Enabled = False
-        Me.cbRunUser.Location = New System.Drawing.Point(576, 104)
+        Me.cbRunUser.Location = New System.Drawing.Point(990, 178)
+        Me.cbRunUser.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.cbRunUser.Name = "cbRunUser"
-        Me.cbRunUser.Size = New System.Drawing.Size(103, 18)
+        Me.cbRunUser.Size = New System.Drawing.Size(174, 28)
         Me.cbRunUser.TabIndex = 9
         Me.cbRunUser.Text = "尝试降权(&U)"
         Me.cbRunUser.UseVisualStyleBackColor = True
@@ -116,9 +122,9 @@ Partial Class frmMain
         '
         'frmMain
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 14.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(12.0!, 24.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(683, 450)
+        Me.ClientSize = New System.Drawing.Size(1171, 771)
         Me.Controls.Add(Me.cbRunUser)
         Me.Controls.Add(Me.cbRunAdmin)
         Me.Controls.Add(Me.twAppList)
@@ -126,6 +132,7 @@ Partial Class frmMain
         Me.Controls.Add(Me.btnRefresh)
         Me.Controls.Add(Me.lblWorkFolder)
         Me.Controls.Add(Me.btnViewWorkFolder)
+        Me.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.Name = "frmMain"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "mMyApp"
