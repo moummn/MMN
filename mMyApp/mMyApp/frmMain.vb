@@ -623,9 +623,15 @@ Public Class frmMain
     End Sub
 
     Private Sub ExitMenu_Click()
-        ' 标记允许退出，然后关闭窗体（将触发 FormClosing）
-        allowExit = True
-        Me.Close()
+        ' 退出前确认
+        Try
+            Dim ret = MsgBox("确认退出应用吗？", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "确认")
+            If ret = MsgBoxResult.Yes Then
+                allowExit = True
+                Me.Close()
+            End If
+        Catch
+        End Try
     End Sub
 
 
