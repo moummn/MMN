@@ -388,6 +388,7 @@ Public Class frmMain
             notifyIcon.Visible = True
             notifyIcon.ContextMenuStrip = muRightClick
             AddHandler notifyIcon.MouseClick, AddressOf NotifyIcon_MouseClick
+            AddHandler notifyIcon.MouseDoubleClick, AddressOf NotifyIcon_MouseDoubleClick
             ' 确保即使在应用列表为空时也有退出菜单
             Try
                 PopulateContextMenuFromTree()
@@ -423,7 +424,50 @@ Public Class frmMain
 
     Private Sub NotifyIcon_MouseClick(sender As Object, e As MouseEventArgs)
         If e.Button = MouseButtons.Left Then
-            ' 显示主窗体（使用 Invoke 确保在 UI 线程执行）
+            ' 尝试调用 NotifyIcon 内部的 ShowContextMenu 方法，以复用系统内部行为（可正确处理自动收起）
+            Try
+                Dim mi = notifyIcon.GetType().GetMethod("ShowContextMenu", Reflection.BindingFlags.Instance Or Reflection.BindingFlags.NonPublic)
+                If mi IsNot Nothing Then
+                    mi.Invoke(notifyIcon, Nothing)
+                    Return
+                End If
+            Catch
+            End Try
+
+            ' 如果反射调用失败，回退到以窗体为 owner 的显示方式
+            Try
+                If muRightClick IsNot Nothing Then
+                    Dim pt = Me.PointToClient(Cursor.Position)
+                    muRightClick.Show(Me, pt)
+                    Try
+                        muRightClick.Focus()
+                    Catch
+                    End Try
+                Else
+                    Me.BeginInvoke(New MethodInvoker(Sub()
+                                                         Try
+                                                             RestoreFromTray()
+                                                         Catch
+                                                         End Try
+                                                     End Sub))
+                End If
+            Catch
+            End Try
+        ElseIf e.Button = MouseButtons.Right Then
+            ' 右键也显示菜单（将菜单关联到主窗体以保证行为一致）
+            Try
+                If muRightClick IsNot Nothing Then
+                    Dim pt2 = Me.PointToClient(Cursor.Position)
+                    muRightClick.Show(Me, pt2)
+                End If
+            Catch
+            End Try
+        End If
+    End Sub
+
+    Private Sub NotifyIcon_MouseDoubleClick(sender As Object, e As MouseEventArgs)
+        If e.Button = MouseButtons.Left Then
+            ' 左键双击恢复主窗口
             Try
                 Me.BeginInvoke(New MethodInvoker(Sub()
                                                      Try
@@ -434,7 +478,6 @@ Public Class frmMain
             Catch
             End Try
         End If
-        ' 右键菜单由 ContextMenuStrip 处理
     End Sub
 
     Private Sub twAppList_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles twAppList.AfterSelect
@@ -589,6 +632,11 @@ Public Class frmMain
         If muRightClick.Items.Count > 0 Then
             muRightClick.Items.Add(New ToolStripSeparator())
         End If
+        ' 添加设置项，点击后显示主窗口
+        Dim miSettings As New ToolStripMenuItem("设置(&S)")
+        AddHandler miSettings.Click, AddressOf RestoreFromMenu_Click
+        muRightClick.Items.Add(miSettings)
+
         Dim miExit As New ToolStripMenuItem("退出应用(&X)")
         AddHandler miExit.Click, AddressOf ExitMenu_Click
         muRightClick.Items.Add(miExit)
@@ -630,6 +678,13 @@ Public Class frmMain
                 allowExit = True
                 Me.Close()
             End If
+        Catch
+        End Try
+    End Sub
+
+    Private Sub RestoreFromMenu_Click(sender As Object, e As EventArgs)
+        Try
+            RestoreFromTray()
         Catch
         End Try
     End Sub
