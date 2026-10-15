@@ -24,11 +24,12 @@ Public Module mdUACRun
     Private Const CREATE_NEW_CONSOLE As UInteger = &H10
 
     ' ---------- 结构体 ----------
+    <System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, CharSet:=System.Runtime.InteropServices.CharSet.Unicode)>
     Private Structure STARTUPINFO
         Public cb As Integer
-        Public lpReserved As String
-        Public lpDesktop As String
-        Public lpTitle As String
+        <System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPTStr)> Public lpReserved As String
+        <System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPTStr)> Public lpDesktop As String
+        <System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPTStr)> Public lpTitle As String
         Public dwX As Integer
         Public dwY As Integer
         Public dwXSize As Integer
@@ -45,6 +46,7 @@ Public Module mdUACRun
         Public hStdError As IntPtr
     End Structure
 
+    <System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)>
     Private Structure PROCESS_INFORMATION
         Public hProcess As IntPtr
         Public hThread As IntPtr
@@ -290,11 +292,11 @@ Public Module mdUACRun
         End Try
         Return 0
     End Function
-    <System.Runtime.InteropServices.DllImport("shell32.dll", SetLastError:=True, CharSet:=System.Runtime.InteropServices.CharSet.Auto)>
+    <System.Runtime.InteropServices.DllImport("shell32.dll", SetLastError:=True, CharSet:=System.Runtime.InteropServices.CharSet.Unicode)>
     Private Function ShellExecuteEx(ByRef lpExecInfo As SHELLEXECUTEINFO) As Boolean
     End Function
 
-    <System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, CharSet:=System.Runtime.InteropServices.CharSet.Auto)>
+    <System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, CharSet:=System.Runtime.InteropServices.CharSet.Unicode)>
     Private Structure SHELLEXECUTEINFO
         Public cbSize As Integer
         Public fMask As UInteger
@@ -332,7 +334,7 @@ Public Module mdUACRun
     Private Function DestroyEnvironmentBlock(lpEnvironment As IntPtr) As Boolean
     End Function
 
-    <System.Runtime.InteropServices.DllImport("advapi32.dll", SetLastError:=True, CharSet:=CharSet.Unicode)>
+    <System.Runtime.InteropServices.DllImport("advapi32.dll", SetLastError:=True, CharSet:=System.Runtime.InteropServices.CharSet.Unicode)>
     Private Function CreateProcessAsUserW(hToken As IntPtr,
                                           lpApplicationName As String,
                                           lpCommandLine As String,

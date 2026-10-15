@@ -2,7 +2,7 @@
 Imports System.Xml
 
 Public Class frmMain
-    <Runtime.InteropServices.StructLayout(Runtime.InteropServices.LayoutKind.Sequential)>
+    <Runtime.InteropServices.StructLayout(Runtime.InteropServices.LayoutKind.Sequential, CharSet:=Runtime.InteropServices.CharSet.Unicode)>
     Private Structure SHFILEINFO
         Public hIcon As IntPtr
         Public iIcon As Integer
@@ -13,7 +13,7 @@ Public Class frmMain
         Public szTypeName As String
     End Structure
 
-    <Runtime.InteropServices.DllImport("shell32.dll", CharSet:=Runtime.InteropServices.CharSet.Auto)>
+    <Runtime.InteropServices.DllImport("shell32.dll", CharSet:=Runtime.InteropServices.CharSet.Unicode, SetLastError:=True)>
     Private Shared Function SHGetFileInfo(pszPath As String, dwFileAttributes As UInteger, ByRef psfi As SHFILEINFO, cbFileInfo As UInteger, uFlags As UInteger) As IntPtr
     End Function
 
@@ -21,7 +21,7 @@ Public Class frmMain
     Private Shared Function DestroyIcon(hIcon As IntPtr) As Boolean
     End Function
 
-    <Runtime.InteropServices.DllImport("shell32.dll", CharSet:=Runtime.InteropServices.CharSet.Auto)>
+    <Runtime.InteropServices.DllImport("shell32.dll", CharSet:=Runtime.InteropServices.CharSet.Unicode, SetLastError:=True)>
     Private Shared Function ExtractIconEx(pszFile As String, nIconIndex As Integer, ByRef phiconLarge As IntPtr, ByRef phiconSmall As IntPtr, nIcons As UInteger) As UInteger
     End Function
 
